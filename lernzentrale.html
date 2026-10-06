@@ -16,7 +16,7 @@
   --font-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
   /* Namen aus der alten Fassung, vom Skript noch benutzt */
   --bg:var(--paper); --fg:var(--ink); --strong:var(--ink); --pen:var(--blue); --pen-soft:var(--blue-soft);
-  --c1:var(--blue); --c2:var(--blue); --c3:var(--blue); --c4:var(--blue); --c5:var(--blue); --c6:var(--blue); --c7:var(--blue); --c8:var(--blue);
+  --c1:#1F5FBF; --c2:#1E7A4A; --c3:#B35400; --c4:#8E3FA8; --c5:#C2255C; --c6:#4A5568; --c7:#7A6A00; --c8:#0E7C86;
 }
 *{box-sizing:border-box}
 html{background:var(--paper)}
@@ -33,6 +33,11 @@ p{margin:0}
 .ico{flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 
 .head{display:flex;flex-direction:column;gap:14px}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;gap:12px 20px}
+.hero .titlerow{flex-direction:column;align-items:flex-start;gap:6px}
+.plot{flex:none;width:210px;max-width:46%;height:auto}
+.plot .ax{stroke:var(--ink);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.plot .ln{fill:none;stroke-width:3.5;stroke-linecap:round;stroke-linejoin:round}
 .titlerow{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap}
 .subj{color:var(--muted);font-family:var(--font-head);font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
 .nameline{display:flex;gap:12px 20px;flex-wrap:wrap;color:var(--muted)}
@@ -50,7 +55,7 @@ p{margin:0}
 
 /* Lineal-Skala: Signature-Element, sitzt oben auf Karten und Methodenfeldern */
 .card,.mcard{position:relative}
-.card::before,.mcard::before{content:"";position:absolute;left:0;right:0;top:0;height:var(--rh,16px);border-radius:18px 18px 0 0;pointer-events:none;
+.card::before,.mcard::before{content:"";position:absolute;left:0;right:0;top:0;height:var(--rh,16px);border-radius:20px 20px 0 0;pointer-events:none;
   background-image:linear-gradient(90deg,var(--c) 2px,transparent 2px),linear-gradient(90deg,var(--c) 1px,transparent 1px),linear-gradient(var(--c),var(--c));
   background-size:40px 85%,8px 45%,100% 3px;background-position:0 100%,0 100%,0 100%;background-repeat:repeat-x,repeat-x,no-repeat}
 .card{--c:var(--blue);background:color-mix(in srgb,var(--c) 5%,#fff);border:1px solid var(--rule);border-radius:18px;padding:42px 26px 26px;display:flex;flex-direction:column;gap:22px;box-shadow:0 14px 30px -16px rgba(20,33,61,.3);min-width:0}
@@ -60,15 +65,18 @@ p{margin:0}
 .muted{color:var(--muted);font-size:1rem}
 
 .mhead{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap}
-.mtitle{font-family:var(--font-head);font-weight:700;font-size:1.6rem}
+.mtitle{display:inline-flex;align-items:center;gap:10px;font-family:var(--font-head);font-weight:800;font-size:1.6rem}
+.mtitle .ico{width:30px;height:30px;color:var(--mc)}
 .back{font:inherit;min-height:44px;background:none;border:0;color:var(--blue);font-weight:600;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:4px}
 
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
-.mcard{--c:var(--blue);--rh:10px;text-align:left;font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:24px 16px 16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0;min-height:128px}
-.mcard:hover{background:var(--blue-soft);border-color:var(--blue)}
+.mcard{--c:var(--blue);--rh:10px;text-align:left;font:inherit;color:var(--ink);background:color-mix(in srgb,var(--c) 8%,#fff);border:2px solid color-mix(in srgb,var(--c) 32%,#fff);border-radius:20px;padding:30px 18px 18px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0;min-height:128px}
+.mcard:hover{background:color-mix(in srgb,var(--c) 15%,#fff);border-color:var(--c);box-shadow:0 10px 20px -12px var(--c)}
+.micon{display:grid;place-items:center;width:46px;height:46px;border-radius:50%;background:var(--c);color:#fff;font-style:normal;margin-bottom:6px}
+.micon .ico{width:26px;height:26px}
 .mcard b{font-family:var(--font-head);font-size:1.3rem;line-height:1.2}
 .mcard span{color:var(--muted);font-size:1rem}
-.mcard small{color:var(--blue);font-family:var(--font-head);font-weight:700;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;margin-top:auto;padding-top:6px}
+.mcard small{color:var(--c);font-family:var(--font-head);font-weight:700;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;margin-top:auto;padding-top:6px}
 
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:1rem;min-height:44px;padding:6px 18px;border:2px solid var(--c);border-radius:999px;background:var(--sheet);color:var(--ink);cursor:pointer}
@@ -164,9 +172,10 @@ textarea:focus-visible{outline-offset:2px}
 .setup input[type=date],.setup select,.setup input[type=text]{font:inherit;min-height:48px;padding:8px 10px;border:2px solid var(--edge);border-radius:12px;background:var(--sheet);color:var(--ink);min-width:0;width:100%}
 .setup input#pSun{width:24px;height:24px;accent-color:var(--blue)}
 .setup .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.summary{display:flex;gap:10px 28px;flex-wrap:wrap}
-.summary div{display:flex;flex-direction:column}
-.summary b{font-family:var(--font-head);font-size:2.1rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px}
+.summary div{--c:var(--blue);display:flex;flex-direction:column;padding:12px 14px;border-radius:16px;background:color-mix(in srgb,var(--c) 10%,#fff);border:2px solid color-mix(in srgb,var(--c) 30%,#fff)}
+.summary div:nth-child(2){--c:var(--c4)}.summary div:nth-child(3){--c:var(--c3)}.summary div:nth-child(4){--c:var(--c2)}
+.summary b{font-family:var(--font-head);font-weight:800;color:var(--c);font-size:2.2rem;line-height:1.1;font-variant-numeric:tabular-nums}
 .summary span{color:var(--muted);font-size:1rem}
 .bar{height:14px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--sheet)}
 .bar i{display:block;height:100%;background:var(--blue);transition:width .4s ease}
@@ -192,7 +201,8 @@ textarea:focus-visible{outline-offset:2px}
 .day li button:hover{background:var(--blue-soft)}
 .day.done .items{opacity:.55;text-decoration:line-through}
 .tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-.tips div{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:12px 16px 14px}
+.tips div{--c:var(--blue);background:color-mix(in srgb,var(--c) 8%,#fff);border:2px solid color-mix(in srgb,var(--c) 30%,#fff);border-top:6px solid var(--c);border-radius:18px;padding:12px 16px 16px}
+.tips h3{color:var(--c);margin-bottom:2px}
 .tips p{color:var(--muted);font-size:1rem}
 
 .progress{color:var(--muted);font-size:1rem;text-align:right;font-variant-numeric:tabular-nums}
@@ -311,7 +321,15 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
 </style>
 <main>
   <div class="head">
-    <div class="titlerow"><h1 id="h1">Lernzentrale</h1><span class="subj" id="subt">Fächer, Lernplan und Übungen</span></div>
+    <div class="hero"><div class="titlerow"><h1 id="h1">Lernzentrale</h1><span class="subj" id="subt">Fächer, Lernplan und Übungen</span></div>
+      <svg class="plot" id="plot" viewBox="0 0 210 96" aria-hidden="true" focusable="false">
+        <path class="ax" d="M10 6v80h194"/>
+        <path class="ln" stroke="var(--t-bew)" d="M16 80 L196 44"/>
+        <path class="ln" stroke="var(--t-besch)" d="M16 82 Q120 82 196 8"/>
+        <path class="ln" stroke="var(--t-funk)" d="M16 30q11-22 22 0t22 0 22 0 22 0 22 0 22 0 22 0 22 0"/>
+        <path d="M16 62h180" stroke="var(--t-mess)" stroke-width="2.5" stroke-dasharray="6 5" fill="none"/>
+        <g fill="var(--t-mess)"><circle cx="40" cy="68" r="4.5"/><circle cx="76" cy="56" r="4.5"/><circle cx="112" cy="66" r="4.5"/><circle cx="148" cy="57" r="4.5"/><circle cx="184" cy="63" r="4.5"/></g>
+      </svg></div>
     <div class="nameline">
       <label for="nm">Name: <input class="hline" id="nm" autocomplete="off"></label>
       <label for="dt">Datum: <input class="hline" id="dt" autocomplete="off"></label>
@@ -505,7 +523,18 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     funk:'<path d="M2 12q2.5-8 5 0t5 0 5 0 5 0"/>',
     messreihe:'<path d="M3 3v18h18"/><path d="M5 12h15" stroke-dasharray="3 2.5"/><circle cx="8" cy="15" r="1.4"/><circle cx="12" cy="9" r="1.4"/><circle cx="16" cy="14" r="1.4"/><circle cx="19" cy="10" r="1.4"/>',
     beschl:'<path d="M3 3v18h18"/><path d="M5 19C12 19 17 14 20 5"/>',
-    mix:'<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/>'
+    mix:'<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/>',
+    rechnen:'<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8M8 12h2M14 12h2M8 16h2M14 16h2"/>',
+    karten:'<rect x="3" y="8" width="14" height="11" rx="2"/><path d="M7 8V5h14v11h-4"/>',
+    fehler:'<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>',
+    einheiten:'<circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 3h6"/>',
+    zuordnen:'<rect x="3" y="4" width="6" height="6" rx="1"/><rect x="15" y="14" width="6" height="6" rx="1"/><path d="M9 7h3v10h3"/>',
+    erklaeren:'<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+    quiz:'<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 1-1 1.7M12 17h.01"/>',
+    sim:'<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4h6v3H9zM9 14l2 2 4-4"/>',
+    themen:'<path d="M5 6h14M5 12h14M5 18h9"/>',
+    notizen:'<path d="M4 20l4-1 11-11-3-3L5 16z"/>',
+    edit:'<circle cx="12" cy="12" r="3"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/>'
   };
   function ico(k){return ICO[k]?'<svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">'+ICO[k]+'</svg>':''}
 
@@ -542,8 +571,10 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     {k:'sim',t:'Probe-Arbeit',d:'Vier Aufgaben wie in der Arbeit, mit Punkten und Uhr',c:'c8',m:'35–45 Min'}
   ];
   function modeInfo(k){return MODES.filter(function(m){return m.k===k})[0]}
+  function modeByTitle(t){return PMODES.concat(GMODES).filter(function(m){return m.t===t})[0]||{}}
   function shell(title,c,inner){
-    return '<div class="mhead"><button class="back" id="bBack">← Alle Methoden</button><span class="mtitle">'+title+'</span></div><div class="card" style="--c:var(--'+c+')">'+inner+'</div>';
+    var mb=modeByTitle(title),mc=S.subj==='physik'?(mb.c||'c1'):c;
+    return '<div class="mhead"><button class="back" id="bBack">← Alle Methoden</button><span class="mtitle" style="--mc:var(--'+mc+')">'+ico(mb.k)+title+'</span></div><div class="card" style="--c:var(--'+c+')">'+inner+'</div>';
   }
   function setView(html){$('#view').innerHTML=crumbsHtml()+html;var b=$('#bBack');if(b)b.onclick=function(){cur.mode=null;render()}}
 
@@ -1139,7 +1170,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     var add='<details class="sheet" id="dAdd"><summary>Neues Fach hinzufügen</summary><div class="how"><div class="form"><div class="f"><label class="l" for="nsName">Name des Fachs</label><input type="text" id="nsName" autocomplete="off" placeholder="zum Beispiel Biologie"></div><div class="f"><label class="l" for="nsCol">Farbe</label><select id="nsCol">'+Object.keys(SCOL).map(function(c){return '<option value="'+c+'"'+(c===nextCol?' selected':'')+'>'+SCOL[c]+'</option>'}).join('')+'</select></div><div class="f"><label class="l" for="nsDate">Datum der Arbeit (optional)</label><input type="date" id="nsDate"></div></div><div class="actions"><button class="btn primary" id="nsAdd">Fach anlegen</button></div><div id="nsMsg" class="msgbox" aria-live="polite"></div></div></details>';
     var setup='<div class="setup"><div class="f"><label class="l" for="pMin">Zeit pro Fach und Lerntag</label><select id="pMin">'+[15,20,30,45].map(function(m){return '<option value="'+m+'"'+(m==P.minutes?' selected':'')+'>'+m+' Minuten</option>'}).join('')+'</select></div><div class="f"><label class="l" for="pTempo">Wie oft lernen</label><select id="pTempo"><option value="locker"'+(P.tempo!=='normal'?' selected':'')+'>Locker (nur jeden 2. Tag)</option><option value="normal"'+(P.tempo==='normal'?' selected':'')+'>Normal (öfter)</option></select></div><div class="f"><label class="l" style="display:flex;gap:10px;align-items:center;min-height:48px;margin-top:22px"><input type="checkbox" id="pSun"'+(P.sunFree?' checked':'')+'> Sonntags frei</label></div></div>';
     var how='<details class="sheet" open><summary>So funktioniert der Plan</summary><div class="how"><p>Jedes Fach mit einem Datum bekommt wenige kurze Einheiten bis zur Arbeit. Tage mit einer Arbeit oder direkt davor bleiben für das jeweilige Fach reserviert, andere Fächer pausieren dann.</p><ol><li><b>Check-in:</b> zeigt dir, wo es noch hakt.</li><li><b>Zwischendurch:</b> schwächste Themen, Fehler suchen, Erklären.</li><li><b>Generalprobe:</b> einmal alles wie in der Arbeit.</li><li><b>Tag vorher:</b> nur Karteikarten und ein kurzer Blick auf die Unterlagen.</li></ol><p>Hake eine Einheit ab, wenn du fertig bist. „Starten“ öffnet direkt die passende Übung. Im Fach selbst legst du Themen, Karten und Fragen an.</p></div></details>';
-    var tips='<details class="sheet"><summary>Lernstrategien</summary><div class="tips" style="padding-block:10px"><div><h3>Kurz und oft</h3><p>20 bis 30 Minuten pro Fach schlagen einen langen Block am Vorabend.</p></div><div><h3>Fächer abwechseln</h3><p>Fach, Pause, anderes Fach. Das Gehirn behält Gemischtes besser.</p></div><div><h3>Abfragen statt lesen</h3><p>Erst Karten und Aufgaben, dann nachschauen. Fehler sind die beste Übung.</p></div><div><h3>Am nächsten Tag wiederholen</h3><p>Starte mit 3 Minuten Karteikarten vom Vortag.</p></div><div><h3>Pausen und Schlaf</h3><p>Nach 25 Minuten 5 Minuten Pause. Vor der Arbeit früh ins Bett.</p></div></div></details>';
+    var tips='<details class="sheet"><summary>Lernstrategien</summary><div class="tips" style="padding-block:10px"><div style="--c:var(--c1)"><h3>Kurz und oft</h3><p>20 bis 30 Minuten pro Fach schlagen einen langen Block am Vorabend.</p></div><div style="--c:var(--c3)"><h3>Fächer abwechseln</h3><p>Fach, Pause, anderes Fach. Das Gehirn behält Gemischtes besser.</p></div><div style="--c:var(--c5)"><h3>Abfragen statt lesen</h3><p>Erst Karten und Aufgaben, dann nachschauen. Fehler sind die beste Übung.</p></div><div style="--c:var(--c4)"><h3>Am nächsten Tag wiederholen</h3><p>Starte mit 3 Minuten Karteikarten vom Vortag.</p></div><div style="--c:var(--c8)"><h3>Pausen und Schlaf</h3><p>Nach 25 Minuten 5 Minuten Pause. Vor der Arbeit früh ins Bett.</p></div></div></details>';
     var backup='<details class="sheet" id="dBackup"><summary>Sicherung</summary><div class="how"><p>Dein Fortschritt wird automatisch gespeichert. Für eine eigene Kopie kannst du die Sicherung hier anzeigen, kopieren und irgendwo aufbewahren. Zum Wiederherstellen fügst du sie unten ein.</p><div class="actions"><button class="btn" id="bExp">Sicherung anzeigen</button><button class="btn" id="bCopy" hidden>Kopieren</button></div><textarea id="expBox" readonly hidden aria-label="Sicherung"></textarea><label class="l" for="impBox" style="color:var(--muted)">Sicherung einfügen</label><textarea id="impBox" placeholder="Sicherung hier einfügen"></textarea><div class="actions"><button class="btn" id="bImp">Wiederherstellen</button></div><div id="impMsg" class="msgbox" aria-live="polite"></div></div></details>';
     var weeks={},order=[],tk=ymd(today());
     plan.days.forEach(function(r){var wd=(r.date.getDay()+6)%7,mon=ymd(addDays(r.date,-wd));if(!weeks[mon]){weeks[mon]=[];order.push(mon)}weeks[mon].push(r)});
@@ -1174,8 +1205,8 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     var plan=buildPlan(),tk=ymd(today()),td=plan.days.filter(function(r){return r.key===tk})[0],tm={};
     if(td)td.rows.forEach(function(row){if(row.sj.id===sj.id)row.items.forEach(function(i){if(i.m)tm[i.m]=1})});
     var st=subjStat(sj),pc=st.p===null?0:Math.round(st.p),modes=sj.id==='physik'?PMODES:GMODES;
-    var head='<div class="card" style="--c:var(--'+sj.c+')"><div class="homeh"><h2>'+esc(sj.name)+'</h2><span class="muted">'+countdown(sj)+'</span></div><div class="scard-bar"><div class="bar" role="img" aria-label="Sicherheit '+pc+' Prozent"><i style="width:'+pc+'%;background:var(--'+sj.c+')"></i></div><p class="muted">'+esc(st.text)+'</p></div><h3>Heute in diesem Fach</h3>'+todayHtml(plan,sj.id)+'</div>';
-    var grid='<div class="card" style="--c:var(--'+sj.c+')"><h2>Wie willst du lernen?</h2><div class="grid">'+modes.map(function(m){return '<button class="mcard" style="--c:var(--'+sj.c+')" data-m="'+m.k+'"><b>'+m.t+'</b><span>'+m.d+'</span><small>'+m.m+'</small>'+(tm[m.k]?'<em class="badge">Heute im Plan</em>':'')+'</button>'}).join('')+'</div></div>';
+    var head='<div class="card" style="--c:var(--'+sj.c+')"><div class="homeh"><h2>Überblick</h2><span class="muted">'+countdown(sj)+'</span></div><div class="scard-bar"><div class="bar" role="img" aria-label="Sicherheit '+pc+' Prozent"><i style="width:'+pc+'%;background:var(--'+sj.c+')"></i></div><p class="muted">'+esc(st.text)+'</p></div><h3>Heute in diesem Fach</h3>'+todayHtml(plan,sj.id)+'</div>';
+    var grid='<div class="card" style="--c:var(--'+sj.c+')"><h2>Wie willst du lernen?</h2><div class="grid">'+modes.map(function(m){return '<button class="mcard" style="--c:var(--'+(sj.id==='physik'?m.c:sj.c)+')" data-m="'+m.k+'"><i class="micon">'+ico(m.k)+'</i><b>'+m.t+'</b><span>'+m.d+'</span><small>'+m.m+'</small>'+(tm[m.k]?'<em class="badge">Heute im Plan</em>':'')+'</button>'}).join('')+'</div></div>';
     setView(head+(sj.id==='physik'?readinessCard():'')+grid);
   }
 
@@ -1183,7 +1214,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
   function render(){
     stopTimers();
     var sheet=$('#formel');if(sheet)sheet.hidden=!(S.screen==='subject'&&S.subj==='physik'&&cur.mode===null);
-    var h1=$('#h1'),sb=$('#subt');
+    var h1=$('#h1'),sb=$('#subt'),pl=$('#plot');if(pl)pl.hidden=!(S.screen==='subject'&&S.subj==='physik');
     if(S.screen==='subject'){var sj=curSubj();h1.textContent=sj?sj.name:'Lernzentrale';sb.textContent=sj&&sj.id==='physik'?'Kinematik · Lernen und Üben':'Dein Fach'}
     else{h1.textContent='Lernzentrale';sb.textContent='Fächer, Lernplan und Übungen'}
     if(S.screen==='subject')renderSubject();else renderHome();
