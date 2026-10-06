@@ -1,0 +1,1212 @@
+<title>Lernzentrale</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,600;0,700;1,400&family=Nunito:wght@600;700;800&family=STIX+Two+Text:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: Millimeterpapier als Grund, weiße Aufgabenblätter mit Lineal-Skala oben in der Themenfarbe; ein Piktogramm pro Themenbereich. Bewusst nur hell. */
+:root{
+  color-scheme:light;
+  --paper:#F3F6FA; --sheet:#FFFFFF; --ink:#14213D; --muted:#46526A; --rule:#C5CEDB; --edge:#6B7A90;
+  --blue:#1F5FBF; --blue-soft:#E7EFFB; --sol:#EDF2FA;
+  --t-bew:#1F5FBF; --t-besch:#B35400; --t-funk:#8E3FA8; --t-mess:#7A6A00; --t-mix:#14213D;
+  --green:#1B7A48; --green-soft:#E2F3E9; --red:#B3261E; --red-soft:#FCE9E7; --hl:#FFE98A;
+  --font-body:"Atkinson Hyperlegible Next","Atkinson Hyperlegible","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --font-head:"Nunito","Segoe UI",system-ui,sans-serif;
+  --s1:#1F5FBF; --s2:#B35400; --s3:#8E3FA8; --s4:#6B6000; --s5:#0F7A80; --s6:#B0346A;
+  --font-math:"STIX Two Text","Cambria Math","Times New Roman",serif;
+  /* Namen aus der alten Fassung, vom Skript noch benutzt */
+  --bg:var(--paper); --fg:var(--ink); --strong:var(--ink); --pen:var(--blue); --pen-soft:var(--blue-soft);
+  --c1:var(--blue); --c2:var(--blue); --c3:var(--blue); --c4:var(--blue); --c5:var(--blue); --c6:var(--blue); --c7:var(--blue); --c8:var(--blue);
+}
+*{box-sizing:border-box}
+html{background:var(--paper)}
+body{margin:0;background-color:var(--paper);
+  background-image:linear-gradient(rgba(31,95,191,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(31,95,191,.04) 1px,transparent 1px),linear-gradient(rgba(31,95,191,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(31,95,191,.07) 1px,transparent 1px);
+  background-size:8px 8px,8px 8px,40px 40px,40px 40px;
+  color:var(--ink);font-family:var(--font-body);font-size:1.0625rem;line-height:1.55;padding-inline:16px;padding-block:24px 56px}
+main{max-width:820px;margin-inline:auto;display:flex;flex-direction:column;gap:22px}
+h1{font-family:var(--font-head);font-size:clamp(2.1rem,7vw,3rem);line-height:1.05;margin:0;font-weight:800;letter-spacing:0;text-wrap:balance}
+h2{font-family:var(--font-head);font-size:1.6rem;line-height:1.15;margin:0;font-weight:700;text-wrap:balance}
+h3{font-family:var(--font-head);font-size:1.25rem;line-height:1.2;margin:0;font-weight:700}
+p{margin:0}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.ico{flex:none;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+.head{display:flex;flex-direction:column;gap:14px}
+.titlerow{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap}
+.subj{color:var(--muted);font-family:var(--font-head);font-size:1.1rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.nameline{display:flex;gap:12px 20px;flex-wrap:wrap;color:var(--muted)}
+.nameline label{display:flex;align-items:flex-end;gap:8px;flex:1 1 220px;min-width:0}
+.hline{flex:1;min-width:0;min-height:44px;border:0;border-bottom:2px solid var(--ink);background:transparent;font-family:var(--font-body);font-size:1.15rem;color:var(--ink);padding:4px;border-radius:0}
+.hline:focus{border-bottom-color:var(--blue)}
+
+.nav{display:flex;border:2px solid var(--ink);border-radius:999px;overflow:hidden;align-self:flex-start;background:var(--sheet)}
+.nav button{font-family:var(--font-head);font-size:1.2rem;font-weight:600;min-height:48px;padding:8px 28px;border:0;background:transparent;color:var(--ink);cursor:pointer}
+.nav button+button{border-left:2px solid var(--ink)}
+.nav button:hover{background:var(--blue-soft)}
+.nav button[aria-selected="true"]{background:var(--blue);color:#fff}
+.nav button:focus-visible{outline-offset:-5px;outline-color:var(--ink)}
+.nav button[aria-selected="true"]:focus-visible{outline-color:#fff}
+
+/* Lineal-Skala: Signature-Element, sitzt oben auf Karten und Methodenfeldern */
+.card,.mcard{position:relative}
+.card::before,.mcard::before{content:"";position:absolute;left:0;right:0;top:0;height:var(--rh,16px);border-radius:18px 18px 0 0;pointer-events:none;
+  background-image:linear-gradient(90deg,var(--c) 2px,transparent 2px),linear-gradient(90deg,var(--c) 1px,transparent 1px),linear-gradient(var(--c),var(--c));
+  background-size:40px 85%,8px 45%,100% 3px;background-position:0 100%,0 100%,0 100%;background-repeat:repeat-x,repeat-x,no-repeat}
+.card{--c:var(--blue);background:color-mix(in srgb,var(--c) 5%,#fff);border:1px solid var(--rule);border-radius:18px;padding:42px 26px 26px;display:flex;flex-direction:column;gap:22px;box-shadow:0 14px 30px -16px rgba(20,33,61,.3);min-width:0}
+.kicker{font-family:var(--font-head);font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;color:var(--c,var(--blue));font-weight:700}
+.task{min-width:0}
+.task b{font-weight:700;background:linear-gradient(transparent 55%,var(--hl) 55%);padding:0 2px}
+.muted{color:var(--muted);font-size:1rem}
+
+.mhead{display:flex;align-items:center;gap:6px 18px;flex-wrap:wrap}
+.mtitle{font-family:var(--font-head);font-weight:700;font-size:1.6rem}
+.back{font:inherit;min-height:44px;background:none;border:0;color:var(--blue);font-weight:600;cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:4px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.mcard{--c:var(--blue);--rh:10px;text-align:left;font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:24px 16px 16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0;min-height:128px}
+.mcard:hover{background:var(--blue-soft);border-color:var(--blue)}
+.mcard b{font-family:var(--font-head);font-size:1.3rem;line-height:1.2}
+.mcard span{color:var(--muted);font-size:1rem}
+.mcard small{color:var(--blue);font-family:var(--font-head);font-weight:700;font-size:1.05rem;letter-spacing:.06em;text-transform:uppercase;margin-top:auto;padding-top:6px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:inline-flex;align-items:center;gap:8px;font:inherit;font-size:1rem;min-height:44px;padding:6px 18px;border:2px solid var(--c);border-radius:999px;background:var(--sheet);color:var(--ink);cursor:pointer}
+.chip .ico{color:var(--c)}
+.chip:hover{background:color-mix(in srgb,var(--c) 10%,#fff)}
+.chip[aria-pressed="true"]{background:var(--c);color:#fff;font-weight:700}
+.chip[aria-pressed="true"] .ico{color:#fff}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;background:var(--sheet)}
+th,td{padding:8px 14px;text-align:center;border:1.5px solid var(--ink)}
+th{font-family:var(--font-head);font-size:1.1rem;font-weight:600;background:var(--blue-soft)}
+tr.pick td{background:var(--hl);font-weight:700}
+
+.inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px 28px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field label{font-size:1rem;color:var(--muted)}
+.row{display:flex;align-items:center;gap:8px;min-height:52px;border:2px solid var(--ink);border-radius:12px;background:var(--sheet);padding-inline:12px}
+.row input{flex:1;min-width:0;min-height:48px;border:0;background:transparent;color:var(--ink);font-family:var(--font-body);font-size:1.3rem;font-variant-numeric:tabular-nums;padding:0;border-radius:0}
+.row input:focus{outline:none}
+.row:focus-within{outline:3px solid var(--blue);outline-offset:2px}
+.row .unit{white-space:nowrap;font-family:var(--font-math);font-size:1.15rem;color:var(--muted)}
+.field.ok .row{border-color:var(--green);background:var(--green-soft)}
+.field.bad .row{border-color:var(--red);background:var(--red-soft)}
+.msg{font-size:1rem;font-weight:700;line-height:1.3;min-height:1.3em}
+.field.ok .msg{color:var(--green)} .field.bad .msg{color:var(--red)}
+.field.ok .msg::before{content:"✓ "} .field.bad .msg::before{content:"✗ "}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button.btn{font:inherit;font-weight:600;min-height:48px;padding:8px 24px;border-radius:999px;border:2px solid var(--ink);background:var(--sheet);color:var(--ink);cursor:pointer}
+button.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+button.btn:hover:not(:disabled){background:var(--blue-soft)}
+button.btn.primary:hover:not(:disabled){background:#174C9A;border-color:#174C9A}
+button.btn:disabled{opacity:.45;cursor:default}
+
+.solution{background:var(--sol);border:1px solid var(--rule);border-radius:16px;padding:18px 22px;display:flex;flex-direction:column;gap:10px;color:var(--ink)}
+.solution .kicker{color:var(--blue)}
+.solution ol{margin:0;padding-left:26px;display:flex;flex-direction:column;font-size:1.1rem;line-height:1.6}
+.solution li{padding-block:6px;border-bottom:1px solid rgba(31,95,191,.22)}
+.solution li:last-child{border-bottom:0}
+.solution code,.sheet code,.task code{font-family:var(--font-math);font-size:1.12em;font-style:normal;background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:0 8px}
+.solution code{white-space:normal}
+.solution .hand{font-size:1.1rem;line-height:1.6}
+.solution .tip{font-size:1rem}
+.verdict{font-weight:700;padding:10px 14px;border:2px solid;border-radius:12px}
+.verdict.good{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+.verdict.good::before{content:"✓ "}
+.verdict.mixed{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+.verdict.mixed::before{content:"! "}
+
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{font:inherit;text-align:left;min-height:52px;padding:12px 14px 12px 50px;border:2px solid var(--rule);background:var(--sheet);color:var(--ink);border-radius:12px;cursor:pointer;position:relative}
+.opt::before{content:"";position:absolute;left:14px;top:14px;width:22px;height:22px;border:2px solid var(--ink);border-radius:50%;font-size:1.1rem;font-weight:700;line-height:18px;text-align:center}
+.opt:hover:not(:disabled){border-color:var(--blue);background:var(--blue-soft)}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right::before{content:"✓";color:var(--green);border-color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong::before{content:"✗";color:var(--red);border-color:var(--red)}
+.opt:disabled{cursor:default;color:var(--ink)}
+.opts.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.opts.cols .opt{font-family:var(--font-math);font-size:1.25rem}
+
+.flash{min-height:220px;border:2px solid var(--ink);border-radius:18px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:10px;background-color:var(--sheet);background-image:repeating-linear-gradient(transparent 0 31px,rgba(31,95,191,.16) 31px 32px)}
+.flash .side{font-family:var(--font-head);font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.flash .txt{font-size:1.35rem;font-weight:600;line-height:1.4}
+.flash .hand{font-family:var(--font-math);font-size:1.7rem;color:var(--ink);line-height:1.35}
+.boxes{display:flex;gap:6px 16px;flex-wrap:wrap;font-size:1rem;color:var(--muted)}
+.boxes b{color:var(--ink)}
+
+.lines{display:flex;flex-direction:column;gap:8px}
+.lrow{display:flex;gap:12px;align-items:center;padding:8px 12px;min-height:56px;border:2px solid var(--rule);border-radius:12px;flex-wrap:wrap;background:var(--sheet)}
+.lrow .lt{flex:1 1 220px;min-width:0;font-family:var(--font-math);font-size:1.2rem;line-height:1.35}
+.lrow.right{border-color:var(--green);background:var(--green-soft)}
+.lrow.wrong{border-color:var(--red);background:var(--red-soft)}
+.lrow button{font:inherit;font-size:1rem;min-height:44px;padding:6px 16px;border:2px solid var(--ink);border-radius:999px;background:var(--sheet);color:var(--ink);cursor:pointer}
+.lrow button:hover:not(:disabled){background:var(--blue-soft)}
+.lrow button:disabled{opacity:.45;cursor:default}
+
+.blitz{font-family:var(--font-head);font-weight:700;font-size:2.6rem;color:var(--ink);line-height:1.1}
+.clock{font-family:var(--font-head);font-variant-numeric:tabular-nums;font-weight:700;font-size:1.6rem}
+.timebar{height:12px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--sheet);max-width:320px}
+.timebar i{display:block;height:100%;width:100%;background:var(--blue);transition:width .25s linear}
+#game{display:flex;flex-direction:column;gap:14px}
+textarea{font-family:var(--font-body);font-size:1.1rem;line-height:2rem;color:var(--ink);border:2px solid var(--ink);border-radius:12px;padding:0 12px;width:100%;min-height:170px;background-color:var(--sheet);resize:vertical;background-image:linear-gradient(transparent calc(100% - 1px),rgba(31,95,191,.25) 0);background-size:100% 2rem;background-attachment:local}
+textarea:focus-visible{outline-offset:2px}
+.check{display:flex;flex-direction:column;gap:4px}
+.check label{display:flex;gap:12px;align-items:flex-start;cursor:pointer;min-height:44px;padding-block:6px}
+.check input{margin-top:3px;width:24px;height:24px;flex:none;accent-color:var(--blue)}
+
+.setup{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px 24px}
+.setup .f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.setup label.l{font-size:1rem;color:var(--muted)}
+.setup input[type=date],.setup select,.setup input[type=text]{font:inherit;min-height:48px;padding:8px 10px;border:2px solid var(--edge);border-radius:12px;background:var(--sheet);color:var(--ink);min-width:0;width:100%}
+.setup input#pSun{width:24px;height:24px;accent-color:var(--blue)}
+.setup .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.summary{display:flex;gap:10px 28px;flex-wrap:wrap}
+.summary div{display:flex;flex-direction:column}
+.summary b{font-family:var(--font-head);font-size:2.1rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary span{color:var(--muted);font-size:1rem}
+.bar{height:14px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--sheet)}
+.bar i{display:block;height:100%;background:var(--blue);transition:width .4s ease}
+.phasebar{display:flex;gap:2px;height:16px}
+.phasebar i{display:block;min-width:4px}
+.phlist{display:flex;flex-direction:column;gap:2px}
+.ph{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:1rem}
+.ph i{display:block;width:14px;height:14px;flex:none}
+.week{display:flex;flex-direction:column;gap:8px}
+.week h3{color:var(--muted);font-size:1.05rem;letter-spacing:.1em;text-transform:uppercase;margin-top:10px}
+.day{display:grid;grid-template-columns:32px 88px minmax(0,1fr);gap:10px;align-items:start;padding:14px;border:1px solid var(--rule);border-radius:16px;background:var(--sheet)}
+.day.today{border:2px solid var(--blue);background:var(--blue-soft)}
+.day.rest,.day.other,.day.free{background:#E9EEF4}
+.day.free .dd{color:var(--muted)}
+.day.exam{border:2px solid var(--ink);background:#FFF3BF}
+.day input[type=checkbox]{width:28px;height:28px;margin:0;accent-color:var(--blue)}
+.day .dd{font-family:var(--font-head);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums;padding-top:2px}
+.day .dd small{display:block;font-family:var(--font-body);font-weight:400;color:var(--muted);font-size:1rem}
+.day ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.day li{display:flex;gap:6px 12px;align-items:center;flex-wrap:wrap}
+.day li .m{color:var(--muted);font-size:1rem;font-variant-numeric:tabular-nums}
+.day li button{font:inherit;font-size:1rem;font-weight:600;min-height:44px;padding:6px 18px;border:2px solid var(--blue);color:var(--blue);background:var(--sheet);border-radius:999px;cursor:pointer}
+.day li button:hover{background:var(--blue-soft)}
+.day.done .items{opacity:.55;text-decoration:line-through}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.tips div{background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:12px 16px 14px}
+.tips p{color:var(--muted);font-size:1rem}
+
+.progress{color:var(--muted);font-size:1rem;text-align:right;font-variant-numeric:tabular-nums}
+.progress b{font-weight:700;color:var(--ink)}
+details.sheet{background:var(--sheet);border:1px solid var(--rule);border-radius:18px;padding:6px 24px 12px}
+details.sheet summary{cursor:pointer;font-family:var(--font-head);font-size:1.35rem;font-weight:700;min-height:44px;display:flex;align-items:center}
+.sheet dl{display:grid;gap:4px;margin:8px 0 4px}
+.sheet dt{display:flex;align-items:center;gap:8px;font-family:var(--font-head);font-size:1.15rem;font-weight:700;margin-top:12px;color:var(--c,var(--ink))}
+.sheet dd{margin:0;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.sheet code{font-size:1.25rem;padding:2px 10px;border-bottom-width:2px;white-space:nowrap}
+.fr{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.2;margin-inline:.15em}
+.fr>span:first-child{border-bottom:1.5px solid currentColor;padding-inline:.25em}
+.fr>span+span{padding-inline:.25em}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+.sec{display:flex;flex-direction:column;gap:12px;border-top:3px solid var(--c);padding-top:14px}
+.sec h3{display:flex;align-items:center;gap:10px;color:var(--c);font-size:1.4rem}
+
+/* ===== Lernzentrale: Startmenü, Fächer, Plan, Werkzeuge ===== */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:0 8px;font-size:1.0625rem}
+.crumbs button{font:inherit;min-height:44px;background:none;border:0;color:var(--blue);text-decoration:underline;text-underline-offset:4px;font-weight:600;cursor:pointer;padding:4px 2px}
+.crumbs .sep{color:var(--muted)}
+.crumbs .here{font-weight:700}
+.schip{display:inline-block;align-self:flex-start;background:var(--c);color:#fff;border-radius:999px;padding:2px 14px;font-family:var(--font-head);font-weight:700;font-size:1.05rem}
+.scard{--c:var(--s1);position:relative;text-align:left;font:inherit;color:var(--ink);background:var(--sheet);border:1px solid var(--rule);border-radius:16px;padding:26px 18px 18px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-width:0;min-height:170px}
+.scard::before{content:"";position:absolute;left:0;right:0;top:0;height:10px;border-radius:16px 16px 0 0;pointer-events:none;background-image:linear-gradient(90deg,var(--c) 2px,transparent 2px),linear-gradient(90deg,var(--c) 1px,transparent 1px),linear-gradient(var(--c),var(--c));background-size:40px 85%,8px 45%,100% 3px;background-position:0 100%,0 100%,0 100%;background-repeat:repeat-x,repeat-x,no-repeat}
+.scard:hover{background:var(--blue-soft);border-color:var(--c)}
+.scard b{font-family:var(--font-head);font-size:1.5rem;line-height:1.15}
+.scard .cd{color:var(--muted)}
+.scard .sbar{height:12px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--sheet);margin-top:auto}
+.scard .sbar i{display:block;height:100%;background:var(--c)}
+.scard .st{font-size:1rem;color:var(--muted)}
+.scard.add{--c:var(--edge);border-style:dashed;align-items:flex-start;justify-content:center}
+.dday{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;padding:14px;border:1px solid var(--rule);border-radius:16px;background:var(--sheet)}
+.dday.today{border:2px solid var(--blue);background:var(--blue-soft)}
+.dday.free{background:#E9EEF4}
+.dday.exam{border:2px solid var(--ink);background:#FFF3BF}
+.dday .dd{font-family:var(--font-head);font-size:1.15rem;font-weight:700;font-variant-numeric:tabular-nums}
+.dday .dd small{display:block;font-family:var(--font-body);font-weight:400;color:var(--muted);font-size:1rem}
+.dbody{display:flex;flex-direction:column;gap:0;min-width:0}
+.exnote{font-weight:700}
+.prow{display:grid;grid-template-columns:32px minmax(0,1fr);gap:10px;align-items:start;padding:10px 0;border-top:1px solid var(--rule)}
+.prow:first-child{border-top:0;padding-top:0}
+.prow input[type=checkbox]{width:28px;height:28px;margin:0;accent-color:var(--c)}
+.pbody{display:flex;flex-direction:column;gap:6px;min-width:0}
+.pbody ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
+.pbody li{display:flex;gap:6px 12px;align-items:center;flex-wrap:wrap}
+.pbody li .m{color:var(--muted);font-variant-numeric:tabular-nums}
+.pbody li button{font:inherit;font-weight:600;min-height:44px;padding:6px 18px;border:2px solid var(--c);color:var(--ink);background:var(--sheet);border-radius:999px;cursor:pointer}
+.pbody li button:hover{background:var(--blue-soft)}
+.prow.done .pbody ul{opacity:.55;text-decoration:line-through}
+.tools{display:flex;flex-direction:column;gap:10px}
+details.tool{background:var(--sheet);border:2px solid var(--rule);border-radius:14px;padding:0 14px}
+details.tool summary{cursor:pointer;font-family:var(--font-head);font-weight:700;font-size:1.1rem;min-height:48px;display:flex;align-items:center}
+details.tool[open]{border-color:var(--edge);padding-bottom:14px}
+.padbox{display:flex;flex-direction:column;gap:10px}
+.padbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.padbar button,.calc button{font:inherit;min-height:44px;min-width:44px;padding:6px 14px;border:2px solid var(--ink);border-radius:12px;background:var(--sheet);color:var(--ink);cursor:pointer}
+.padbar button:hover,.calc button:hover{background:var(--blue-soft)}
+.padbar button[aria-pressed="true"]{background:var(--ink);color:#fff}
+.padbar .sw{width:44px;padding:0;position:relative}
+.padbar .sw i{display:block;width:22px;height:22px;border-radius:50%;margin:auto}
+.padbar .sw[aria-pressed="true"]{background:var(--sheet);outline:3px solid var(--ink);outline-offset:1px}
+.padbar label{display:flex;align-items:center;gap:8px;min-height:44px}
+.padbar input[type=checkbox]{width:22px;height:22px;accent-color:var(--blue)}
+.padbox canvas{display:block;width:100%;height:320px;touch-action:none;border:2px solid var(--ink);border-radius:12px;background-color:#fff;background-image:linear-gradient(rgba(31,95,191,.12) 1px,transparent 1px),linear-gradient(90deg,rgba(31,95,191,.12) 1px,transparent 1px);background-size:24px 24px;cursor:crosshair}
+.calc{display:flex;flex-direction:column;gap:10px;max-width:360px}
+.calc input{font-family:var(--font-math);font-size:1.5rem;min-height:52px;border:2px solid var(--ink);border-radius:12px;padding:4px 12px;background:var(--sheet);color:var(--ink);width:100%}
+.calc .res{font-family:var(--font-math);font-size:1.5rem;min-height:2rem;text-align:right;color:var(--blue);font-weight:600}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.keys button{min-height:52px;font-size:1.25rem}
+.keys .op{background:var(--blue-soft)}
+.keys .eq{background:var(--blue);border-color:var(--blue);color:#fff}
+.trows{display:flex;flex-direction:column;gap:10px}
+.trow{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;padding:10px 12px;border:2px solid var(--rule);border-radius:12px;background:var(--sheet)}
+.trow .tt{flex:1 1 200px;min-width:0;font-weight:600}
+.rate{display:flex;gap:6px;flex-wrap:wrap}
+.rb{font:inherit;min-height:44px;padding:4px 14px;border:2px solid var(--rule);border-radius:999px;background:var(--sheet);color:var(--ink);cursor:pointer}
+.rb[aria-pressed="true"].r0{background:var(--red-soft);border-color:var(--red);color:var(--red);font-weight:700}
+.rb[aria-pressed="true"].r1{background:#FFF3BF;border-color:#8A6D00;color:#5E4A00;font-weight:700}
+.rb[aria-pressed="true"].r2{background:var(--green-soft);border-color:var(--green);color:var(--green);font-weight:700}
+.xbtn{font:inherit;min-height:44px;padding:4px 12px;border:0;background:none;color:var(--muted);text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.addrow{display:flex;flex-wrap:wrap;gap:10px}
+.tin,.form input[type=text],.form input[type=date],.form select,.form textarea{font:inherit;min-height:48px;padding:8px 12px;border:2px solid var(--edge);border-radius:12px;background:var(--sheet);color:var(--ink);min-width:0;width:100%}
+.addrow .tin{flex:1 1 220px;width:auto}
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px 20px}
+.form .f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.form .f.wide{grid-column:1/-1}
+.form label.l{color:var(--muted)}
+.form textarea{font-family:var(--font-body);font-size:1.0625rem;line-height:1.5;min-height:84px;background-image:none;resize:vertical}
+.list{display:flex;flex-direction:column;gap:8px}
+.litem{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 12px;border:2px solid var(--rule);border-radius:12px;background:var(--sheet)}
+.litem span{min-width:0;overflow-wrap:anywhere}
+.msgbox{font-weight:700;color:var(--green)}
+#expBox,#impBox{min-height:110px;font-family:var(--font-math);font-size:.95rem;line-height:1.4;background-image:none;padding:8px 12px}
+.homeh{display:flex;justify-content:space-between;align-items:baseline;gap:6px 16px;flex-wrap:wrap}
+@media (max-width:520px){.dday{grid-template-columns:minmax(0,1fr)}.keys button{min-height:56px}}
+
+.badge{align-self:flex-start;font-style:normal;font-family:var(--font-head);font-weight:700;font-size:1rem;background:var(--ink);color:#fff;border-radius:999px;padding:2px 12px;margin-top:6px}
+.rd{display:flex;flex-direction:column;gap:10px}
+.rrow{display:grid;grid-template-columns:minmax(120px,170px) minmax(0,1fr) minmax(70px,auto);gap:12px;align-items:center}
+.rbar{height:14px;border:2px solid var(--ink);border-radius:99px;overflow:hidden;background:var(--sheet)}
+.rbar i{display:block;height:100%}
+.rv{color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.how{display:flex;flex-direction:column;gap:10px;padding-block:6px}
+.how ol{margin:0;padding-left:24px;display:flex;flex-direction:column;gap:6px}
+.progress span{font-size:1rem}
+@media (max-width:520px){
+  .rrow{grid-template-columns:minmax(0,1fr) auto}.rrow .rbar{grid-column:1/-1;order:3}
+  .card{padding:36px 16px 22px}
+  .nav{align-self:stretch}.nav button{flex:1 1 0;padding-inline:8px}
+  .day{grid-template-columns:32px minmax(0,1fr)}.day .dd{grid-column:2}.day .items{grid-column:1/-1}
+  .blitz{font-size:2.2rem}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+<main>
+  <div class="head">
+    <div class="titlerow"><h1 id="h1">Lernzentrale</h1><span class="subj" id="subt">Fächer, Lernplan und Übungen</span></div>
+    <div class="nameline">
+      <label for="nm">Name: <input class="hline" id="nm" autocomplete="off"></label>
+      <label for="dt">Datum: <input class="hline" id="dt" autocomplete="off"></label>
+    </div>
+  </div>
+  <div id="view" style="display:flex;flex-direction:column;gap:20px;min-width:0"></div>
+  <p class="progress" id="progress" aria-live="polite"></p>
+
+  <details class="sheet" id="formel" hidden>
+    <summary>Formelblatt und Umrechnungen</summary>
+    <dl>
+      <dt data-k="geschw" style="--c:var(--t-bew)">Gleichförmige Bewegung</dt><dd><code>v = <span class="fr"><span>Δs</span><span class="vh"> / </span><span>Δt</span></span></code> <code>s = v · t</code> <code>t = <span class="fr"><span>s</span><span class="vh"> / </span><span>v</span></span></code></dd>
+      <dt data-k="beschl" style="--c:var(--t-besch)">Beschleunigung</dt><dd><code>a = <span class="fr"><span>Δv</span><span class="vh"> / </span><span>Δt</span></span></code> <code>v(t) = a·t + v₀</code> <code>s(t) = ½·a·t² + v₀·t + s₀</code></dd>
+      <dt data-k="mix" style="--c:var(--t-mix)">Umrechnen</dt><dd><code>km/h ÷ 3,6 = m/s</code> <code>m/s · 3,6 = km/h</code> <code>min ÷ 60 = h</code></dd>
+      <dt data-k="funk" style="--c:var(--t-funk)">Lichtgeschwindigkeit</dt><dd><code>c = 3,00·10⁸ m/s = 300.000 km/s</code></dd>
+      <dt data-k="messreihe" style="--c:var(--t-mess)">Abweichung in der Messreihe</dt><dd><code>Δv = v − v̄</code> Abweichung = <code><span class="fr"><span>|Δv|</span><span class="vh"> / </span><span>v̄</span></span> · 100 %</code></dd>
+    </dl>
+  </details>
+</main>
+
+<script>
+(function(){
+  /* ---------- helpers ---------- */
+  var $ = function(s,r){return (r||document).querySelector(s)};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  function pick(a){return a[Math.floor(Math.random()*a.length)]}
+  function fmt(x,d){return Number(x).toLocaleString('de-DE',{maximumFractionDigits:d==null?2:d,minimumFractionDigits:0})}
+  function parse(s){
+    s=String(s).trim().replace(/\s/g,'');
+    if(/,/.test(s)) s=s.replace(/\./g,'');
+    s=s.replace(',','.');
+    var n=parseFloat(s);return isNaN(n)?null:n;
+  }
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+  function pad(n){return n<10?'0'+n:''+n}
+  function ymd(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+  function pd(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+  function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n)}
+  function today(){var d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+  function dshort(d){return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'}
+  var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+  /* ---------- state ---------- */
+  var KEY='kin2';
+  var S={screen:'home',subj:null,plan:{exam:'2026-10-12',minutes:20,tempo:'locker',sunFree:true,others:[{n:'',d:''},{n:'',d:''}]},done:{},cards:{},stats:{right:0,n:0},log:[],sims:[],notes:{},name:'',date:'',ts:0};
+  function fixState(){
+    S.log=S.log||[];S.sims=S.sims||[];S.done=S.done||{};S.cards=S.cards||{};S.notes=S.notes||{};S.stats=S.stats||{right:0,n:0};S.sd=S.sd||{};
+    if(!S.settings){var p=S.plan||{};S.settings={minutes:p.minutes||20,tempo:p.tempo||'locker',sunFree:p.sunFree!==false}}
+    if(!S.subjects){
+      S.subjects=[{id:'physik',name:'Physik',c:'s1',exam:(S.plan&&S.plan.exam)||'2026-10-12',builtin:true}];
+      ((S.plan&&S.plan.others)||[]).forEach(function(o,i){if(o&&(o.n||o.d))S.subjects.push({id:'f'+(i+1),name:o.n||('Fach '+(i+2)),c:'s'+(i+2),exam:o.d||'',builtin:false})});
+      var nd={};Object.keys(S.done).forEach(function(k){nd[k.indexOf('|')<0?k+'|physik':k]=true});S.done=nd;
+    }
+    if(!S.subjects.some(function(x){return x.id==='physik'}))S.subjects.unshift({id:'physik',name:'Physik',c:'s1',exam:'2026-10-12',builtin:true});
+    S.settings.minutes=S.settings.minutes||20;S.settings.tempo=S.settings.tempo||'locker';
+  }
+  try{var r=JSON.parse(localStorage.getItem(KEY)||'null');if(r)S=Object.assign(S,r)}catch(e){}
+  S.screen='home';S.subj=null;fixState();
+  /* Speichern: immer im Browser, zusätzlich im Konto (db), damit der Fortschritt über Sitzungen und Geräte bleibt */
+  var saveMsg='Fortschritt wird in diesem Browser gespeichert.',cloud=null,cloudTimer=null,cloudBusy=false,cloudDirty=false;
+  function save(){S.ts=Date.now();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}scheduleCloud()}
+  function scheduleCloud(){if(!cloud)return;cloudDirty=true;clearTimeout(cloudTimer);cloudTimer=setTimeout(pushCloud,1500)}
+  function pushCloud(){
+    if(!cloud||cloudBusy||!cloudDirty)return;cloudBusy=true;cloudDirty=false;
+    var body=JSON.parse(JSON.stringify({ts:S.ts,s:S}));
+    cloud.set(body).then(function(){saveMsg='Fortschritt gespeichert (in deinem Konto).';updateProgress()},function(){saveMsg='Konto-Speicher nicht erreichbar. Fortschritt wird in diesem Browser gespeichert.';cloud=null;updateProgress()}).then(function(){cloudBusy=false;if(cloudDirty&&cloud)scheduleCloud()});
+  }
+  function initCloud(){
+    try{
+      if(!window.claude||!window.claude.use)return;
+      Promise.all([window.claude.use('db'),window.claude.use('user')]).then(function(r){
+        var db=r[0],user=r[1];if(!db||!user)return;
+        return user.id().then(function(id){
+          if(!id)return;
+          var ref=db.doc('data/users/'+id+'/profile');
+          return ref.get().then(function(snap){
+            var d=snap.exists?snap.data():null;
+            if(d&&d.s&&(d.ts||0)>(S.ts||0)){var scr=S.screen,sbj=S.subj;S=Object.assign({},S,d.s);S.screen=scr;S.subj=sbj;S.ts=d.ts;fixState();try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+            cloud=ref;saveMsg='Fortschritt wird in deinem Konto gespeichert.';
+            if((S.ts||0)>((d&&d.ts)||0)){cloudDirty=true;pushCloud()}
+            updateProgress();if(!cur.mode)render();
+          });
+        });
+      }).catch(function(){});
+    }catch(e){}
+  }
+  function updateProgress(){$('#progress').innerHTML='Aufgaben bearbeitet: <b>'+S.stats.n+'</b> &nbsp;·&nbsp; richtig: <b>'+S.stats.right+'</b><br><span>'+saveMsg+'</span>'}
+  function count(ok,topic){S.stats.n++;if(ok)S.stats.right++;S.log.push({t:topic||'x',ok:ok?1:0,ts:Date.now()});if(S.log.length>120)S.log=S.log.slice(-120);save();updateProgress()}
+  var timers=[];
+  function stopTimers(){timers.forEach(clearInterval);timers=[]}
+  var cur={mode:null,sub:null};
+
+  /* ---------- Rechenaufgaben-Generatoren ---------- */
+  var gens = {};
+  gens.geschw = function(){
+    var d = pick([50,60,75,80,88,90,100,120]);
+    var v0 = pick([12,15,18,20,22,25,28,30]);
+    var t = Math.round(d/1000/v0*10000)/10000;
+    var v = d/1000/t;
+    return {
+      text:'Zwei Sensoren eines Messgeräts haben einen Abstand von <b>'+d+' mm</b>. Der zweite Sensor wird <b>'+fmt(t,4)+' s</b> nach dem ersten verdunkelt. Berechne die Geschwindigkeit des Fahrzeugs.',
+      inputs:[{label:'Geschwindigkeit',unit:'m/s',ans:v,dec:2},{label:'Geschwindigkeit',unit:'km/h',ans:v*3.6,dec:1}],
+      steps:['Gegeben: <code>s = '+d+' mm = '+fmt(d/1000,3)+' m</code>, <code>t = '+fmt(t,4)+' s</code>','Formel: <code>v = s / t</code>','<code>v = '+fmt(d/1000,3)+' m / '+fmt(t,4)+' s = '+fmt(v,2)+' m/s</code>','Umrechnen mit 3,6: <code>'+fmt(v,2)+' · 3,6 = '+fmt(v*3.6,1)+' km/h</code>'],
+      tip:'Wandle Millimeter zuerst in Meter um (÷ 1000), bevor du teilst.'
+    };
+  };
+  gens.strecke = function(){
+    var v = pick([30,45,50,60,72,80,90]);
+    var tm = pick([10,12,15,20,25,40,45]);
+    var s = v*tm/60;
+    if(Math.random()<0.5){
+      return {
+        text:'Ein Fahrzeug fährt <b>'+tm+' min</b> lang mit <b>'+v+' km/h</b>. Berechne die zurückgelegte Strecke.',
+        inputs:[{label:'Strecke',unit:'km',ans:s,dec:2},{label:'Strecke',unit:'m',ans:s*1000,dec:0}],
+        steps:['Gegeben: <code>v = '+v+' km/h</code>, <code>t = '+tm+' min = '+tm+'/60 h = '+fmt(tm/60,3)+' h</code>','Formel: <code>s = v · t</code>','<code>s = '+v+' km/h · '+fmt(tm/60,3)+' h = '+fmt(s,2)+' km</code>','In Meter: <code>'+fmt(s,2)+' · 1000 = '+fmt(s*1000,0)+' m</code>'],
+        tip:'Minuten immer in Stunden umrechnen, wenn die Geschwindigkeit in km/h steht: ÷ 60.'
+      };
+    }
+    return {
+      text:'Ein Fahrzeug legt <b>'+fmt(s,2)+' km</b> mit konstant <b>'+v+' km/h</b> zurück. Wie lange braucht es?',
+      inputs:[{label:'Zeit',unit:'min',ans:tm,dec:1},{label:'Zeit',unit:'h',ans:tm/60,dec:3}],
+      steps:['Gegeben: <code>s = '+fmt(s,2)+' km</code>, <code>v = '+v+' km/h</code>','Formel: <code>t = s / v</code>','<code>t = '+fmt(s,2)+' km / '+v+' km/h = '+fmt(tm/60,3)+' h</code>','In Minuten: <code>'+fmt(tm/60,3)+' · 60 = '+tm+' min</code>'],
+      tip:'Das Ergebnis in Stunden mal 60 ergibt Minuten.'
+    };
+  };
+  gens.funk = function(){
+    var L = pick([30000,36000,38000,40000]);
+    var four = Math.random()<0.5;
+    var s = L*(four?4:2), t = s/300000;
+    var txt = four
+      ? 'Bei einer Live-Schalte läuft die Frage vom Studio über einen Satelliten zum Reporter und die Antwort denselben Weg zurück. Jede der Teilstrecken Studio–Satellit und Satellit–Reporter ist <b>'+fmt(L,0)+' km</b> lang.'
+      : 'Ein Funksignal läuft vom Studio über einen Satelliten zum Reporter. Studio–Satellit und Satellit–Reporter sind jeweils <b>'+fmt(L,0)+' km</b> lang.';
+    return {
+      text:txt+' Das Signal bewegt sich mit <b>c = 3,00·10⁸ m/s</b>. Schätze die Verzögerung durch die Laufzeit ab. <b>Gib sie in Sekunden an.</b>',
+      inputs:[{label:'Gesamtstrecke',unit:'km',ans:s,dec:0},{label:'Laufzeit',unit:'s',ans:t,dec:3,tol:0.03}],
+      steps:[four?'Es sind 4 Teilstrecken (hin: 2, zurück: 2): <code>s = 4 · '+fmt(L,0)+' km = '+fmt(s,0)+' km</code>':'Es sind 2 Teilstrecken: <code>s = 2 · '+fmt(L,0)+' km = '+fmt(s,0)+' km</code>','Rechne mit km/s: <code>c = 300.000 km/s</code>','<code>t = s / c = '+fmt(s,0)+' km / 300.000 km/s = '+fmt(t,3)+' s</code>'],
+      tip:'c in km/h umzurechnen ist unnötig. Mit 300.000 km/s kommt die Zeit direkt in Sekunden heraus.'
+    };
+  };
+  gens.messreihe = function(){
+    var v0 = 3.5+Math.random()*3;
+    var ds = pick([[0.4,0.4,0.4,0.8,0.8,0.8],[0.5,0.5,0.5,0.6,0.6,0.6],[0.3,0.3,0.3,0.6,0.6,0.6]]);
+    var rows=[];
+    for(var i=0;i<6;i++){
+      var noise = (i===1||i===4) ? (Math.random()<0.5?-1:1)*(0.12+Math.random()*0.08) : (Math.random()-0.5)*0.08;
+      var dt = Math.round(ds[i]/(v0*(1+noise))*1000)/1000;
+      rows.push({n:i+1,ds:ds[i],dt:dt,v:ds[i]/dt});
+    }
+    var mean = rows.reduce(function(a,r){return a+r.v},0)/6;
+    var k = rows.slice().sort(function(a,b){return Math.abs(b.v-mean)-Math.abs(a.v-mean)})[0];
+    var dev = Math.abs(k.v-mean)/mean*100;
+    var tbl='<div class="tablewrap"><table><tr><th>Nr.</th><th>Δs / m</th><th>Δt / s</th></tr>'+rows.map(function(r){return '<tr'+(r.n===k.n?' class="pick"':'')+'><td>'+r.n+'</td><td>'+fmt(r.ds,3)+'</td><td>'+fmt(r.dt,3)+'</td></tr>'}).join('')+'</table></div>';
+    return {
+      text:'Die Geschwindigkeit einer Drohne wurde sechsmal mit einer Lichtschranke gemessen. Werte die Reihe aus.',
+      table:tbl,
+      inputs:[
+        {label:'v in Messung '+k.n,unit:'m/s',ans:k.v,dec:2,tol:0.02},
+        {label:'Mittelwert v̄',unit:'m/s',ans:mean,dec:2,tol:0.02},
+        {label:'Abweichung von Messung '+k.n,unit:'%',ans:dev,dec:1,tol:0.08}
+      ],
+      steps:['Jede Geschwindigkeit: <code>v = Δs / Δt</code>. Ergebnisse: '+rows.map(function(r){return '<code>v'+r.n+' = '+fmt(r.v,2)+'</code>'}).join(' ')+' (m/s)','Messung '+k.n+': <code>'+fmt(k.ds,3)+' m / '+fmt(k.dt,3)+' s = '+fmt(k.v,2)+' m/s</code>','Mittelwert: Summe aller sechs v geteilt durch 6: <code>v̄ = '+fmt(mean,2)+' m/s</code> (= '+fmt(mean*3.6,1)+' km/h)','<code>Δv = '+fmt(k.v,2)+' − '+fmt(mean,2)+' = '+fmt(k.v-mean,2)+' m/s</code>','Abweichung: <code>|Δv| / v̄ · 100 % = '+fmt(dev,1)+' %</code>'],
+      tip:'Unter 5 % gilt die Messung als gut, darüber als ungenau. Nenne in der Auswertung zwei Fehlerquellen, zum Beispiel Aufbau und Zeitmessung.'
+    };
+  };
+  gens.beschl = function(){
+    if(Math.random()<0.5){
+      var vk = pick([60,80,100,120]), t = pick([5,6,8,10]);
+      var vm = vk/3.6, a = vm/t, s = 0.5*a*t*t;
+      return {
+        text:'Ein Auto beschleunigt gleichmäßig in <b>'+t+' s</b> von 0 auf <b>'+vk+' km/h</b>. Berechne die Beschleunigung und die Strecke in dieser Zeit.',
+        inputs:[{label:'Beschleunigung a',unit:'m/s²',ans:a,dec:2},{label:'Strecke s',unit:'m',ans:s,dec:1}],
+        steps:['Umrechnen: <code>'+vk+' km/h ÷ 3,6 = '+fmt(vm,2)+' m/s</code>','<code>a = Δv / Δt = '+fmt(vm,2)+' / '+t+' = '+fmt(a,2)+' m/s²</code>','<code>s = ½ · a · t² = ½ · '+fmt(a,2)+' · '+t+'² = '+fmt(s,1)+' m</code>'],
+        tip:'Erst km/h in m/s umrechnen, dann a berechnen, sonst passen die Einheiten nicht.'
+      };
+    }
+    var a2 = pick([1.5,2,2.5,3,4]), t2 = pick([4,5,6,8,10]);
+    var v2 = a2*t2, s2 = 0.5*a2*t2*t2;
+    return {
+      text:'Ein Fahrzeug startet aus der Ruhe und beschleunigt <b>'+t2+' s</b> lang mit <b>a = '+fmt(a2,1)+' m/s²</b>. Berechne die Endgeschwindigkeit und die Strecke.',
+      inputs:[{label:'Endgeschwindigkeit v',unit:'m/s',ans:v2,dec:2},{label:'Strecke s',unit:'m',ans:s2,dec:1}],
+      steps:['Aus der Ruhe: <code>v₀ = 0</code>, <code>s₀ = 0</code>','<code>v(t) = a · t = '+fmt(a2,1)+' · '+t2+' = '+fmt(v2,2)+' m/s</code> (= '+fmt(v2*3.6,1)+' km/h)','<code>s(t) = ½ · a · t² = ½ · '+fmt(a2,1)+' · '+t2+'² = '+fmt(s2,1)+' m</code>'],
+      tip:'t wird bei s(t) quadriert. Rechne zuerst t², dann den Rest.'
+    };
+  };
+  var TOPICS=[['geschw','Geschwindigkeit'],['strecke','Strecke und Zeit'],['funk','Funksignale'],['messreihe','Messreihe'],['beschl','Beschleunigung'],['mix','Gemischt']];
+  /* Themenfarben und Piktogramme (nur Darstellung) */
+  var TC={geschw:'t-bew',strecke:'t-bew',funk:'t-funk',messreihe:'t-mess',beschl:'t-besch',mix:'t-mix'};
+  var ICO={
+    geschw:'<path d="M3 3v18h18"/><path d="M6 17 19 6"/>',
+    strecke:'<path d="M4 12h16"/><circle cx="5" cy="12" r="2.2"/><circle cx="19" cy="12" r="2.2"/>',
+    funk:'<path d="M2 12q2.5-8 5 0t5 0 5 0 5 0"/>',
+    messreihe:'<path d="M3 3v18h18"/><path d="M5 12h15" stroke-dasharray="3 2.5"/><circle cx="8" cy="15" r="1.4"/><circle cx="12" cy="9" r="1.4"/><circle cx="16" cy="14" r="1.4"/><circle cx="19" cy="10" r="1.4"/>',
+    beschl:'<path d="M3 3v18h18"/><path d="M5 19C12 19 17 14 20 5"/>',
+    mix:'<rect x="4" y="4" width="6" height="6"/><rect x="14" y="4" width="6" height="6"/><rect x="4" y="14" width="6" height="6"/><rect x="14" y="14" width="6" height="6"/>'
+  };
+  function ico(k){return ICO[k]?'<svg class="ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false">'+ICO[k]+'</svg>':''}
+
+  function inputsHtml(task,p){
+    return '<div class="inputs">'+task.inputs.map(function(f,i){
+      return '<div class="field" id="'+p+'f'+i+'"><label for="'+p+'in'+i+'">'+f.label+'</label><div class="row"><input id="'+p+'in'+i+'" inputmode="decimal" autocomplete="off"><span class="unit">'+f.unit+'</span></div><div class="msg" id="'+p+'m'+i+'"></div></div>';
+    }).join('')+'</div>';
+  }
+  function evalInputs(task,p){
+    var good=0;
+    task.inputs.forEach(function(f,i){
+      var v=parse($('#'+p+'in'+i).value), tol=f.tol||0.02;
+      var ok=v!==null&&Math.abs(v-f.ans)<=Math.max(Math.abs(f.ans)*tol,Math.pow(10,-f.dec)*0.6);
+      $('#'+p+'f'+i).className='field '+(ok?'ok':'bad');
+      $('#'+p+'m'+i).textContent=v===null?'Zahl eintragen':ok?'richtig':'nochmal prüfen';
+      if(ok)good++;
+    });
+    return good;
+  }
+  function solutionHtml(task){
+    var ans=task.inputs.map(function(f){return f.label+': <code>'+fmt(f.ans,f.dec)+' '+f.unit+'</code>'}).join('<br>');
+    return '<div class="solution"><div class="kicker">Lösungsweg</div><ol>'+task.steps.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol><div class="hand">'+ans+'</div><p class="tip">Tipp: '+task.tip+'</p></div>';
+  }
+
+  /* ---------- Gerüst für eine Methode ---------- */
+  var MODES=[
+    {k:'rechnen',t:'Rechnen',d:'Aufgaben mit neuen Zahlen, Lösungsweg zum Nachlesen',c:'c1',m:'10–15 Min'},
+    {k:'karten',t:'Karteikarten',d:'Formeln und Regeln abfragen. Gewusste Karten wandern ins nächste Fach',c:'c2',m:'5–10 Min'},
+    {k:'fehler',t:'Fehlerdetektiv',d:'Eine fertige Rechnung enthält einen Fehler. Finde die Zeile',c:'c5',m:'5–10 Min'},
+    {k:'einheiten',t:'Einheiten-Blitz',d:'60 Sekunden lang Einheiten umrechnen',c:'c3',m:'2 Min'},
+    {k:'zuordnen',t:'Formel wählen',d:'Welche Formel passt zur Aufgabe? Ohne zu rechnen',c:'c4',m:'5 Min'},
+    {k:'erklaeren',t:'Erklären',d:'In eigenen Worten schreiben und mit Stichpunkten vergleichen',c:'c7',m:'10 Min'},
+    {k:'quiz',t:'Quiz',d:'Ankreuzen mit kurzer Erklärung',c:'c6',m:'5–8 Min'},
+    {k:'sim',t:'Probe-Arbeit',d:'Vier Aufgaben wie in der Arbeit, mit Punkten und Uhr',c:'c8',m:'35–45 Min'}
+  ];
+  function modeInfo(k){return MODES.filter(function(m){return m.k===k})[0]}
+  function shell(title,c,inner){
+    return '<div class="mhead"><button class="back" id="bBack">← Alle Methoden</button><span class="mtitle">'+title+'</span></div><div class="card" style="--c:var(--'+c+')">'+inner+'</div>';
+  }
+  function setView(html){$('#view').innerHTML=crumbsHtml()+html;var b=$('#bBack');if(b)b.onclick=function(){cur.mode=null;render()}}
+
+  /* ---------- Methode: Rechnen ---------- */
+  function modeRechnen(sub){
+    sub=sub||cur.sub||'geschw';cur.sub=sub;
+    var g=sub==='mix'?pick(['geschw','strecke','funk','messreihe','beschl']):sub;
+    var task=gens[g], checked=false;task=task();
+    var chips='<div class="chips">'+TOPICS.map(function(t){return '<button class="chip" style="--c:var(--'+TC[t[0]]+')" data-sub="'+t[0]+'" aria-pressed="'+(t[0]===sub)+'">'+ico(t[0])+t[1]+'</button>'}).join('')+'</div>';
+    setView(shell('Rechnen',TC[sub],chips+'<div class="kicker">Aufgabe</div><p class="task">'+task.text+'</p>'+(task.table||'')+toolsHtml()+inputsHtml(task,'r')+'<div class="actions"><button class="btn primary" id="bCheck">Prüfen</button><button class="btn" id="bSol">Lösungsweg</button><button class="btn" id="bNew">Neue Aufgabe</button></div><div id="out"></div>'));
+    initTools();
+    $$('.chip').forEach(function(c){c.onclick=function(){modeRechnen(c.dataset.sub)}});
+    $('#bNew').onclick=function(){modeRechnen(sub)};
+    $('#bCheck').onclick=function(){
+      var good=evalInputs(task,'r'),all=good===task.inputs.length;
+      if(!checked){checked=true;count(all,g)}
+      $('#out').innerHTML=all?'<div class="verdict good">Alles richtig.</div>':'<div class="verdict mixed">'+good+' von '+task.inputs.length+' richtig. Prüfe Einheiten und Umrechnung, oder öffne den Lösungsweg.</div>';
+    };
+    $('#bSol').onclick=function(){$('#out').innerHTML=solutionHtml(task);if(!checked){checked=true;count(false,g)}};
+    $$('input',$('#view')).forEach(function(el){el.addEventListener('keydown',function(e){if(e.key==='Enter')$('#bCheck').click()})});
+    var f=$('#rin0');if(f)f.focus({preventScroll:true});
+  }
+
+  /* ---------- Methode: Karteikarten (Leitner) ---------- */
+  var CARDS=[
+    ['Formel für die Geschwindigkeit (konstant)','v = Δs / Δt'],
+    ['Formel für die Strecke bei konstanter Geschwindigkeit','s = v · t'],
+    ['Formel für die Zeit bei konstanter Geschwindigkeit','t = s / v'],
+    ['km/h in m/s umrechnen','÷ 3,6   (72 km/h = 20 m/s)'],
+    ['m/s in km/h umrechnen','· 3,6   (20 m/s = 72 km/h)'],
+    ['Minuten in Stunden','÷ 60   (12 min = 1/5 h = 0,2 h)'],
+    ['Millimeter in Meter','÷ 1000   (88 mm = 0,088 m)'],
+    ['Lichtgeschwindigkeit','c = 3,00 · 10⁸ m/s = 300.000 km/s'],
+    ['Formel für die Beschleunigung. Welche Einheit?','a = Δv / Δt,  Einheit m/s²'],
+    ['Strecke bei gleichmäßig beschleunigter Bewegung','s(t) = ½ · a · t² + v₀ · t + s₀'],
+    ['Geschwindigkeit bei gleichmäßig beschleunigter Bewegung','v(t) = a · t + v₀'],
+    ['Was gilt bei einer gleichförmigen Bewegung?','v ist konstant, a = 0 m/s²'],
+    ['Unterschied mittlere und momentane Geschwindigkeit','mittlere: v̄ = Δs/Δt über ein Intervall.  momentane: v(t) = ds/dt = ṡ(t) zu einem Zeitpunkt'],
+    ['Prozentuale Abweichung in einer Messreihe','|v − v̄| / v̄ · 100 %'],
+    ['Ab wann gilt eine Messung als gut?','Abweichung unter 5 %'],
+    ['Was gehört in die Skizze einer Geschwindigkeitsmessung?','Zwei Sensoren (Lichtschranken) mit Abstand Δs, Messgerät, Fahrzeug, Messstrecke, alles beschriftet'],
+    ['Drei mögliche Fehlerquellen bei einer Messung','Aufbau (Abstand ungenau), Ablesen oder Reaktion, Messgerät, menschliche Fehler'],
+    ['Frage und Antwort bei einer Live-Schalte: Wie viele Teilstrecken?','4 (hin und zurück, jeweils Studio–Satellit und Satellit–Reporter)']
+  ];
+  function modeKarten(){
+    var last=-1,idx=0,flipped=false;
+    function counts(){var c=[0,0,0];CARDS.forEach(function(_,i){c[(S.cards[i]||1)-1]++});return c}
+    function draw(){var w=[];CARDS.forEach(function(_,i){if(i===last)return;var b=S.cards[i]||1;var wt=b===1?4:b===2?2:1;for(var k=0;k<wt;k++)w.push(i)});return pick(w)}
+    function paint(){
+      var c=counts();
+      var face=flipped
+        ?'<div class="side">Antwort</div><div class="hand">'+CARDS[idx][1]+'</div>'
+        :'<div class="side">Frage</div><div class="txt">'+CARDS[idx][0]+'</div>';
+      var acts=flipped
+        ?'<button class="btn primary" id="kYes">Gewusst</button><button class="btn" id="kNo">Noch nicht</button>'
+        :'<button class="btn primary" id="kFlip">Antwort zeigen</button>';
+      setView(shell('Karteikarten','c2','<div class="boxes"><span>Fach 1: <b>'+c[0]+'</b></span><span>Fach 2: <b>'+c[1]+'</b></span><span>Fach 3: <b>'+c[2]+'</b></span></div><div class="flash">'+face+'</div><div class="actions">'+acts+'</div><p class="muted">Überlege zuerst, was du sagen würdest. Gewusste Karten kommen seltener, schwere öfter.</p>'));
+      if(flipped){
+        $('#kYes').onclick=function(){S.cards[idx]=Math.min(3,(S.cards[idx]||1)+1);save();next()};
+        $('#kNo').onclick=function(){S.cards[idx]=1;save();next()};
+      }else $('#kFlip').onclick=function(){flipped=true;paint()};
+    }
+    function next(){idx=draw();last=idx;flipped=false;paint()}
+    next();
+  }
+
+  /* ---------- Methode: Fehlerdetektiv ---------- */
+  function errGen(){
+    var t=pick(['unit','formel','quad','legs']);
+    if(t==='unit'){
+      var v=pick([45,60,72,80,90]),m=pick([12,15,20,25,30]),s=v*m/60;
+      return {intro:'Ein Fahrzeug fährt '+m+' min lang mit '+v+' km/h. Wie weit kommt es?',lines:['Gegeben: v = '+v+' km/h, t = '+m+' min','Formel: s = v · t','s = '+v+' km/h · '+m+' = '+fmt(v*m,0)+' km','Ergebnis: s = '+fmt(v*m,0)+' km'],err:2,why:'Die Zeit steht in Minuten, v in km/h. Erst umrechnen: '+m+' min = '+fmt(m/60,3)+' h. Richtig ist s = '+v+' · '+fmt(m/60,3)+' = '+fmt(s,2)+' km.'};
+    }
+    if(t==='formel'){
+      var d=pick([60,75,88,90]),tt=pick([0.003,0.004,0.0042,0.005]),vv=d/1000/tt;
+      return {intro:'Zwei Sensoren haben '+d+' mm Abstand. Der zweite wird '+fmt(tt,4)+' s nach dem ersten verdunkelt. Wie schnell ist das Fahrzeug?',lines:['Gegeben: s = '+d+' mm = '+fmt(d/1000,3)+' m, t = '+fmt(tt,4)+' s','Formel: v = t / s','v = '+fmt(tt,4)+' s / '+fmt(d/1000,3)+' m = '+fmt(tt/(d/1000),3),'Ergebnis: v = '+fmt(tt/(d/1000),3)+' m/s'],err:1,why:'Die Geschwindigkeit ist Strecke durch Zeit: v = s / t. Richtig ist v = '+fmt(d/1000,3)+' m / '+fmt(tt,4)+' s = '+fmt(vv,2)+' m/s.'};
+    }
+    if(t==='quad'){
+      var a=pick([2,2.5,3,4]),tm=pick([4,5,6,8]);
+      return {intro:'Ein Auto startet aus der Ruhe und beschleunigt '+tm+' s lang mit '+fmt(a,1)+' m/s². Welche Strecke legt es zurück?',lines:['Gegeben: a = '+fmt(a,1)+' m/s², t = '+tm+' s, Start aus der Ruhe','Formel: s = ½ · a · t²','s = ½ · '+fmt(a,1)+' · '+tm+' = '+fmt(0.5*a*tm,1)+' m','Ergebnis: s = '+fmt(0.5*a*tm,1)+' m'],err:2,why:'Die Zeit muss quadriert werden, wie in der Formel. Richtig ist s = ½ · '+fmt(a,1)+' · '+tm+'² = '+fmt(0.5*a*tm*tm,1)+' m.'};
+    }
+    var L=pick([36000,38000,40000]),s2=2*L;
+    return {intro:'Bei einer Live-Schalte läuft die Frage vom Studio über einen Satelliten zum Reporter, die Antwort denselben Weg zurück. Jede Teilstrecke ist '+fmt(L,0)+' km lang. Wie groß ist die Verzögerung?',lines:['Teilstrecken: Studio–Satellit und Satellit–Reporter, hin und zurück','Gesamtstrecke: s = 2 · '+fmt(L,0)+' km = '+fmt(s2,0)+' km','Laufzeit: t = s / c = '+fmt(s2,0)+' km / 300.000 km/s = '+fmt(s2/300000,3)+' s','Ergebnis: t ≈ '+fmt(s2/300000,2)+' s'],err:1,why:'Hin und zurück sind vier Teilstrecken: s = 4 · '+fmt(L,0)+' km = '+fmt(4*L,0)+' km. Damit ist t = '+fmt(4*L/300000,2)+' s.'};
+  }
+  function modeFehler(){
+    var e=errGen(),done=false;
+    var rows=e.lines.map(function(l,i){return '<div class="lrow" id="l'+i+'"><span class="lt">'+l+'</span><button data-i="'+i+'">Hier ist der Fehler</button></div>'}).join('');
+    setView(shell('Fehlerdetektiv','c5','<div class="kicker">Aufgabe</div><p class="task">'+e.intro+'</p><p class="task">Ein Mitschüler hat gerechnet. <b>In einer Zeile steckt ein Fehler.</b> Tippe auf diese Zeile.</p><div class="lines">'+rows+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNew">Nächste Aufgabe</button></div>'));
+    $$('.lrow button').forEach(function(b){b.onclick=function(){
+      if(done)return;done=true;var i=+b.dataset.i,ok=i===e.err;
+      $$('.lrow button').forEach(function(x){x.disabled=true});
+      $('#l'+e.err).classList.add('right');if(!ok)$('#l'+i).classList.add('wrong');
+      count(ok,'fehler');
+      $('#out').innerHTML='<div class="solution"><div class="kicker">'+(ok?'Richtig gefunden':'Nicht ganz, der Fehler steckt in Zeile '+(e.err+1))+'</div><p class="hand">'+e.why+'</p></div>';
+    }});
+    $('#bNew').onclick=modeFehler;
+  }
+
+  /* ---------- Methode: Einheiten-Blitz ---------- */
+  function convGen(){
+    var t=pick(['kmh','ms','minh','mmm','kmm']);
+    if(t==='kmh'){var v=pick([18,36,54,72,90,108,144]);return {q:v+' km/h in m/s',a:v/3.6,u:'m/s'}}
+    if(t==='ms'){var w=pick([5,10,15,20,25,30,40]);return {q:w+' m/s in km/h',a:w*3.6,u:'km/h'}}
+    if(t==='minh'){var m=pick([6,12,15,24,30,45,18]);return {q:m+' min in h',a:m/60,u:'h'}}
+    if(t==='mmm'){var d=pick([50,75,88,120,250,60]);return {q:d+' mm in m',a:d/1000,u:'m'}}
+    var k=pick([0.5,1.2,3,12,2.5]);return {q:fmt(k,1)+' km in m',a:k*1000,u:'m'};
+  }
+  function modeEinheiten(){
+    setView(shell('Einheiten-Blitz','c3','<p class="task">Du hast <b>60 Sekunden</b>. Rechne so viele Umrechnungen wie möglich im Kopf oder auf Papier und bestätige mit Enter.</p><div class="actions"><button class="btn primary" id="bStart">Start</button></div><div id="game"></div>'));
+    $('#bStart').onclick=function(){
+      var q=convGen(),right=0,total=0,wrong=[],end=Date.now()+60000;
+      $('#bStart').disabled=true;
+      $('#game').innerHTML='<div class="clock" id="clk">60 s</div><div class="timebar"><i id="tb"></i></div><div class="blitz" id="bq"></div><div class="row" style="max-width:320px"><input id="ba" inputmode="decimal" autocomplete="off"><span class="unit" id="bu"></span></div>';
+      function showQ(){$('#bq').textContent=q.q;$('#bu').textContent=q.u;$('#ba').value=''}
+      showQ();$('#ba').focus();
+      var iv=setInterval(function(){
+        var left=Math.max(0,Math.ceil((end-Date.now())/1000));$('#clk').textContent=left+' s';$('#tb').style.width=Math.max(0,(end-Date.now())/600)+'%';
+        if(left<=0){clearInterval(iv);finish()}
+      },250);timers.push(iv);
+      $('#ba').addEventListener('keydown',function(e){
+        if(e.key!=='Enter')return;
+        var v=parse($('#ba').value);if(v===null)return;
+        total++;var ok=Math.abs(v-q.a)<=Math.abs(q.a)*0.005+1e-9;
+        if(ok)right++;else wrong.push(q.q+' = '+fmt(q.a,3)+' '+q.u);
+        count(ok,'einheiten');q=convGen();showQ();
+      });
+      function finish(){
+        $('#game').innerHTML='<div class="verdict '+(right===total&&total>0?'good':'mixed')+'">'+right+' von '+total+' richtig.</div>'+(wrong.length?'<div class="solution"><div class="kicker">Zum Nachschauen</div><div class="hand">'+wrong.join('<br>')+'</div></div>':'');
+        $('#bStart').disabled=false;$('#bStart').textContent='Nochmal';
+      }
+    };
+  }
+
+  /* ---------- Methode: Formel wählen ---------- */
+  var FORMS=['v = Δs / Δt','s = v · t','t = s / v','a = Δv / Δt','s = ½ · a · t²','v = a · t','Abweichung = |v − v̄| / v̄ · 100 %'];
+  var SCEN=[
+    ['Gegeben: Abstand zweier Sensoren und die Zeit dazwischen. Gesucht: Geschwindigkeit.',0],
+    ['Gegeben: Geschwindigkeit und Fahrzeit. Gesucht: Strecke.',1],
+    ['Gegeben: Strecke und Geschwindigkeit. Gesucht: Zeit.',2],
+    ['Gegeben: Geschwindigkeitsänderung und Zeit. Gesucht: Beschleunigung.',3],
+    ['Gegeben: a und t, Start aus der Ruhe. Gesucht: zurückgelegte Strecke.',4],
+    ['Gegeben: a und t, Start aus der Ruhe. Gesucht: Endgeschwindigkeit.',5],
+    ['Gegeben: Entfernung Erde–Satellit und c. Gesucht: Laufzeit eines Funksignals.',2],
+    ['Ein Radfahrer fährt 9 km in 20 min. Gesucht: mittlere Geschwindigkeit.',0],
+    ['Ein Zug fährt 2,5 h lang mit 120 km/h. Gesucht: zurückgelegte Strecke.',1],
+    ['Ein Auto beschleunigt von 0 auf 27 m/s in 9 s. Gesucht: Beschleunigung.',3],
+    ['Gegeben: ein Messwert und der Mittelwert einer Messreihe. Gesucht: wie ungenau ist der Messwert in Prozent?',6],
+    ['Ein Roller fährt 40 s lang mit a = 0,5 m/s² aus dem Stand. Gesucht: Weg.',4]
+  ];
+  function modeZuordnen(){
+    var s=pick(SCEN),done=false;
+    setView(shell('Formel wählen','c4','<div class="kicker">Situation</div><p class="task"><b>'+s[0]+'</b></p><p class="muted">Welche Formel brauchst du?</p><div class="opts cols">'+FORMS.map(function(f,i){return '<button class="opt" data-i="'+i+'">'+f+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNew">Nächste Situation</button></div>'));
+    $$('.opt').forEach(function(b){b.onclick=function(){
+      if(done)return;done=true;var i=+b.dataset.i,ok=i===s[1];
+      $$('.opt').forEach(function(x){x.disabled=true;if(+x.dataset.i===s[1])x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');count(ok,'zuordnen');
+      $('#out').innerHTML='<div class="verdict '+(ok?'good':'mixed')+'">'+(ok?'Richtig.':'Passend wäre: '+FORMS[s[1]])+'</div>';
+    }});
+    $('#bNew').onclick=modeZuordnen;
+  }
+
+  /* ---------- Methode: Erklären ---------- */
+  var EXPL=[
+    {q:'Erläutere, woran die Verzögerung bei einer Live-Schalte ins Ausland liegt.',pts:['Das Signal braucht Zeit, weil es sich nur mit endlicher Geschwindigkeit (Lichtgeschwindigkeit) bewegt','Die Strecke über den Satelliten ist sehr lang','Frage und Antwort laufen den Weg hin und zurück','Optional: t = s / c, hier etwa eine halbe Sekunde'],model:'Das Funksignal läuft mit Lichtgeschwindigkeit vom Studio über den Satelliten zum Reporter und die Antwort wieder zurück. Die Strecke ist sehr lang und das Signal braucht dafür eine messbare Zeit (t = s / c). Deshalb entsteht eine kleine Pause zwischen Frage und Antwort.'},
+    {q:'Beschreibe den Aufbau einer Geschwindigkeitsmessung mit zwei Lichtschranken.',pts:['Zwei Sensoren (Lichtschranken) in bekanntem Abstand Δs','Das Fahrzeug verdunkelt nacheinander beide Sensoren','Ein Messgerät misst die Zeit Δt dazwischen','Berechnung mit v = Δs / Δt','Skizze mit Beschriftung: Sensor 1, Sensor 2, Fahrzeug, Messstrecke'],model:'Zwei Lichtschranken stehen im bekannten Abstand Δs an der Strecke. Fährt das Fahrzeug durch, wird erst Sensor 1 und dann Sensor 2 verdunkelt. Das Messgerät misst die Zeit Δt dazwischen. Die Geschwindigkeit ist v = Δs / Δt.'},
+    {q:'Du hast eine Messreihe mit 6 Werten. Was schreibst du in die Auswertung?',pts:['Mittelwert v̄ berechnet und genannt (auch in km/h)','Abweichung jedes Werts in Prozent','Grenze 5 %: darunter gut, darüber ungenau, die Werte konkret benennen','Mindestens zwei Fehlerquellen (Aufbau, Messen, menschliche Fehler)','Aussage zur Geschwindigkeit, zum Beispiel ob eine Grenze eingehalten wird'],model:'Der Mittelwert der Geschwindigkeit beträgt ... m/s (... km/h). Bei den Messungen 1, 3, 5 und 6 liegt die Abweichung unter 5 %, das spricht für eine gute Messung. Bei Messung 2 und 4 liegt sie darüber, das ist ungenau. Gründe können Fehler beim Aufbau, beim Messen oder menschliche Fehler sein. Das Fahrzeug überschreitet die Grenze von 20 km/h nicht.'},
+    {q:'Erkläre den Unterschied zwischen gleichförmiger und gleichmäßig beschleunigter Bewegung.',pts:['Gleichförmig: v ist konstant, a = 0 m/s²','Beschleunigt: a ist konstant, v ändert sich','Formel gleichförmig: s = v · t + s₀','Formel beschleunigt: s = ½ · a · t² + v₀ · t + s₀ und v = a · t + v₀'],model:'Bei der gleichförmigen Bewegung ist die Geschwindigkeit konstant und die Beschleunigung null (s = v · t + s₀). Bei der gleichmäßig beschleunigten Bewegung ist die Beschleunigung konstant, die Geschwindigkeit wächst gleichmäßig (v = a · t + v₀, s = ½ · a · t² + v₀ · t + s₀).'}
+  ];
+  function modeErklaeren(){
+    var i=Math.floor(Math.random()*EXPL.length),e=EXPL[i];
+    setView(shell('Erklären','c7','<div class="kicker">Schreibe in eigenen Worten</div><p class="task"><b>'+e.q+'</b></p><textarea id="ex" placeholder="Hier schreiben ..."></textarea><div class="actions"><button class="btn primary" id="bCmp">Mit Stichpunkten vergleichen</button><button class="btn" id="bNew">Andere Frage</button></div><div id="out"></div>'));
+    var ta=$('#ex');try{ta.value=S.notes['e'+i]||''}catch(x){}
+    ta.addEventListener('input',function(){S.notes['e'+i]=ta.value;save()});
+    $('#bNew').onclick=modeErklaeren;
+    $('#bCmp').onclick=function(){
+      $('#out').innerHTML='<div class="kicker" style="color:var(--c7)">Hast du das erwähnt?</div><div class="check">'+e.pts.map(function(p,k){return '<label><input type="checkbox" data-k="'+k+'"><span>'+p+'</span></label>'}).join('')+'</div><div class="verdict mixed" id="sc">0 von '+e.pts.length+'</div><div class="solution"><div class="kicker">Beispielantwort</div><p class="hand">'+e.model+'</p></div>';
+      $$('.check input').forEach(function(c){c.onchange=function(){var n=$$('.check input:checked').length;var sc=$('#sc');sc.textContent=n+' von '+e.pts.length+' Punkten';sc.className='verdict '+(n>=e.pts.length-1?'good':'mixed')}});
+    };
+  }
+
+  /* ---------- Methode: Quiz ---------- */
+  var QUIZ = [
+    {q:'Woran liegt die Verzögerung bei einer Live-Schalte ins Ausland?',o:['Das Funksignal braucht für die lange Strecke über den Satelliten Zeit.','Das Funksignal ist schneller als das Licht.','Der Satellit speichert das Signal absichtlich.'],a:0,e:'Das Signal bewegt sich mit endlicher Geschwindigkeit (c). Eine lange Strecke bedeutet eine messbare Laufzeit, t = s / c.'},
+    {q:'12 min in Stunden. Was stimmt?',o:['12 h','1/5 h = 0,2 h','0,12 h'],a:1,e:'12 min / 60 = 0,2 h = 1/5 h.'},
+    {q:'Eine Messung weicht um 12 % vom Mittelwert ab. Was sagst du in der Auswertung?',o:['Sie ist sehr genau.','Sie ist ungenau (über 5 %), mögliche Ursachen sind Aufbau- oder Messfehler.','Die Messreihe ist wertlos.'],a:1,e:'Unter 5 % gilt als gut, darüber als ungenau. Nenne danach konkrete Fehlerquellen.'},
+    {q:'Wie rechnest du 72 km/h in m/s um?',o:['72 · 3,6','72 ÷ 3,6','72 ÷ 60'],a:1,e:'km/h ÷ 3,6 = m/s, also 72 ÷ 3,6 = 20 m/s.'},
+    {q:'Welche Formel gehört zur gleichförmigen Bewegung?',o:['s(t) = ½·a·t² + v₀·t + s₀','s(t) = v·t + s₀ mit v = konstant','v(t) = a·t²'],a:1,e:'Bei gleichförmiger Bewegung ist v konstant und a = 0 m/s².'},
+    {q:'Dein Ergebnis für eine Zeit lautet „19/270000 h“. Was fehlt noch?',o:['Nichts, das ist korrekt.','Eine Umrechnung in Sekunden, wenn die Aufgabe das verlangt (hier ≈ 0,25 s).','Ein Kommentar zum Radius.'],a:1,e:'Lies die geforderte Einheit in der Aufgabe. Bei Funklaufzeiten sind Sekunden die sinnvolle Einheit.'},
+    {q:'Ein Signal läuft Studio → Satellit → Reporter. Jede Teilstrecke ist 38.000 km. Welche Gesamtstrecke gilt?',o:['38.000 km','76.000 km','19.000 km'],a:1,e:'Zwei Teilstrecken: 2 · 38.000 km = 76.000 km. Bei Frage und Antwort wären es vier.'},
+    {q:'Was muss eine Skizze zur Geschwindigkeitsmessung enthalten?',o:['Nur das Fahrzeug.','Zwei Sensoren mit bekanntem Abstand Δs, Messgerät für Δt und das Fahrzeug auf der Messstrecke.','Nur ein Diagramm mit Zahlen.'],a:1,e:'v = Δs / Δt: Du brauchst den Abstand und die Zeit zwischen beiden Sensoren. Beschrifte alle Teile.'},
+    {q:'Ein Auto beschleunigt gleichmäßig aus der Ruhe. Nach 4 s hat es doppelt so lange beschleunigt wie nach 2 s. Wie verhält sich die Strecke?',o:['Doppelt so groß.','Viermal so groß.','Gleich groß.'],a:1,e:'s = ½·a·t². Verdoppelt sich t, wird t² viermal so groß.'}
+  ];
+  var quizOrder=[],quizIdx=0;
+  function modeQuiz(){
+    if(quizIdx>=quizOrder.length){quizOrder=shuffle(QUIZ.map(function(_,i){return i}));quizIdx=0}
+    var q=QUIZ[quizOrder[quizIdx++]],order=shuffle(q.o.map(function(_,i){return i})),answered=false;
+    setView(shell('Quiz','c6','<div class="kicker">Frage '+quizIdx+' von '+QUIZ.length+'</div><p class="task"><b>'+q.q+'</b></p><div class="opts">'+order.map(function(i){return '<button class="opt" data-i="'+i+'">'+q.o[i]+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNext" disabled>Nächste Frage</button></div>'));
+    $$('.opt').forEach(function(b){b.onclick=function(){
+      if(answered)return;answered=true;var ok=+b.dataset.i===q.a;
+      $$('.opt').forEach(function(x){x.disabled=true;if(+x.dataset.i===q.a)x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');count(ok,'quiz');
+      $('#out').innerHTML='<div class="solution"><div class="kicker">'+(ok?'Richtig':'Nicht ganz')+'</div><p>'+q.e+'</p></div>';
+      $('#bNext').disabled=false;
+    }});
+    $('#bNext').onclick=modeQuiz;
+  }
+
+  /* ---------- Methode: Probe-Arbeit ---------- */
+  function modeSim(){
+    var parts=[
+      {k:'geschw',t:'Aufgabe 1: Mobiler Blitzer',task:gens.geschw()},
+      {k:'funk',t:'Aufgabe 2: Funksignale',task:gens.funk()},
+      {k:'messreihe',t:'Aufgabe 3: Geschwindigkeit eines Fahrzeugs',task:gens.messreihe()},
+      {k:'beschl',t:'Aufgabe 4: Beschleunigung',task:gens.beschl()}
+    ];
+    var total=parts.reduce(function(a,p){return a+p.task.inputs.length},0),start=Date.now(),submitted=false;
+    var body='<p class="task">Rechne wie in der Arbeit. Jedes richtige Ergebnis gibt einen Punkt. Das Formelblatt unten darfst du benutzen. <b>Gesamt: '+total+' Punkte</b></p><div class="clock" id="clk">0:00</div>'+toolsHtml();
+    parts.forEach(function(p,i){body+='<div class="sec" style="--c:var(--'+TC[p.k]+')"><h3>'+ico(p.k)+p.t+'</h3><p class="task">'+p.task.text+'</p>'+(p.task.table||'')+inputsHtml(p.task,'s'+i+'_')+'<div id="sol'+i+'"></div></div>'});
+    body+='<div class="actions"><button class="btn primary" id="bSub">Abgeben und prüfen</button></div><div id="out"></div>';
+    setView(shell('Probe-Arbeit','c8',body));initTools();
+    var iv=setInterval(function(){var s=Math.floor((Date.now()-start)/1000);var c=$('#clk');if(c)c.textContent=Math.floor(s/60)+':'+pad(s%60)},1000);timers.push(iv);
+    $('#bSub').onclick=function(){
+      if(submitted)return;submitted=true;clearInterval(iv);
+      var pts=0;
+      parts.forEach(function(p,i){var g=evalInputs(p.task,'s'+i+'_');pts+=g;count(g===p.task.inputs.length,p.k);$('#sol'+i).innerHTML=solutionHtml(p.task)});
+      var pct=Math.round(pts/total*100),sec=Math.floor((Date.now()-start)/1000);
+      S.sims.push({pct:pct,ts:Date.now()});S.sims=S.sims.slice(-10);save();
+      $('#out').innerHTML='<div class="verdict '+(pct>=75?'good':'mixed')+'">'+pts+' von '+total+' Punkten ('+pct+' %) in '+Math.floor(sec/60)+' min '+pad(sec%60)+' s. Die Lösungswege stehen unter jeder Aufgabe.</div>';
+      $('#bSub').disabled=true;
+      $('#out').scrollIntoView({block:'nearest'});
+    };
+  }
+
+  /* ---------- Fächer und Daten ---------- */
+  var SCOL={s1:'Blau',s2:'Orange',s3:'Violett',s4:'Oliv',s5:'Türkis',s6:'Rosa'};
+  function subj(id){return S.subjects.filter(function(x){return x.id===id})[0]}
+  function curSubj(){return subj(S.subj)}
+  function sd(id){var d=S.sd[id];if(!d)d=S.sd[id]={};d.themen=d.themen||[];d.cards=d.cards||[];d.quiz=d.quiz||[];d.notes=d.notes||'';d.log=d.log||[];return d}
+  function esc(t){return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+  function uid(){return 'f'+Date.now().toString(36)+Math.floor(Math.random()*1e5).toString(36)}
+  function daysTo(ds){return Math.round((pd(ds)-today())/86400000)}
+  function countdown(sj){
+    if(!sj.exam)return 'Kein Termin gesetzt';
+    var d=daysTo(sj.exam),dt=dshort(pd(sj.exam));
+    return d<0?'Arbeit war am '+dt:d===0?'Arbeit heute ('+dt+')':'Arbeit am '+dt+' · '+(d===1?'morgen':'in '+d+' Tagen');
+  }
+  function dlog(id,t,ok){var D=sd(id);D.log.push({t:t,ok:ok?1:0,ts:Date.now()});if(D.log.length>80)D.log=D.log.slice(-80);save()}
+
+  /* ---------- Physik: Stand und Notenschätzung ---------- */
+  var TOPIC_LABEL={geschw:'Geschwindigkeit',strecke:'Strecke und Zeit',funk:'Funksignale',messreihe:'Messreihe',beschl:'Beschleunigung'};
+  var PRIOR=['funk','messreihe','beschl','strecke','geschw'];
+  function topicStat(t){var l=(S.log||[]).filter(function(e){return e.t===t}).slice(-8),n=l.length,r=l.filter(function(e){return e.ok}).length;return {n:n,r:r,acc:n?r/n:null}}
+  function weakTopics(){return PRIOR.slice().sort(function(a,b){var A=topicStat(a),B=topicStat(b),x=A.n?A.acc:0.5,y=B.n?B.acc:0.5;if(x!==y)return x-y;return PRIOR.indexOf(a)-PRIOR.indexOf(b)})}
+  function readiness(){
+    var last=(S.log||[]).slice(-25),acc=last.length?last.filter(function(e){return e.ok}).length/last.length*100:null;
+    var sims=(S.sims||[]).slice(-2),sa=sims.length?sims.reduce(function(a,x){return a+x.pct},0)/sims.length:null,p=null;
+    if(sa!==null&&acc!==null&&last.length>=8)p=0.6*sa+0.4*acc;else if(sa!==null)p=sa;else if(last.length>=8)p=acc;
+    return {p:p,n:(S.log||[]).length,sims:S.sims||[]};
+  }
+  function gr(p){return p>=92?1:p>=81?2:p>=67?3:p>=50?4:p>=30?5:6}
+  function readinessCard(){
+    var R=readiness(),h='<div class="card" style="--c:var(--t-bew)"><h2>Wie gut bist du schon?</h2>';
+    if(R.p===null){
+      h+='<p class="muted">Noch zu wenig Ergebnisse für eine Einschätzung. Mach den Check-in (Rechnen, Gemischt) oder eine Probe-Arbeit. Ab etwa 8 beantworteten Aufgaben siehst du hier deinen Stand und eine grobe Notenschätzung.</p>';
+    }else{
+      var p=Math.round(R.p),g1=gr(Math.min(100,R.p+6)),g2=gr(Math.max(0,R.p-6));
+      h+='<div class="summary"><div><b>'+p+' %</b><span>Sicherheit insgesamt</span></div><div><b>'+(g1===g2?g1:g1+'–'+g2)+'</b><span>geschätzte Note</span></div></div>';
+      h+='<div class="bar" role="img" aria-label="Sicherheit '+p+' Prozent"><i style="width:'+p+'%"></i></div>';
+    }
+    h+='<div class="rd">'+['geschw','strecke','funk','messreihe','beschl'].map(function(t){
+      var st=topicStat(t),pc=st.n?Math.round(st.acc*100):0;
+      return '<div class="rrow"><span>'+TOPIC_LABEL[t]+'</span><div class="rbar"><i style="width:'+pc+'%;background:var(--'+TC[t]+')"></i></div><span class="rv">'+(st.n?st.r+' von '+st.n:'noch offen')+'</span></div>';
+    }).join('')+'</div>';
+    if(R.sims.length)h+='<p class="muted">Probe-Arbeiten: '+R.sims.slice(-5).map(function(x){return x.pct+' %'}).join(' · ')+'</p>';
+    h+='<p class="muted">Die Schätzung kommt aus deinen letzten Aufgaben (40 %) und deinen Probe-Arbeiten (60 %). Sie ist grob. Die echte Note hängt auch davon ab, wie deine Lehrkraft bewertet.</p></div>';
+    return h;
+  }
+  function subjStat(sj){
+    if(sj.id==='physik'){var R=readiness();return {p:R.p,text:R.p===null?'Noch keine Einschätzung. Mach den Check-in.':Math.round(R.p)+' % sicher'}}
+    var D=sd(sj.id),th=D.themen,n=th.length,sc=null,g=th.filter(function(t){return t.r===2}).length,y=th.filter(function(t){return t.r===1}).length;
+    if(n)sc=(g+0.5*y)/n*100;
+    var l=D.log.slice(-20),ac=l.length>=5?l.filter(function(e){return e.ok}).length/l.length*100:null;
+    var p=sc!==null&&ac!==null?(sc+ac)/2:(sc!==null?sc:ac);
+    return {p:p,text:p===null?'Noch keine Themen oder Karten':Math.round(p)+' % sicher'+(n?' · '+g+' von '+n+' Themen grün':'')};
+  }
+
+  /* ---------- Lernplan über alle Fächer ---------- */
+  function I(l,m,s,min){return {l:l,m:m,s:s,min:min}}
+  function fit(list,m){var out=[],sum=0;list.forEach(function(it){if(!out.length||sum+it.min<=m){out.push(it);sum+=it.min}});return out}
+  function physItems(kind,min,w){
+    var L;
+    if(kind==='check')L=[I('Check-in: gemischte Aufgaben','rechnen','mix',12),I('Karteikarten','karten',null,8)];
+    else if(kind==='midA')L=[I('Aufgaben: '+TOPIC_LABEL[w[0]],'rechnen',w[0],12),I('Fehlerdetektiv','fehler',null,8)];
+    else if(kind==='midB')L=[I('Erklären','erklaeren',null,10),I('Aufgaben: '+TOPIC_LABEL[w[1]],'rechnen',w[1],10)];
+    else L=[I('Probe-Arbeit wie in der Arbeit (einmal, länger)','sim',null,40)];
+    return fit(L,min);
+  }
+  function genItems(kind,min){
+    var L;
+    if(kind==='check')L=[I('Themen-Check: Ampel setzen','themen',null,8),I('Karteikarten','karten',null,12)];
+    else if(kind==='midA')L=[I('Karteikarten','karten',null,10),I('Quiz','quiz',null,10)];
+    else if(kind==='midB')L=[I('Unsichere Themen wiederholen','themen',null,12),I('Notizen durchgehen','notizen',null,8)];
+    else L=[I('Alles einmal durchgehen: Karten','karten',null,12),I('Quiz','quiz',null,13)];
+    return fit(L,min);
+  }
+  function lightItems(sj){return sj.id==='physik'?[I('Karteikarten','karten',null,10),I('Formelblatt einmal lesen',null,null,5)]:[I('Karteikarten','karten',null,10),I('Unsichere Themen kurz ansehen','themen',null,5)]}
+  function buildPlan(){
+    var P=S.settings,T=today(),subs=S.subjects.filter(function(s){return s.exam&&pd(s.exam)>=T});
+    if(!subs.length)return {empty:true,days:[]};
+    subs.sort(function(a,b){return pd(a.exam)-pd(b.exam)});
+    var last=pd(subs[subs.length-1].exam),days=[],by={};
+    for(var d=new Date(T);d<=last;d=addDays(d,1)){var r={date:new Date(d),key:ymd(d),rows:[],exams:[],eve:[],busy:false};days.push(r);by[r.key]=r}
+    subs.forEach(function(sj){by[sj.exam].exams.push(sj);var ev=by[ymd(addDays(pd(sj.exam),-1))];if(ev)ev.eve.push(sj)});
+    days.forEach(function(r){if(r.exams.length||r.eve.length)r.busy=true;if(r.eve.length&&!r.exams.length)r.eve.forEach(function(sj){r.rows.push({sj:sj,type:'light',items:lightItems(sj),note:'Letzter Tag vor der Arbeit. Kurz lernen und früh schlafen.'})})});
+    var used={};
+    subs.forEach(function(sj){
+      var E=pd(sj.exam),cands=days.filter(function(r){return !r.busy&&r.date<=addDays(E,-2)&&!(P.sunFree&&r.date.getDay()===0)}),len=cands.length;
+      if(!len)return;
+      var m=Math.max(1,Math.round(len*(P.tempo==='normal'?0.8:0.55)));if(len>=3&&m<3)m=3;if(m>len)m=len;
+      var picked=[],pk={};
+      for(var i=0;i<m;i++){
+        var ix=m===1?0:Math.round(i*(len-1)/(m-1)),c=cands[ix];
+        if(used[c.key]||pk[c.key]){
+          var best=null,bd=1e9;
+          cands.forEach(function(x,j){if(!used[x.key]&&!pk[x.key]&&Math.abs(j-ix)<bd){bd=Math.abs(j-ix);best=x}});
+          if(best)c=best;else if(pk[c.key])continue;
+        }
+        pk[c.key]=1;picked.push(c);
+      }
+      picked.sort(function(a,b){return a.date-b.date});
+      var mid=0,w=sj.id==='physik'?weakTopics():null,total=picked.length;
+      picked.forEach(function(c,i){
+        used[c.key]=1;
+        var kind=i===0?'check':(i===total-1&&total>=2?'probe':(mid++%2===0?'midA':'midB'));
+        c.rows.push({sj:sj,type:'study',kind:kind,items:sj.id==='physik'?physItems(kind,P.minutes,w):genItems(kind,P.minutes),note:''});
+      });
+    });
+    return {days:days,empty:false};
+  }
+  function itemHtml(row,it){return '<li><span>'+esc(it.l)+'</span><span class="m">'+it.min+' Min</span>'+(it.m?'<button data-go="'+row.sj.id+'" data-m="'+it.m+'" data-sub="'+(it.s||'')+'">Starten</button>':'')+'</li>'}
+  function rowHtml(r,row){
+    var key=r.key+'|'+row.sj.id,dn=!!S.done[key];
+    return '<div class="prow'+(dn?' done':'')+'" style="--c:var(--'+row.sj.c+')"><input type="checkbox" aria-label="'+esc(row.sj.name)+' erledigt" data-k="'+key+'"'+(dn?' checked':'')+'><div class="pbody"><span class="schip">'+esc(row.sj.name)+'</span><ul>'+row.items.map(function(it){return itemHtml(row,it)}).join('')+'</ul>'+(row.note?'<p class="muted">'+row.note+'</p>':'')+'</div></div>';
+  }
+  function dayHtml(r,isT){
+    var cls='dday'+(isT?' today':'')+(r.exams.length?' exam':(r.rows.length?'':' free'));
+    var b='';
+    if(r.exams.length)b+='<p class="exnote">Arbeit: '+r.exams.map(function(s){return esc(s.name)}).join(', ')+'. Taschenrechner und Stifte einpacken, ruhig bleiben.</p>';
+    b+=r.rows.map(function(row){return rowHtml(r,row)}).join('');
+    if(!r.rows.length&&!r.exams.length)b+='<p class="muted">Frei für alles andere.</p>';
+    return '<div class="'+cls+'"><div class="dd">'+WD[r.date.getDay()]+' '+dshort(r.date)+(isT?'<small>heute</small>':'')+'</div><div class="dbody">'+b+'</div></div>';
+  }
+  function todayHtml(plan,onlyId){
+    var tk=ymd(today()),td=plan.days.filter(function(r){return r.key===tk})[0];
+    var rows=td?td.rows.filter(function(x){return !onlyId||x.sj.id===onlyId}):[];
+    var h='';
+    if(td&&td.exams.length&&!onlyId)h+='<p class="exnote">Heute ist Arbeit: '+td.exams.map(function(s){return esc(s.name)}).join(', ')+'. Viel Erfolg!</p>';
+    if(rows.length)h+=rows.map(function(row){return rowHtml(td,row)}).join('');
+    else if(!(td&&td.exams.length&&!onlyId)){
+      var nx=plan.days.filter(function(r){return r.date>today()&&(r.rows.length||r.exams.length)&&(!onlyId||r.rows.some(function(x){return x.sj.id===onlyId}))})[0];
+      h+='<p>Heute ist nichts geplant.'+(nx?' Nächster Termin: <b>'+WD[nx.date.getDay()]+' '+dshort(nx.date)+'</b>.':'')+'</p>';
+    }
+    return h;
+  }
+
+  /* ---------- Werkzeuge: Zeichenfläche und Taschenrechner ---------- */
+  var toolOpen={pad:false,calc:false},padS={strokes:[],color:'blue',eraser:false,finger:false},lastInput=null;
+  var PEN={blue:'#1F5FBF',black:'#14213D',red:'#B3261E'},PENNAME={blue:'Blau',black:'Schwarz',red:'Rot'};
+  document.addEventListener('focusin',function(e){if(e.target&&e.target.matches&&e.target.matches('.row input'))lastInput=e.target});
+  function toolsHtml(o){
+    o=o||{};
+    var keys=[['C','C','op'],['⌫','BK','op'],['(','(',''],[')',')',''],['x²','²','op'],['√','√(','op'],['^','^','op'],['÷','÷','op'],['7','7',''],['8','8',''],['9','9',''],['×','×','op'],['4','4',''],['5','5',''],['6','6',''],['−','−','op'],['1','1',''],['2','2',''],['3','3',''],['+','+','op'],['0','0',''],[',',',',''],['Ans','ANS','op'],['=','=','eq']];
+    return '<div class="tools">'
+      +'<details class="tool" id="dPad"'+((o.pad||toolOpen.pad)?' open':'')+'><summary>Zeichenfläche für den Stift</summary><div class="padbox"><div class="padbar" role="toolbar" aria-label="Zeichenwerkzeuge">'
+      +['blue','black','red'].map(function(c){return '<button class="sw" data-pc="'+c+'" aria-pressed="'+(padS.color===c&&!padS.eraser)+'" aria-label="Stift '+PENNAME[c]+'"><i style="background:'+PEN[c]+'"></i></button>'}).join('')
+      +'<button data-pa="eraser" aria-pressed="'+padS.eraser+'">Radierer</button><button data-pa="undo">Rückgängig</button><button data-pa="clear">Alles löschen</button>'
+      +'<label><input type="checkbox" id="padFinger"'+(padS.finger?' checked':'')+'> Auch mit dem Finger zeichnen</label></div>'
+      +'<canvas id="pad" aria-label="Zeichenfläche für Nebenrechnungen"></canvas><p class="muted">Mit dem Stift oder der Maus zeichnen. Die Zeichnung bleibt nur, solange die Aufgabe offen ist.</p></div></details>'
+      +'<details class="tool" id="dCalc"'+((o.calc||toolOpen.calc)?' open':'')+'><summary>Taschenrechner</summary><div class="calc"><input id="calcIn" inputmode="none" autocomplete="off" aria-label="Rechnung" placeholder="zum Beispiel 0,088 ÷ 0,0042"><div class="res" id="calcRes" aria-live="polite"></div><div class="keys">'
+      +keys.map(function(k){return '<button class="'+k[2]+'" data-ck="'+k[1]+'">'+k[0]+'</button>'}).join('')
+      +'</div><button class="btn" id="calcUse">Ergebnis ins Antwortfeld übernehmen</button><p class="muted" id="calcHint"></p></div></details></div>';
+  }
+  function calcEval(str){
+    var s=String(str).replace(/\s/g,'').replace(/,/g,'.').replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-').replace(/²/g,'^2').replace(/π/g,'('+Math.PI+')'),i=0;
+    function num(){var m=/^(\d+\.?\d*|\.\d+)/.exec(s.slice(i));if(!m)throw 0;i+=m[0].length;return parseFloat(m[0])}
+    function prim(){if(s[i]==='('){i++;var v=expr();if(s[i]!==')')throw 0;i++;return v}return num()}
+    function pow(){var b=prim();while(s[i]==='^'){i++;b=Math.pow(b,unary())}return b}
+    function unary(){if(s[i]==='-'){i++;return -unary()}if(s[i]==='+'){i++;return unary()}if(s[i]==='√'){i++;return Math.sqrt(unary())}return pow()}
+    function term(){var v=unary();while(i<s.length){if(s[i]==='*'){i++;v*=unary()}else if(s[i]==='/'){i++;v/=unary()}else if(s[i]==='('||s[i]==='√'){v*=unary()}else break}return v}
+    function expr(){var v=term();while(s[i]==='+'||s[i]==='-'){var o=s[i++];var t=term();v=o==='+'?v+t:v-t}return v}
+    var r=expr();if(i<s.length||!isFinite(r))throw 0;return r;
+  }
+  function nfmt(x){
+    if(x===0)return '0';
+    if(Math.abs(x)>=1e15||Math.abs(x)<1e-7)return x.toExponential(6).replace('.',',');
+    return parseFloat(x.toPrecision(12)).toLocaleString('de-DE',{maximumFractionDigits:8});
+  }
+  function initTools(){
+    var dp=$('#dPad'),dc=$('#dCalc');if(!dp||!dc)return;
+    dp.addEventListener('toggle',function(){toolOpen.pad=dp.open;if(dp.open)setTimeout(function(){window.dispatchEvent(new Event('resize'))},0)});
+    dc.addEventListener('toggle',function(){toolOpen.calc=dc.open});
+    initPad();initCalc();
+  }
+  function initPad(){
+    var cv=$('#pad');if(!cv)return;
+    var ctx=cv.getContext('2d'),H=320,dpr=1,stk=null;
+    padS.strokes=[];
+    function size(){var w=cv.clientWidth;if(!w)return;dpr=window.devicePixelRatio||1;cv.width=Math.round(w*dpr);cv.height=Math.round(H*dpr);redraw()}
+    function seg(s,a,b){ctx.globalCompositeOperation=s.e?'destination-out':'source-over';ctx.strokeStyle=PEN[s.c];ctx.lineCap='round';ctx.lineJoin='round';ctx.lineWidth=s.e?22:s.w*(0.6+(b[2]||0.5)*0.9);ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.stroke()}
+    function redraw(){
+      ctx.setTransform(1,0,0,1,0,0);ctx.clearRect(0,0,cv.width,cv.height);ctx.setTransform(dpr,0,0,dpr,0,0);
+      padS.strokes.forEach(function(s){if(s.pts.length===1)seg(s,s.pts[0],s.pts[0]);for(var i=1;i<s.pts.length;i++)seg(s,s.pts[i-1],s.pts[i])});
+    }
+    size();window.addEventListener('resize',size);
+    function pt(e,ev){var r=cv.getBoundingClientRect();return [ev.clientX-r.left,ev.clientY-r.top,e.pointerType==='pen'?(ev.pressure||0.5):0.5]}
+    cv.addEventListener('pointerdown',function(e){
+      if(e.pointerType==='touch'&&!padS.finger)return;
+      e.preventDefault();try{cv.setPointerCapture(e.pointerId)}catch(x){}
+      stk={c:padS.color,e:padS.eraser,w:2.4,pts:[pt(e,e)]};padS.strokes.push(stk);seg(stk,stk.pts[0],stk.pts[0]);
+    });
+    cv.addEventListener('pointermove',function(e){
+      if(!stk)return;e.preventDefault();
+      var evs=e.getCoalescedEvents?e.getCoalescedEvents():[];if(!evs.length)evs=[e];
+      evs.forEach(function(ev){var p=pt(e,ev),q=stk.pts[stk.pts.length-1];stk.pts.push(p);seg(stk,q,p)});
+    });
+    ['pointerup','pointercancel'].forEach(function(n){cv.addEventListener(n,function(){stk=null})});
+    $$('.padbar [data-pc]').forEach(function(b){b.onclick=function(){padS.color=b.dataset.pc;padS.eraser=false;$$('.padbar [data-pc]').forEach(function(x){x.setAttribute('aria-pressed',x===b)});$('[data-pa="eraser"]').setAttribute('aria-pressed','false')}});
+    $('[data-pa="eraser"]').onclick=function(){padS.eraser=!padS.eraser;this.setAttribute('aria-pressed',padS.eraser);$$('.padbar [data-pc]').forEach(function(x){x.setAttribute('aria-pressed',!padS.eraser&&x.dataset.pc===padS.color)})};
+    $('[data-pa="undo"]').onclick=function(){padS.strokes.pop();redraw()};
+    $('[data-pa="clear"]').onclick=function(){padS.strokes=[];redraw()};
+    $('#padFinger').onchange=function(){padS.finger=this.checked};
+  }
+  function initCalc(){
+    var inp=$('#calcIn');if(!inp)return;
+    var ans='',res='';
+    function ins(t){var a=inp.selectionStart==null?inp.value.length:inp.selectionStart,b=inp.selectionEnd==null?a:inp.selectionEnd;inp.value=inp.value.slice(0,a)+t+inp.value.slice(b);var p=a+t.length;inp.setSelectionRange(p,p);inp.focus()}
+    function run(){
+      try{var v=calcEval(inp.value);res=nfmt(v);ans=res;$('#calcRes').textContent='= '+res}
+      catch(x){res='';$('#calcRes').textContent='Rechnung prüfen'}
+    }
+    $$('[data-ck]').forEach(function(b){b.onclick=function(){
+      var k=b.dataset.ck;
+      if(k==='C'){inp.value='';$('#calcRes').textContent='';res='';inp.focus()}
+      else if(k==='BK'){var a=inp.selectionStart==null?inp.value.length:inp.selectionStart;if(a>0){inp.value=inp.value.slice(0,a-1)+inp.value.slice(inp.selectionEnd==null?a:inp.selectionEnd);inp.setSelectionRange(a-1,a-1)}inp.focus()}
+      else if(k==='=')run();
+      else if(k==='ANS'){if(ans)ins(ans)}
+      else ins(k);
+    }});
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();run()}});
+    $('#calcUse').onclick=function(){
+      if(!res)run();
+      var h=$('#calcHint');
+      if(!res){h.textContent='Erst eine Rechnung eingeben und = drücken.';return}
+      if(lastInput&&document.body.contains(lastInput)){lastInput.value=res;lastInput.focus();h.textContent='Übernommen: '+res}
+      else h.textContent='Klicke zuerst in das Antwortfeld.';
+    };
+  }
+
+  /* ---------- Methoden für selbst angelegte Fächer ---------- */
+  function modeThemen(){
+    var sj=curSubj(),D=sd(sj.id);
+    function paint(focus){
+      var th=D.themen,g=th.filter(function(t){return t.r===2}).length;
+      var rows=th.map(function(t,i){
+        return '<div class="trow"><span class="tt">'+esc(t.t)+'</span><div class="rate" role="group" aria-label="Sicherheit: '+esc(t.t)+'">'+[['Unsicher',0],['Geht so',1],['Sicher',2]].map(function(o){return '<button class="rb r'+o[1]+'" data-i="'+i+'" data-r="'+o[1]+'" aria-pressed="'+(t.r===o[1])+'">'+o[0]+'</button>'}).join('')+'</div><button class="xbtn" data-del="'+i+'" aria-label="Thema '+esc(t.t)+' löschen">Löschen</button></div>';
+      }).join('');
+      setView(shell('Themen-Check',sj.c,'<p class="muted">Sammle die Themen der Arbeit und schätze ehrlich ein, wie sicher du bist. Unsichere Themen kommen im Lernplan zuerst dran.</p>'+(th.length?'<p><b>'+g+' von '+th.length+' Themen sicher</b></p>':'')+'<div class="trows">'+(rows||'<p class="muted">Noch keine Themen. Trag unten das erste ein.</p>')+'</div><div class="addrow"><input id="thIn" type="text" class="tin" placeholder="Neues Thema" aria-label="Neues Thema" autocomplete="off"><button class="btn primary" id="thAdd">Hinzufügen</button></div>'));
+      $$('.rb').forEach(function(b){b.onclick=function(){D.themen[+b.dataset.i].r=+b.dataset.r;save();paint()}});
+      $$('[data-del]').forEach(function(b){b.onclick=function(){D.themen.splice(+b.dataset.del,1);save();paint()}});
+      function add(){var v=$('#thIn').value.trim();if(!v)return;D.themen.push({t:v,r:0});save();paint(true)}
+      $('#thAdd').onclick=add;$('#thIn').addEventListener('keydown',function(e){if(e.key==='Enter')add()});
+      if(focus)$('#thIn').focus();
+    }
+    paint();
+  }
+  function viewChips(sj,view,n){
+    return '<div class="chips"><button class="chip" style="--c:var(--'+sj.c+')" data-v="lernen" aria-pressed="'+(view==='lernen')+'">Lernen</button><button class="chip" style="--c:var(--'+sj.c+')" data-v="verwalten" aria-pressed="'+(view==='verwalten')+'">Verwalten ('+n+')</button></div>';
+  }
+  function modeKartenX(){
+    var sj=curSubj(),D=sd(sj.id),view='lernen',idx=-1,last=-1,flipped=false,msg='';
+    function draw(){var w=[];D.cards.forEach(function(c,i){if(i===last&&D.cards.length>1)return;var b=c.b||1,wt=b===1?4:b===2?2:1;for(var k=0;k<wt;k++)w.push(i)});return w.length?pick(w):-1}
+    function bind(){$$('[data-v]').forEach(function(b){b.onclick=function(){view=b.dataset.v;idx=-1;flipped=false;paint()}})}
+    function paint(){
+      if(!D.cards.length&&view==='lernen'){view='verwalten';msg='Noch keine Karten. Lege die erste an.'}
+      if(view==='verwalten')return manage();
+      if(idx<0||idx>=D.cards.length)idx=draw();
+      var c=D.cards[idx];
+      var face=flipped?'<div class="side">Antwort</div><div class="hand">'+esc(c.a)+'</div>':'<div class="side">Frage</div><div class="txt">'+esc(c.q)+'</div>';
+      var acts=flipped?'<button class="btn primary" id="kYes">Gewusst</button><button class="btn" id="kNo">Noch nicht</button>':'<button class="btn primary" id="kFlip">Antwort zeigen</button>';
+      setView(shell('Karteikarten',sj.c,viewChips(sj,view,D.cards.length)+'<div class="flash">'+face+'</div><div class="actions">'+acts+'</div><p class="muted">Überlege zuerst, was du sagen würdest.</p>'));bind();
+      if(flipped){
+        $('#kYes').onclick=function(){c.b=Math.min(3,(c.b||1)+1);dlog(sj.id,'karten',true);last=idx;idx=-1;flipped=false;paint()};
+        $('#kNo').onclick=function(){c.b=1;dlog(sj.id,'karten',false);last=idx;idx=-1;flipped=false;paint()};
+      }else $('#kFlip').onclick=function(){flipped=true;paint()};
+    }
+    function manage(){
+      var list=D.cards.map(function(c,i){return '<div class="litem"><span><b>'+esc(c.q)+'</b><br>'+esc(c.a)+'</span><button class="xbtn" data-del="'+i+'" aria-label="Karte löschen">Löschen</button></div>'}).join('');
+      setView(shell('Karteikarten',sj.c,viewChips(sj,view,D.cards.length)+(msg?'<p class="muted">'+msg+'</p>':'')+'<div class="form"><div class="f wide"><label class="l" for="kq">Frage (Vorderseite)</label><input type="text" id="kq" autocomplete="off"></div><div class="f wide"><label class="l" for="ka">Antwort (Rückseite)</label><textarea id="ka"></textarea></div></div><div class="actions"><button class="btn primary" id="kAdd">Karte hinzufügen</button></div><div class="list">'+list+'</div>'));bind();msg='';
+      $('#kAdd').onclick=function(){var q=$('#kq').value.trim(),a=$('#ka').value.trim();if(!q||!a){msg='Trag Frage und Antwort ein.';manage();return}D.cards.push({q:q,a:a,b:1});save();msg='Karte gespeichert.';manage();$('#kq').focus()};
+      $$('[data-del]').forEach(function(b){b.onclick=function(){D.cards.splice(+b.dataset.del,1);save();manage()}});
+    }
+    paint();
+  }
+  function modeQuizX(){
+    var sj=curSubj(),D=sd(sj.id),view='lernen',last=-1,msg='';
+    function bind(){$$('[data-v]').forEach(function(b){b.onclick=function(){view=b.dataset.v;paint()}})}
+    function paint(){
+      if(!D.quiz.length&&view==='lernen'){view='verwalten';msg='Noch keine Fragen. Lege die erste an.'}
+      if(view==='verwalten')return manage();
+      var qi;do{qi=Math.floor(Math.random()*D.quiz.length)}while(qi===last&&D.quiz.length>1);last=qi;
+      var q=D.quiz[qi],opts=shuffle([q.r].concat(q.w)),done=false;
+      setView(shell('Quiz',sj.c,viewChips(sj,view,D.quiz.length)+'<p class="task"><b>'+esc(q.q)+'</b></p><div class="opts">'+opts.map(function(o,i){return '<button class="opt" data-i="'+i+'">'+esc(o)+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNext" disabled>Nächste Frage</button></div>'));bind();
+      $$('.opt').forEach(function(b){b.onclick=function(){
+        if(done)return;done=true;var ok=opts[+b.dataset.i]===q.r;
+        $$('.opt').forEach(function(x){x.disabled=true;if(opts[+x.dataset.i]===q.r)x.classList.add('right')});
+        if(!ok)b.classList.add('wrong');dlog(sj.id,'quiz',ok);
+        $('#out').innerHTML='<div class="solution"><div class="kicker">'+(ok?'Richtig':'Nicht ganz')+'</div><p>'+(q.e?esc(q.e):'Richtig ist: '+esc(q.r))+'</p></div>';
+        $('#bNext').disabled=false;
+      }});
+      $('#bNext').onclick=paint;
+    }
+    function manage(){
+      var list=D.quiz.map(function(q,i){return '<div class="litem"><span><b>'+esc(q.q)+'</b><br>Richtig: '+esc(q.r)+'</span><button class="xbtn" data-del="'+i+'" aria-label="Frage löschen">Löschen</button></div>'}).join('');
+      setView(shell('Quiz',sj.c,viewChips(sj,view,D.quiz.length)+(msg?'<p class="muted">'+msg+'</p>':'')+'<div class="form"><div class="f wide"><label class="l" for="qq">Frage</label><input type="text" id="qq" autocomplete="off"></div><div class="f"><label class="l" for="qr">Richtige Antwort</label><input type="text" id="qr" autocomplete="off"></div><div class="f"><label class="l" for="qw1">Falsche Antwort 1</label><input type="text" id="qw1" autocomplete="off"></div><div class="f"><label class="l" for="qw2">Falsche Antwort 2 (optional)</label><input type="text" id="qw2" autocomplete="off"></div><div class="f wide"><label class="l" for="qe">Erklärung (optional)</label><input type="text" id="qe" autocomplete="off"></div></div><div class="actions"><button class="btn primary" id="qAdd">Frage hinzufügen</button></div><div class="list">'+list+'</div>'));bind();msg='';
+      $('#qAdd').onclick=function(){
+        var q=$('#qq').value.trim(),r=$('#qr').value.trim(),w=[$('#qw1').value.trim(),$('#qw2').value.trim()].filter(Boolean);
+        if(!q||!r||!w.length){msg='Trag Frage, die richtige Antwort und mindestens eine falsche Antwort ein.';manage();return}
+        D.quiz.push({q:q,r:r,w:w,e:$('#qe').value.trim()});save();msg='Frage gespeichert.';manage();$('#qq').focus();
+      };
+      $$('[data-del]').forEach(function(b){b.onclick=function(){D.quiz.splice(+b.dataset.del,1);save();manage()}});
+    }
+    paint();
+  }
+  function modeNotizen(){
+    var sj=curSubj(),D=sd(sj.id);
+    setView(shell('Notizblock',sj.c,'<p class="muted">Schreib Stichpunkte oder rechne mit dem Stift. Der Text wird gespeichert.</p><label class="l" for="nt" style="color:var(--muted)">Notizen zu '+esc(sj.name)+'</label><textarea id="nt" placeholder="Hier schreiben ..."></textarea>'+toolsHtml({pad:true})));
+    var ta=$('#nt');ta.value=D.notes||'';
+    ta.addEventListener('input',function(){D.notes=ta.value;save()});
+    initTools();
+  }
+  function modeEdit(){
+    var sj=curSubj();
+    setView(shell('Fach bearbeiten',sj.c,'<div class="form"><div class="f"><label class="l" for="eName">Name</label><input type="text" id="eName" value="'+esc(sj.name)+'"'+(sj.builtin?' disabled':'')+'></div><div class="f"><label class="l" for="eCol">Farbe</label><select id="eCol">'+Object.keys(SCOL).map(function(c){return '<option value="'+c+'"'+(c===sj.c?' selected':'')+'>'+SCOL[c]+'</option>'}).join('')+'</select></div><div class="f"><label class="l" for="eDate">Datum der Arbeit</label><input type="date" id="eDate" value="'+(sj.exam||'')+'"></div></div><div class="actions"><button class="btn primary" id="eSave">Speichern</button>'+(sj.builtin?'':'<button class="btn" id="eDel">Fach löschen</button>')+'</div><div id="out" class="msgbox" aria-live="polite"></div>'));
+    $('#eSave').onclick=function(){
+      var n=$('#eName').value.trim();if(!sj.builtin&&n)sj.name=n;sj.c=$('#eCol').value;sj.exam=$('#eDate').value;save();
+      render();
+    };
+    var del=$('#eDel');
+    if(del)del.onclick=function(){
+      if(del.dataset.sure!=='1'){del.dataset.sure='1';del.textContent='Wirklich löschen? Themen, Karten und Fragen gehen verloren.';return}
+      S.subjects=S.subjects.filter(function(x){return x.id!==sj.id});delete S.sd[sj.id];save();go('home');
+    };
+  }
+
+  /* ---------- Navigation ---------- */
+  var PMODES=MODES.concat([
+    {k:'notizen',t:'Notizblock',d:'Notizen schreiben und mit dem Stift rechnen',c:'c1',m:'frei'},
+    {k:'edit',t:'Fach bearbeiten',d:'Datum der Arbeit und Farbe ändern',c:'c1',m:'1 Min'}
+  ]);
+  var GMODES=[
+    {k:'themen',t:'Themen-Check',d:'Themen sammeln und mit Ampel einschätzen',m:'5 Min'},
+    {k:'karten',t:'Karteikarten',d:'Eigene Karten anlegen und abfragen',m:'5–10 Min'},
+    {k:'quiz',t:'Quiz',d:'Eigene Fragen anlegen und üben',m:'5–10 Min'},
+    {k:'notizen',t:'Notizblock',d:'Notizen schreiben und mit dem Stift rechnen',m:'frei'},
+    {k:'edit',t:'Fach bearbeiten',d:'Name, Datum der Arbeit und Farbe ändern',m:'1 Min'}
+  ];
+  var PRUN={rechnen:modeRechnen,karten:modeKarten,fehler:modeFehler,einheiten:modeEinheiten,zuordnen:modeZuordnen,erklaeren:modeErklaeren,quiz:modeQuiz,sim:modeSim,notizen:modeNotizen,edit:modeEdit};
+  var GRUN={themen:modeThemen,karten:modeKartenX,quiz:modeQuizX,notizen:modeNotizen,edit:modeEdit};
+  function modeTitle(){var L=(S.subj==='physik'?PMODES:GMODES).filter(function(m){return m.k===cur.mode})[0];return L?L.t:''}
+  function go(id,mode,sub){
+    if(id==='home'){S.screen='home';S.subj=null;cur.mode=null}
+    else{S.screen='subject';S.subj=id;cur.mode=mode||null;cur.sub=sub||null}
+    render();window.scrollTo(0,0);
+  }
+  function crumbsHtml(){
+    if(S.screen!=='subject')return '';
+    var sj=curSubj(),h='<nav class="crumbs" aria-label="Pfad"><button data-crumb="home">Start</button><span class="sep" aria-hidden="true">›</span>';
+    if(cur.mode)h+='<button data-crumb="subj">'+esc(sj.name)+'</button><span class="sep" aria-hidden="true">›</span><span class="here">'+esc(modeTitle())+'</span>';
+    else h+='<span class="here">'+esc(sj.name)+'</span>';
+    return h+'</nav>';
+  }
+
+  /* ---------- Startmenü ---------- */
+  var homeMsg='';
+  function renderHome(){
+    var plan=buildPlan(),P=S.settings;
+    var cards=S.subjects.map(function(sj){
+      var st=subjStat(sj),pc=st.p===null?0:Math.round(st.p);
+      return '<button class="scard" style="--c:var(--'+sj.c+')" data-open="'+sj.id+'"><b>'+esc(sj.name)+'</b><span class="cd">'+countdown(sj)+'</span><span class="st">'+esc(st.text)+'</span><div class="sbar" role="img" aria-label="Sicherheit '+pc+' Prozent"><i style="width:'+pc+'%"></i></div></button>';
+    }).join('');
+    var used={};S.subjects.forEach(function(s){used[s.c]=1});
+    var nextCol=Object.keys(SCOL).filter(function(c){return !used[c]})[0]||'s2';
+    var add='<details class="sheet" id="dAdd"><summary>Neues Fach hinzufügen</summary><div class="how"><div class="form"><div class="f"><label class="l" for="nsName">Name des Fachs</label><input type="text" id="nsName" autocomplete="off" placeholder="zum Beispiel Biologie"></div><div class="f"><label class="l" for="nsCol">Farbe</label><select id="nsCol">'+Object.keys(SCOL).map(function(c){return '<option value="'+c+'"'+(c===nextCol?' selected':'')+'>'+SCOL[c]+'</option>'}).join('')+'</select></div><div class="f"><label class="l" for="nsDate">Datum der Arbeit (optional)</label><input type="date" id="nsDate"></div></div><div class="actions"><button class="btn primary" id="nsAdd">Fach anlegen</button></div><div id="nsMsg" class="msgbox" aria-live="polite"></div></div></details>';
+    var setup='<div class="setup"><div class="f"><label class="l" for="pMin">Zeit pro Fach und Lerntag</label><select id="pMin">'+[15,20,30,45].map(function(m){return '<option value="'+m+'"'+(m==P.minutes?' selected':'')+'>'+m+' Minuten</option>'}).join('')+'</select></div><div class="f"><label class="l" for="pTempo">Wie oft lernen</label><select id="pTempo"><option value="locker"'+(P.tempo!=='normal'?' selected':'')+'>Locker (nur jeden 2. Tag)</option><option value="normal"'+(P.tempo==='normal'?' selected':'')+'>Normal (öfter)</option></select></div><div class="f"><label class="l" style="display:flex;gap:10px;align-items:center;min-height:48px;margin-top:22px"><input type="checkbox" id="pSun"'+(P.sunFree?' checked':'')+'> Sonntags frei</label></div></div>';
+    var how='<details class="sheet" open><summary>So funktioniert der Plan</summary><div class="how"><p>Jedes Fach mit einem Datum bekommt wenige kurze Einheiten bis zur Arbeit. Tage mit einer Arbeit oder direkt davor bleiben für das jeweilige Fach reserviert, andere Fächer pausieren dann.</p><ol><li><b>Check-in:</b> zeigt dir, wo es noch hakt.</li><li><b>Zwischendurch:</b> schwächste Themen, Fehler suchen, Erklären.</li><li><b>Generalprobe:</b> einmal alles wie in der Arbeit.</li><li><b>Tag vorher:</b> nur Karteikarten und ein kurzer Blick auf die Unterlagen.</li></ol><p>Hake eine Einheit ab, wenn du fertig bist. „Starten“ öffnet direkt die passende Übung. Im Fach selbst legst du Themen, Karten und Fragen an.</p></div></details>';
+    var tips='<details class="sheet"><summary>Lernstrategien</summary><div class="tips" style="padding-block:10px"><div><h3>Kurz und oft</h3><p>20 bis 30 Minuten pro Fach schlagen einen langen Block am Vorabend.</p></div><div><h3>Fächer abwechseln</h3><p>Fach, Pause, anderes Fach. Das Gehirn behält Gemischtes besser.</p></div><div><h3>Abfragen statt lesen</h3><p>Erst Karten und Aufgaben, dann nachschauen. Fehler sind die beste Übung.</p></div><div><h3>Am nächsten Tag wiederholen</h3><p>Starte mit 3 Minuten Karteikarten vom Vortag.</p></div><div><h3>Pausen und Schlaf</h3><p>Nach 25 Minuten 5 Minuten Pause. Vor der Arbeit früh ins Bett.</p></div></div></details>';
+    var backup='<details class="sheet" id="dBackup"><summary>Sicherung</summary><div class="how"><p>Dein Fortschritt wird automatisch gespeichert. Für eine eigene Kopie kannst du die Sicherung hier anzeigen, kopieren und irgendwo aufbewahren. Zum Wiederherstellen fügst du sie unten ein.</p><div class="actions"><button class="btn" id="bExp">Sicherung anzeigen</button><button class="btn" id="bCopy" hidden>Kopieren</button></div><textarea id="expBox" readonly hidden aria-label="Sicherung"></textarea><label class="l" for="impBox" style="color:var(--muted)">Sicherung einfügen</label><textarea id="impBox" placeholder="Sicherung hier einfügen"></textarea><div class="actions"><button class="btn" id="bImp">Wiederherstellen</button></div><div id="impMsg" class="msgbox" aria-live="polite"></div></div></details>';
+    var weeks={},order=[],tk=ymd(today());
+    plan.days.forEach(function(r){var wd=(r.date.getDay()+6)%7,mon=ymd(addDays(r.date,-wd));if(!weeks[mon]){weeks[mon]=[];order.push(mon)}weeks[mon].push(r)});
+    var total=0,done=0,mins=0;
+    plan.days.forEach(function(r){r.rows.forEach(function(row){total++;if(S.done[r.key+'|'+row.sj.id])done++;row.items.forEach(function(i){mins+=i.min})})});
+    var list=plan.empty?'<p class="muted">Gib einem Fach ein Datum für die Arbeit, dann erscheint hier dein Plan.</p>':'<div class="summary"><div><b>'+total+'</b><span>Einheiten</span></div><div><b>'+(Math.round(mins/6)/10)+' h</b><span>Lernzeit gesamt</span></div><div><b>'+done+' / '+total+'</b><span>erledigt</span></div></div><div class="bar" role="img" aria-label="'+done+' von '+total+' Einheiten erledigt"><i style="width:'+(total?done/total*100:0)+'%"></i></div>'+order.map(function(mon){return '<div class="week"><h3>Woche ab '+dshort(pd(mon))+'</h3>'+weeks[mon].map(function(r){return dayHtml(r,r.key===tk)}).join('')+'</div>'}).join('');
+    var sheet=$('#formel');
+    setView('<div class="card" style="--c:var(--blue)"><div class="homeh"><h2>Heute</h2><span class="muted">'+WD[today().getDay()]+' '+dshort(today())+'</span></div>'+(plan.empty?'<p>Noch kein Termin gesetzt. Öffne ein Fach und trag das Datum der Arbeit ein.</p>':todayHtml(plan))+'</div>'
+      +'<div class="card" style="--c:var(--s3)"><h2>Deine Fächer</h2>'+(homeMsg?'<p class="msgbox">'+esc(homeMsg)+'</p>':'')+'<div class="grid">'+cards+'</div>'+add+'</div>'
+      +'<div class="card" style="--c:var(--s5)"><h2>Dein Lernplan</h2>'+setup+list+how+'</div>'
+      +tips+backup);
+    homeMsg='';
+    $('#nsAdd').onclick=function(){
+      var n=$('#nsName').value.trim();if(!n){$('#nsMsg').textContent='Trag zuerst einen Namen ein.';return}
+      var sj={id:uid(),name:n,c:$('#nsCol').value,exam:$('#nsDate').value,builtin:false};S.subjects.push(sj);sd(sj.id);save();homeMsg='Fach angelegt: '+n+'. Öffne es und trag Themen, Karten oder Fragen ein.';render();
+    };
+    ['pMin','pTempo','pSun'].forEach(function(id){$('#'+id).addEventListener('change',function(){S.settings.minutes=+$('#pMin').value;S.settings.tempo=$('#pTempo').value;S.settings.sunFree=$('#pSun').checked;save();render()})});
+    $('#bExp').onclick=function(){var b=$('#expBox');b.value=JSON.stringify({v:1,data:S});b.hidden=false;$('#bCopy').hidden=false;b.focus();b.select()};
+    $('#bCopy').onclick=function(){var b=$('#expBox');b.select();try{navigator.clipboard.writeText(b.value).then(function(){$('#impMsg').textContent='Kopiert.'},function(){$('#impMsg').textContent='Text ist markiert. Bitte selbst kopieren.'})}catch(e){$('#impMsg').textContent='Text ist markiert. Bitte selbst kopieren.'}};
+    $('#bImp').onclick=function(){
+      var btn=$('#bImp'),m=$('#impMsg'),obj;
+      try{obj=JSON.parse($('#impBox').value);if(!obj||!obj.data||!Array.isArray(obj.data.subjects))throw 0}catch(e){m.textContent='Das ist keine gültige Sicherung.';return}
+      if(btn.dataset.sure!=='1'){btn.dataset.sure='1';btn.textContent='Wirklich überschreiben?';m.textContent='Dein jetziger Stand wird ersetzt.';return}
+      S=Object.assign({},S,obj.data);fixState();S.screen='home';save();homeMsg='Sicherung wiederhergestellt.';render();
+    };
+  }
+
+  /* ---------- Fachseite ---------- */
+  function renderSubject(){
+    var sj=curSubj();if(!sj){go('home');return}
+    if(cur.mode){(sj.id==='physik'?PRUN:GRUN)[cur.mode]();return}
+    var plan=buildPlan(),tk=ymd(today()),td=plan.days.filter(function(r){return r.key===tk})[0],tm={};
+    if(td)td.rows.forEach(function(row){if(row.sj.id===sj.id)row.items.forEach(function(i){if(i.m)tm[i.m]=1})});
+    var st=subjStat(sj),pc=st.p===null?0:Math.round(st.p),modes=sj.id==='physik'?PMODES:GMODES;
+    var head='<div class="card" style="--c:var(--'+sj.c+')"><div class="homeh"><h2>'+esc(sj.name)+'</h2><span class="muted">'+countdown(sj)+'</span></div><div class="scard-bar"><div class="bar" role="img" aria-label="Sicherheit '+pc+' Prozent"><i style="width:'+pc+'%;background:var(--'+sj.c+')"></i></div><p class="muted">'+esc(st.text)+'</p></div><h3>Heute in diesem Fach</h3>'+todayHtml(plan,sj.id)+'</div>';
+    var grid='<div class="card" style="--c:var(--'+sj.c+')"><h2>Wie willst du lernen?</h2><div class="grid">'+modes.map(function(m){return '<button class="mcard" style="--c:var(--'+sj.c+')" data-m="'+m.k+'"><b>'+m.t+'</b><span>'+m.d+'</span><small>'+m.m+'</small>'+(tm[m.k]?'<em class="badge">Heute im Plan</em>':'')+'</button>'}).join('')+'</div></div>';
+    setView(head+(sj.id==='physik'?readinessCard():'')+grid);
+  }
+
+  /* ---------- Routing ---------- */
+  function render(){
+    stopTimers();
+    var sheet=$('#formel');if(sheet)sheet.hidden=!(S.screen==='subject'&&S.subj==='physik'&&cur.mode===null);
+    var h1=$('#h1'),sb=$('#subt');
+    if(S.screen==='subject'){var sj=curSubj();h1.textContent=sj?sj.name:'Lernzentrale';sb.textContent=sj&&sj.id==='physik'?'Kinematik · Lernen und Üben':'Dein Fach'}
+    else{h1.textContent='Lernzentrale';sb.textContent='Fächer, Lernplan und Übungen'}
+    if(S.screen==='subject')renderSubject();else renderHome();
+  }
+  var view=$('#view');
+  view.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.dataset.crumb==='home')return go('home');
+    if(t.dataset.crumb==='subj'){cur.mode=null;return render()}
+    if(t.dataset.open)return go(t.dataset.open);
+    if(t.dataset.go&&t.dataset.m)return go(t.dataset.go,t.dataset.m,t.dataset.sub||null);
+    if(t.classList.contains('mcard')&&t.dataset.m&&S.screen==='subject'){cur.mode=t.dataset.m;cur.sub=null;render();window.scrollTo(0,0)}
+  });
+  view.addEventListener('change',function(e){
+    var c=e.target;
+    if(c.matches&&c.matches('input[type=checkbox][data-k]')){if(c.checked)S.done[c.dataset.k]=true;else delete S.done[c.dataset.k];save();render()}
+  });
+  ['nm','dt'].forEach(function(id){
+    var el=$('#'+id),k=id==='nm'?'name':'date';
+    el.value=S[k]||(id==='dt'?new Date().toLocaleDateString('de-DE'):'');
+    el.addEventListener('input',function(){S[k]=el.value;save()});
+  });
+  $$('.sheet dt').forEach(function(dt){if(dt.dataset.k)dt.insertAdjacentHTML('afterbegin',ico(dt.dataset.k))});
+  updateProgress();render();initCloud();
+})();
+</script>
