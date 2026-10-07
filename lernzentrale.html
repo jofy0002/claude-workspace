@@ -514,7 +514,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
       tip:'t wird bei s(t) quadriert. Rechne zuerst t², dann den Rest.'
     };
   };
-  var TOPICS=[['geschw','Geschwindigkeit'],['strecke','Strecke und Zeit'],['funk','Funksignale'],['messreihe','Messreihe'],['beschl','Beschleunigung'],['mix','Gemischt']];
+  var TOPICS=[['geschw','Geschwindigkeit'],['strecke','Strecke und Zeit'],['funk','Funksignale'],['messreihe','Messreihe'],['mix','Gemischt'],['beschl','Zusatz: Beschleunigung']];
   /* Themenfarben und Piktogramme (nur Darstellung) */
   var TC={geschw:'t-bew',strecke:'t-bew',funk:'t-funk',messreihe:'t-mess',beschl:'t-besch',mix:'t-mix'};
   var ICO={
@@ -568,7 +568,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     {k:'zuordnen',t:'Formel wählen',d:'Welche Formel passt zur Aufgabe? Ohne zu rechnen',c:'c4',m:'5 Min'},
     {k:'erklaeren',t:'Erklären',d:'In eigenen Worten schreiben und mit Stichpunkten vergleichen',c:'c7',m:'10 Min'},
     {k:'quiz',t:'Quiz',d:'Ankreuzen mit kurzer Erklärung',c:'c6',m:'5–8 Min'},
-    {k:'sim',t:'Probe-Arbeit',d:'Vier Aufgaben wie in der Arbeit, mit Punkten und Uhr',c:'c8',m:'35–45 Min'}
+    {k:'sim',t:'Probe-Arbeit',d:'Drei Aufgaben wie in der Arbeit, mit Punkten und Uhr',c:'c8',m:'35–45 Min'}
   ];
   function modeInfo(k){return MODES.filter(function(m){return m.k===k})[0]}
   function modeByTitle(t){return PMODES.concat(GMODES).filter(function(m){return m.t===t})[0]||{}}
@@ -581,7 +581,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
   /* ---------- Methode: Rechnen ---------- */
   function modeRechnen(sub){
     sub=sub||cur.sub||'geschw';cur.sub=sub;
-    var g=sub==='mix'?pick(['geschw','strecke','funk','messreihe','beschl']):sub;
+    var g=sub==='mix'?pick(['geschw','strecke','funk','messreihe']):sub;
     var task=gens[g], checked=false;task=task();
     var chips='<div class="chips">'+TOPICS.map(function(t){return '<button class="chip" style="--c:var(--'+TC[t[0]]+')" data-sub="'+t[0]+'" aria-pressed="'+(t[0]===sub)+'">'+ico(t[0])+t[1]+'</button>'}).join('')+'</div>';
     setView(shell('Rechnen',TC[sub],chips+'<div class="kicker">Aufgabe</div><p class="task">'+task.text+'</p>'+(task.table||'')+toolsHtml()+inputsHtml(task,'r')+'<div class="actions"><button class="btn primary" id="bCheck">Prüfen</button><button class="btn" id="bSol">Lösungsweg</button><button class="btn" id="bNew">Neue Aufgabe</button></div><div id="out"></div>'));
@@ -620,9 +620,9 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     ['Frage und Antwort bei einer Live-Schalte: Wie viele Teilstrecken?','4 (hin und zurück, jeweils Studio–Satellit und Satellit–Reporter)']
   ];
   function modeKarten(){
-    var last=-1,idx=0,flipped=false;
-    function counts(){var c=[0,0,0];CARDS.forEach(function(_,i){c[(S.cards[i]||1)-1]++});return c}
-    function draw(){var w=[];CARDS.forEach(function(_,i){if(i===last)return;var b=S.cards[i]||1;var wt=b===1?4:b===2?2:1;for(var k=0;k<wt;k++)w.push(i)});return pick(w)}
+    var last=-1,idx=0,flipped=false,EXTRA={8:1,9:1,10:1,12:1};
+    function counts(){var c=[0,0,0];CARDS.forEach(function(_,i){if(EXTRA[i])return;c[(S.cards[i]||1)-1]++});return c}
+    function draw(){var w=[];CARDS.forEach(function(_,i){if(i===last||EXTRA[i])return;var b=S.cards[i]||1;var wt=b===1?4:b===2?2:1;for(var k=0;k<wt;k++)w.push(i)});return pick(w)}
     function paint(){
       var c=counts();
       var face=flipped
@@ -643,7 +643,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
 
   /* ---------- Methode: Fehlerdetektiv ---------- */
   function errGen(){
-    var t=pick(['unit','formel','quad','legs']);
+    var t=pick(['unit','formel','legs']);
     if(t==='unit'){
       var v=pick([45,60,72,80,90]),m=pick([12,15,20,25,30]),s=v*m/60;
       return {intro:'Ein Fahrzeug fährt '+m+' min lang mit '+v+' km/h. Wie weit kommt es?',lines:['Gegeben: v = '+v+' km/h, t = '+m+' min','Formel: s = v · t','s = '+v+' km/h · '+m+' = '+fmt(v*m,0)+' km','Ergebnis: s = '+fmt(v*m,0)+' km'],err:2,why:'Die Zeit steht in Minuten, v in km/h. Erst umrechnen: '+m+' min = '+fmt(m/60,3)+' h. Richtig ist s = '+v+' · '+fmt(m/60,3)+' = '+fmt(s,2)+' km.'};
@@ -725,8 +725,8 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     ['Ein Roller fährt 40 s lang mit a = 0,5 m/s² aus dem Stand. Gesucht: Weg.',4]
   ];
   function modeZuordnen(){
-    var s=pick(SCEN),done=false;
-    setView(shell('Formel wählen','c4','<div class="kicker">Situation</div><p class="task"><b>'+s[0]+'</b></p><p class="muted">Welche Formel brauchst du?</p><div class="opts cols">'+FORMS.map(function(f,i){return '<button class="opt" data-i="'+i+'">'+f+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNew">Nächste Situation</button></div>'));
+    var OKF=[0,1,2,6],s=pick(SCEN.filter(function(x){return OKF.indexOf(x[1])>=0})),done=false;
+    setView(shell('Formel wählen','c4','<div class="kicker">Situation</div><p class="task"><b>'+s[0]+'</b></p><p class="muted">Welche Formel brauchst du?</p><div class="opts cols">'+OKF.map(function(i){return '<button class="opt" data-i="'+i+'">'+FORMS[i]+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNew">Nächste Situation</button></div>'));
     $$('.opt').forEach(function(b){b.onclick=function(){
       if(done)return;done=true;var i=+b.dataset.i,ok=i===s[1];
       $$('.opt').forEach(function(x){x.disabled=true;if(+x.dataset.i===s[1])x.classList.add('right')});
@@ -744,7 +744,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     {q:'Erkläre den Unterschied zwischen gleichförmiger und gleichmäßig beschleunigter Bewegung.',pts:['Gleichförmig: v ist konstant, a = 0 m/s²','Beschleunigt: a ist konstant, v ändert sich','Formel gleichförmig: s = v · t + s₀','Formel beschleunigt: s = ½ · a · t² + v₀ · t + s₀ und v = a · t + v₀'],model:'Bei der gleichförmigen Bewegung ist die Geschwindigkeit konstant und die Beschleunigung null (s = v · t + s₀). Bei der gleichmäßig beschleunigten Bewegung ist die Beschleunigung konstant, die Geschwindigkeit wächst gleichmäßig (v = a · t + v₀, s = ½ · a · t² + v₀ · t + s₀).'}
   ];
   function modeErklaeren(){
-    var i=Math.floor(Math.random()*EXPL.length),e=EXPL[i];
+    var i=Math.floor(Math.random()*3),e=EXPL[i];
     setView(shell('Erklären','c7','<div class="kicker">Schreibe in eigenen Worten</div><p class="task"><b>'+e.q+'</b></p><textarea id="ex" placeholder="Hier schreiben ..."></textarea><div class="actions"><button class="btn primary" id="bCmp">Mit Stichpunkten vergleichen</button><button class="btn" id="bNew">Andere Frage</button></div><div id="out"></div>'));
     var ta=$('#ex');try{ta.value=S.notes['e'+i]||''}catch(x){}
     ta.addEventListener('input',function(){S.notes['e'+i]=ta.value;save()});
@@ -765,8 +765,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     {q:'Dein Ergebnis für eine Zeit lautet „19/270000 h“. Was fehlt noch?',o:['Nichts, das ist korrekt.','Eine Umrechnung in Sekunden, wenn die Aufgabe das verlangt (hier ≈ 0,25 s).','Ein Kommentar zum Radius.'],a:1,e:'Lies die geforderte Einheit in der Aufgabe. Bei Funklaufzeiten sind Sekunden die sinnvolle Einheit.'},
     {q:'Ein Signal läuft Studio → Satellit → Reporter. Jede Teilstrecke ist 38.000 km. Welche Gesamtstrecke gilt?',o:['38.000 km','76.000 km','19.000 km'],a:1,e:'Zwei Teilstrecken: 2 · 38.000 km = 76.000 km. Bei Frage und Antwort wären es vier.'},
     {q:'Was muss eine Skizze zur Geschwindigkeitsmessung enthalten?',o:['Nur das Fahrzeug.','Zwei Sensoren mit bekanntem Abstand Δs, Messgerät für Δt und das Fahrzeug auf der Messstrecke.','Nur ein Diagramm mit Zahlen.'],a:1,e:'v = Δs / Δt: Du brauchst den Abstand und die Zeit zwischen beiden Sensoren. Beschrifte alle Teile.'},
-    {q:'Ein Auto beschleunigt gleichmäßig aus der Ruhe. Nach 4 s hat es doppelt so lange beschleunigt wie nach 2 s. Wie verhält sich die Strecke?',o:['Doppelt so groß.','Viermal so groß.','Gleich groß.'],a:1,e:'s = ½·a·t². Verdoppelt sich t, wird t² viermal so groß.'}
-  ];
+      ];
   var quizOrder=[],quizIdx=0;
   function modeQuiz(){
     if(quizIdx>=quizOrder.length){quizOrder=shuffle(QUIZ.map(function(_,i){return i}));quizIdx=0}
@@ -787,8 +786,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
     var parts=[
       {k:'geschw',t:'Aufgabe 1: Mobiler Blitzer',task:gens.geschw()},
       {k:'funk',t:'Aufgabe 2: Funksignale',task:gens.funk()},
-      {k:'messreihe',t:'Aufgabe 3: Geschwindigkeit eines Fahrzeugs',task:gens.messreihe()},
-      {k:'beschl',t:'Aufgabe 4: Beschleunigung',task:gens.beschl()}
+      {k:'messreihe',t:'Aufgabe 3: Geschwindigkeit eines Fahrzeugs',task:gens.messreihe()}
     ];
     var total=parts.reduce(function(a,p){return a+p.task.inputs.length},0),start=Date.now(),submitted=false;
     var body='<p class="task">Rechne wie in der Arbeit. Jedes richtige Ergebnis gibt einen Punkt. Das Formelblatt unten darfst du benutzen. <b>Gesamt: '+total+' Punkte</b></p><div class="clock" id="clk">0:00</div>'+toolsHtml();
@@ -825,7 +823,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
 
   /* ---------- Physik: Stand und Notenschätzung ---------- */
   var TOPIC_LABEL={geschw:'Geschwindigkeit',strecke:'Strecke und Zeit',funk:'Funksignale',messreihe:'Messreihe',beschl:'Beschleunigung'};
-  var PRIOR=['funk','messreihe','beschl','strecke','geschw'];
+  var PRIOR=['funk','messreihe','strecke','geschw'];
   function topicStat(t){var l=(S.log||[]).filter(function(e){return e.t===t}).slice(-8),n=l.length,r=l.filter(function(e){return e.ok}).length;return {n:n,r:r,acc:n?r/n:null}}
   function weakTopics(){return PRIOR.slice().sort(function(a,b){var A=topicStat(a),B=topicStat(b),x=A.n?A.acc:0.5,y=B.n?B.acc:0.5;if(x!==y)return x-y;return PRIOR.indexOf(a)-PRIOR.indexOf(b)})}
   function readiness(){
@@ -844,7 +842,7 @@ details.tool[open]{border-color:var(--edge);padding-bottom:14px}
       h+='<div class="summary"><div><b>'+p+' %</b><span>Sicherheit insgesamt</span></div><div><b>'+(g1===g2?g1:g1+'–'+g2)+'</b><span>geschätzte Note</span></div></div>';
       h+='<div class="bar" role="img" aria-label="Sicherheit '+p+' Prozent"><i style="width:'+p+'%"></i></div>';
     }
-    h+='<div class="rd">'+['geschw','strecke','funk','messreihe','beschl'].map(function(t){
+    h+='<div class="rd">'+['geschw','strecke','funk','messreihe'].map(function(t){
       var st=topicStat(t),pc=st.n?Math.round(st.acc*100):0;
       return '<div class="rrow"><span>'+TOPIC_LABEL[t]+'</span><div class="rbar"><i style="width:'+pc+'%;background:var(--'+TC[t]+')"></i></div><span class="rv">'+(st.n?st.r+' von '+st.n:'noch offen')+'</span></div>';
     }).join('')+'</div>';
