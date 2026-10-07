@@ -1,0 +1,711 @@
+<title>Kinematik Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+/* Layout: weißes Arbeitsblatt, bewusst nur hell (auch im dunklen Claude-Browser). Zwei Bereiche: Lernplan und Üben mit Methodenkarten. */
+:root{
+  color-scheme:light;
+  --bg:#f1f2f4; --paper:#ffffff; --fg:#1c1c1e; --muted:#5d6168; --rule:#cfd3d9; --strong:#1c1c1e;
+  --pen:#1b3f9e; --pen-soft:#e8edfb; --red:#c0302a; --red-soft:#fdeceb; --green:#1d7a45; --green-soft:#e3f4ea;
+  --hl:#fff1a8;
+  --c1:#2f6fd6; --c2:#2a8f55; --c3:#c2690a; --c4:#8a4fc7; --c5:#d6417a; --c6:#5f6672; --c7:#8f7200; --c8:#0f8590;
+  --font-body:"Source Sans 3","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --font-hand:"Caveat","Bradley Hand","Segoe Print",cursive;
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:17px;line-height:1.55;padding-inline:16px;padding-block:24px 56px}
+main{max-width:800px;margin-inline:auto;display:flex;flex-direction:column;gap:20px}
+h1{font-size:clamp(1.7rem,5vw,2.2rem);line-height:1.1;margin:0;font-weight:700}
+h2{font-size:1.15rem;margin:0;font-weight:700}
+h3{font-size:1rem;margin:0;font-weight:700}
+p{margin:0}
+:focus-visible{outline:2px solid var(--pen);outline-offset:2px}
+
+.head{display:flex;flex-direction:column;gap:12px}
+.titlerow{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.subj{color:var(--muted);font-size:.95rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600}
+.nameline{display:flex;gap:16px;flex-wrap:wrap;font-size:.95rem;color:var(--muted)}
+.nameline label{display:flex;align-items:flex-end;gap:8px;flex:1 1 200px;min-width:0}
+.hline{flex:1;min-width:0;border:0;border-bottom:1.5px solid var(--strong);background:transparent;font-family:var(--font-hand);font-size:1.5rem;line-height:1.1;color:var(--pen);padding:0 4px;border-radius:0}
+.hline:focus{outline:none;border-bottom-color:var(--pen)}
+
+.nav{display:flex;gap:0;border:1.5px solid var(--strong);border-radius:4px;overflow:hidden;align-self:flex-start;background:var(--paper)}
+.nav button{font:inherit;font-weight:700;padding:10px 22px;border:0;background:transparent;color:var(--fg);cursor:pointer}
+.nav button+button{border-left:1.5px solid var(--strong)}
+.nav button[aria-selected="true"]{background:var(--strong);color:var(--paper)}
+
+.card{background:var(--paper);border:1px solid var(--rule);border-top:6px solid var(--c,var(--c1));border-radius:2px;padding:24px;display:flex;flex-direction:column;gap:20px;box-shadow:0 2px 10px rgba(0,0,0,.07);min-width:0}
+.kicker{font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--c,var(--c1));font-weight:700}
+.task{min-width:0}
+.task b{font-weight:600;background:linear-gradient(transparent 55%,var(--hl) 55%);padding:0 2px}
+.muted{color:var(--muted);font-size:.92rem}
+
+.mhead{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.mtitle{font-weight:700;font-size:1.15rem}
+.back{font:inherit;background:none;border:0;color:var(--pen);cursor:pointer;padding:4px 0;text-decoration:underline;text-underline-offset:3px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.mcard{text-align:left;font:inherit;color:var(--fg);background:var(--paper);border:1px solid var(--rule);border-top:6px solid var(--c);border-radius:2px;padding:14px 16px 16px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0}
+.mcard:hover{background:var(--pen-soft)}
+.mcard b{font-size:1.08rem}
+.mcard span{color:var(--muted);font-size:.93rem}
+.mcard small{color:var(--c);font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font:inherit;font-size:.93rem;padding:5px 12px;border:1.5px solid var(--rule);border-radius:99px;background:var(--paper);color:var(--fg);cursor:pointer}
+.chip[aria-pressed="true"]{border-color:var(--c);background:var(--c);color:#fff;font-weight:600}
+
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:6px 14px;text-align:center;border:1.5px solid var(--strong)}
+th{font-weight:600;background:var(--pen-soft)}
+tr.pick td{background:var(--hl);font-weight:600}
+
+.inputs{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:20px 28px}
+.field{display:flex;flex-direction:column;gap:2px;min-width:0}
+.field label{font-size:.9rem;color:var(--muted)}
+.row{display:flex;align-items:flex-end;gap:8px;border-bottom:1.5px solid var(--strong)}
+.row input{flex:1;min-width:0;border:0;background:transparent;color:var(--pen);font-family:var(--font-hand);font-size:1.8rem;line-height:1.15;padding:2px 4px;border-radius:0}
+.row input:focus{outline:none}
+.row:focus-within{border-bottom-color:var(--pen)}
+.row .unit{padding-bottom:4px;white-space:nowrap}
+.field.ok .row{border-bottom-color:var(--green)} .field.bad .row{border-bottom-color:var(--red)}
+.field.ok input{color:var(--green)} .field.bad input{color:var(--red)}
+.msg{font-family:var(--font-hand);font-size:1.3rem;line-height:1.1;min-height:1.2em}
+.field.ok .msg{color:var(--green)} .field.bad .msg{color:var(--red)}
+.field.ok .msg::before{content:"✓ "} .field.bad .msg::before{content:"✗ "}
+
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button.btn{font:inherit;font-weight:600;padding:9px 16px;border-radius:4px;border:1.5px solid var(--strong);background:var(--paper);color:var(--fg);cursor:pointer}
+button.btn.primary{background:var(--pen);border-color:var(--pen);color:#fff}
+button.btn:hover:not(:disabled){background:var(--pen-soft)}
+button.btn.primary:hover:not(:disabled){background:var(--pen);filter:brightness(1.12)}
+button.btn:disabled{opacity:.4;cursor:default}
+
+.solution{background:var(--red-soft);border-radius:4px;padding:14px 18px;display:flex;flex-direction:column;gap:8px;color:var(--red)}
+.solution .kicker{color:var(--red)}
+.solution ol{margin:0;padding-left:22px;display:flex;flex-direction:column;gap:6px;font-family:var(--font-hand);font-size:1.4rem;line-height:1.25}
+.solution code{font:inherit;white-space:normal}
+.solution .hand{font-family:var(--font-hand);font-size:1.4rem;line-height:1.3}
+.solution .tip{font-size:.95rem;color:var(--fg)}
+.verdict{font-weight:600;padding:8px 14px;border-left:4px solid;border-radius:2px}
+.verdict.good{background:var(--green-soft);color:var(--green);border-color:var(--green)}
+.verdict.mixed{background:var(--red-soft);color:var(--red);border-color:var(--red)}
+
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{font:inherit;text-align:left;padding:10px 12px 10px 44px;border:1.5px solid var(--rule);background:transparent;color:var(--fg);border-radius:2px;cursor:pointer;position:relative}
+.opt::before{content:"";position:absolute;left:12px;top:12px;width:18px;height:18px;border:1.5px solid var(--strong);border-radius:2px;font-family:var(--font-hand);font-size:1.5rem;line-height:15px;text-align:center}
+.opt:hover:not(:disabled){border-color:var(--pen);background:var(--pen-soft)}
+.opt.right{border-color:var(--green);background:var(--green-soft)}
+.opt.right::before{content:"✓";color:var(--green);border-color:var(--green)}
+.opt.wrong{border-color:var(--red);background:var(--red-soft)}
+.opt.wrong::before{content:"✗";color:var(--red);border-color:var(--red)}
+.opt:disabled{cursor:default;color:var(--fg)}
+.opts.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+
+.flash{min-height:180px;border:1.5px solid var(--strong);border-radius:6px;padding:24px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:var(--paper)}
+.flash .side{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.flash .txt{font-size:1.3rem;font-weight:600}
+.flash .hand{font-family:var(--font-hand);font-size:1.9rem;color:var(--pen);line-height:1.2}
+.boxes{display:flex;gap:10px;flex-wrap:wrap;font-size:.9rem;color:var(--muted)}
+.boxes b{color:var(--fg)}
+
+.lines{display:flex;flex-direction:column;gap:6px}
+.lrow{display:flex;gap:12px;align-items:center;padding:8px 12px;border:1.5px solid var(--rule);border-radius:4px;flex-wrap:wrap}
+.lrow .lt{flex:1 1 220px;min-width:0;font-family:var(--font-hand);font-size:1.5rem;line-height:1.2;color:var(--pen)}
+.lrow.right{border-color:var(--green);background:var(--green-soft)}
+.lrow.wrong{border-color:var(--red);background:var(--red-soft)}
+.lrow button{font:inherit;font-size:.88rem;padding:4px 10px;border:1.5px solid var(--strong);border-radius:4px;background:var(--paper);color:var(--fg);cursor:pointer}
+.lrow button:disabled{opacity:.4;cursor:default}
+
+.blitz{font-family:var(--font-hand);font-size:2.4rem;color:var(--pen);line-height:1.1}
+.clock{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.3rem}
+textarea{font-family:var(--font-hand);font-size:1.5rem;line-height:1.35;color:var(--pen);border:1.5px solid var(--strong);border-radius:4px;padding:10px 12px;width:100%;min-height:150px;background:var(--paper);resize:vertical;background-image:linear-gradient(transparent calc(100% - 1px),var(--rule) 0);background-size:100% 2.025rem;background-attachment:local}
+.check{display:flex;flex-direction:column;gap:6px}
+.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.check input{margin-top:6px;width:18px;height:18px;accent-color:var(--green)}
+
+.setup{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px 24px}
+.setup .f{display:flex;flex-direction:column;gap:4px;min-width:0}
+.setup label.l{font-size:.9rem;color:var(--muted)}
+.setup input[type=date],.setup select,.setup input[type=text]{font:inherit;padding:8px 10px;border:1.5px solid var(--rule);border-radius:4px;background:var(--paper);color:var(--fg);min-width:0;width:100%}
+.setup .two{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.summary{display:flex;gap:10px 24px;flex-wrap:wrap}
+.summary div{display:flex;flex-direction:column}
+.summary b{font-size:1.5rem;line-height:1.1;font-variant-numeric:tabular-nums}
+.summary span{color:var(--muted);font-size:.85rem}
+.bar{height:10px;border:1.5px solid var(--strong);border-radius:99px;overflow:hidden;background:var(--paper)}
+.bar i{display:block;height:100%;background:var(--green)}
+.week{display:flex;flex-direction:column;gap:6px}
+.week h3{color:var(--muted);font-size:.85rem;letter-spacing:.08em;text-transform:uppercase;margin-top:8px}
+.day{display:grid;grid-template-columns:28px 78px minmax(0,1fr);gap:10px;align-items:start;padding:10px 12px;border:1px solid var(--rule);border-radius:4px;background:var(--paper)}
+.day.today{border:2px solid var(--pen);background:var(--pen-soft)}
+.day.rest,.day.other{background:var(--bg)}
+.day.exam{border:2px solid var(--red);background:var(--red-soft)}
+.day input[type=checkbox]{width:20px;height:20px;margin-top:3px;accent-color:var(--green)}
+.day .dd{font-weight:700;font-variant-numeric:tabular-nums}
+.day .dd small{display:block;font-weight:400;color:var(--muted);font-size:.8rem}
+.day ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px}
+.day li{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.day li .m{color:var(--muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.day li button{font:inherit;font-size:.85rem;padding:2px 10px;border:1.5px solid var(--pen);color:var(--pen);background:var(--paper);border-radius:99px;cursor:pointer}
+.day.done .items{opacity:.5;text-decoration:line-through}
+.tips{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.tips div{border-left:4px solid var(--c);padding:2px 0 2px 12px}
+.tips p{color:var(--muted);font-size:.93rem}
+
+.progress{color:var(--muted);font-size:.9rem;text-align:right;font-variant-numeric:tabular-nums}
+.progress b{font-weight:600;color:var(--fg)}
+details.sheet{background:var(--paper);border:1px solid var(--rule);border-radius:2px;padding:12px 24px}
+details.sheet summary{cursor:pointer;font-weight:700}
+.sheet dl{display:grid;gap:2px;margin:12px 0 4px}
+.sheet dt{font-weight:600;margin-top:10px;color:var(--c1)}
+.sheet dd{margin:0}
+.sheet code{font-family:var(--font-body);font-style:italic;background:var(--pen-soft);padding:1px 6px;border-radius:3px;white-space:nowrap}
+@media (max-width:520px){.card{padding:18px 16px 22px}.day{grid-template-columns:24px minmax(0,1fr);}.day .dd{grid-column:2}.day .items{grid-column:1/-1}}
+</style>
+
+<main>
+  <div class="head">
+    <div class="titlerow"><h1>Kinematik</h1><span class="subj">Physik · Lernplan und Übungen</span></div>
+    <div class="nameline">
+      <label for="nm">Name: <input class="hline" id="nm" autocomplete="off"></label>
+      <label for="dt">Datum: <input class="hline" id="dt" autocomplete="off"></label>
+    </div>
+  </div>
+  <div class="nav" role="tablist">
+    <button role="tab" id="navPlan" data-nav="plan">Lernplan</button>
+    <button role="tab" id="navLearn" data-nav="learn">Üben</button>
+  </div>
+  <div id="view" style="display:flex;flex-direction:column;gap:20px;min-width:0"></div>
+  <p class="progress" id="progress" aria-live="polite"></p>
+
+  <details class="sheet">
+    <summary>Formelblatt und Umrechnungen</summary>
+    <dl>
+      <dt>Gleichförmige Bewegung</dt><dd><code>v = Δs / Δt</code> &nbsp; <code>s = v · t</code> &nbsp; <code>t = s / v</code></dd>
+      <dt>Beschleunigung</dt><dd><code>a = Δv / Δt</code> &nbsp; <code>v(t) = a·t + v₀</code> &nbsp; <code>s(t) = ½·a·t² + v₀·t + s₀</code></dd>
+      <dt>Umrechnen</dt><dd><code>km/h ÷ 3,6 = m/s</code> &nbsp; <code>m/s · 3,6 = km/h</code> &nbsp; <code>min ÷ 60 = h</code></dd>
+      <dt>Lichtgeschwindigkeit</dt><dd><code>c = 3,00·10⁸ m/s = 300.000 km/s</code></dd>
+      <dt>Abweichung in der Messreihe</dt><dd><code>Δv = v − v̄</code> &nbsp; Abweichung = <code>|Δv| / v̄ · 100 %</code></dd>
+    </dl>
+  </details>
+</main>
+
+<script>
+(function(){
+  /* ---------- helpers ---------- */
+  var $ = function(s,r){return (r||document).querySelector(s)};
+  var $$ = function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+  function pick(a){return a[Math.floor(Math.random()*a.length)]}
+  function fmt(x,d){return Number(x).toLocaleString('de-DE',{maximumFractionDigits:d==null?2:d,minimumFractionDigits:0})}
+  function parse(s){
+    s=String(s).trim().replace(/\s/g,'');
+    if(/,/.test(s)) s=s.replace(/\./g,'');
+    s=s.replace(',','.');
+    var n=parseFloat(s);return isNaN(n)?null:n;
+  }
+  function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+  function pad(n){return n<10?'0'+n:''+n}
+  function ymd(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())}
+  function pd(s){var p=s.split('-');return new Date(+p[0],+p[1]-1,+p[2])}
+  function addDays(d,n){return new Date(d.getFullYear(),d.getMonth(),d.getDate()+n)}
+  function today(){var d=new Date();return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+  function dshort(d){return pad(d.getDate())+'.'+pad(d.getMonth()+1)+'.'}
+  var WD=['So','Mo','Di','Mi','Do','Fr','Sa'];
+
+  /* ---------- state ---------- */
+  var KEY='kin2';
+  var S={nav:'plan',plan:{exam:'',minutes:30,sunFree:true,others:[{n:'',d:''},{n:'',d:''}]},done:{},cards:{},stats:{right:0,n:0},notes:{},name:'',date:''};
+  try{var r=JSON.parse(localStorage.getItem(KEY)||'null');if(r)S=Object.assign(S,r)}catch(e){}
+  if(!S.plan.exam){S.plan.exam=ymd(addDays(today(),28));S.plan.suggested=true}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+  function updateProgress(){$('#progress').innerHTML='Aufgaben bearbeitet: <b>'+S.stats.n+'</b> &nbsp;·&nbsp; richtig: <b>'+S.stats.right+'</b>'}
+  function count(ok){S.stats.n++;if(ok)S.stats.right++;save();updateProgress()}
+  var timers=[];
+  function stopTimers(){timers.forEach(clearInterval);timers=[]}
+  var cur={mode:null,sub:null};
+
+  /* ---------- Rechenaufgaben-Generatoren ---------- */
+  var gens = {};
+  gens.geschw = function(){
+    var d = pick([50,60,75,80,88,90,100,120]);
+    var v0 = pick([12,15,18,20,22,25,28,30]);
+    var t = Math.round(d/1000/v0*10000)/10000;
+    var v = d/1000/t;
+    return {
+      text:'Zwei Sensoren eines Messgeräts haben einen Abstand von <b>'+d+' mm</b>. Der zweite Sensor wird <b>'+fmt(t,4)+' s</b> nach dem ersten verdunkelt. Berechne die Geschwindigkeit des Fahrzeugs.',
+      inputs:[{label:'Geschwindigkeit',unit:'m/s',ans:v,dec:2},{label:'Geschwindigkeit',unit:'km/h',ans:v*3.6,dec:1}],
+      steps:['Gegeben: <code>s = '+d+' mm = '+fmt(d/1000,3)+' m</code>, <code>t = '+fmt(t,4)+' s</code>','Formel: <code>v = s / t</code>','<code>v = '+fmt(d/1000,3)+' m / '+fmt(t,4)+' s = '+fmt(v,2)+' m/s</code>','Umrechnen mit 3,6: <code>'+fmt(v,2)+' · 3,6 = '+fmt(v*3.6,1)+' km/h</code>'],
+      tip:'Wandle Millimeter zuerst in Meter um (÷ 1000), bevor du teilst.'
+    };
+  };
+  gens.strecke = function(){
+    var v = pick([30,45,50,60,72,80,90]);
+    var tm = pick([10,12,15,20,25,40,45]);
+    var s = v*tm/60;
+    if(Math.random()<0.5){
+      return {
+        text:'Ein Fahrzeug fährt <b>'+tm+' min</b> lang mit <b>'+v+' km/h</b>. Berechne die zurückgelegte Strecke.',
+        inputs:[{label:'Strecke',unit:'km',ans:s,dec:2},{label:'Strecke',unit:'m',ans:s*1000,dec:0}],
+        steps:['Gegeben: <code>v = '+v+' km/h</code>, <code>t = '+tm+' min = '+tm+'/60 h = '+fmt(tm/60,3)+' h</code>','Formel: <code>s = v · t</code>','<code>s = '+v+' km/h · '+fmt(tm/60,3)+' h = '+fmt(s,2)+' km</code>','In Meter: <code>'+fmt(s,2)+' · 1000 = '+fmt(s*1000,0)+' m</code>'],
+        tip:'Minuten immer in Stunden umrechnen, wenn die Geschwindigkeit in km/h steht: ÷ 60.'
+      };
+    }
+    return {
+      text:'Ein Fahrzeug legt <b>'+fmt(s,2)+' km</b> mit konstant <b>'+v+' km/h</b> zurück. Wie lange braucht es?',
+      inputs:[{label:'Zeit',unit:'min',ans:tm,dec:1},{label:'Zeit',unit:'h',ans:tm/60,dec:3}],
+      steps:['Gegeben: <code>s = '+fmt(s,2)+' km</code>, <code>v = '+v+' km/h</code>','Formel: <code>t = s / v</code>','<code>t = '+fmt(s,2)+' km / '+v+' km/h = '+fmt(tm/60,3)+' h</code>','In Minuten: <code>'+fmt(tm/60,3)+' · 60 = '+tm+' min</code>'],
+      tip:'Das Ergebnis in Stunden mal 60 ergibt Minuten.'
+    };
+  };
+  gens.funk = function(){
+    var L = pick([30000,36000,38000,40000]);
+    var four = Math.random()<0.5;
+    var s = L*(four?4:2), t = s/300000;
+    var txt = four
+      ? 'Bei einer Live-Schalte läuft die Frage vom Studio über einen Satelliten zum Reporter und die Antwort denselben Weg zurück. Jede der Teilstrecken Studio–Satellit und Satellit–Reporter ist <b>'+fmt(L,0)+' km</b> lang.'
+      : 'Ein Funksignal läuft vom Studio über einen Satelliten zum Reporter. Studio–Satellit und Satellit–Reporter sind jeweils <b>'+fmt(L,0)+' km</b> lang.';
+    return {
+      text:txt+' Das Signal bewegt sich mit <b>c = 3,00·10⁸ m/s</b>. Schätze die Verzögerung durch die Laufzeit ab. <b>Gib sie in Sekunden an.</b>',
+      inputs:[{label:'Gesamtstrecke',unit:'km',ans:s,dec:0},{label:'Laufzeit',unit:'s',ans:t,dec:3,tol:0.03}],
+      steps:[four?'Es sind 4 Teilstrecken (hin: 2, zurück: 2): <code>s = 4 · '+fmt(L,0)+' km = '+fmt(s,0)+' km</code>':'Es sind 2 Teilstrecken: <code>s = 2 · '+fmt(L,0)+' km = '+fmt(s,0)+' km</code>','Rechne mit km/s: <code>c = 300.000 km/s</code>','<code>t = s / c = '+fmt(s,0)+' km / 300.000 km/s = '+fmt(t,3)+' s</code>'],
+      tip:'c in km/h umzurechnen ist unnötig. Mit 300.000 km/s kommt die Zeit direkt in Sekunden heraus.'
+    };
+  };
+  gens.messreihe = function(){
+    var v0 = 3.5+Math.random()*3;
+    var ds = pick([[0.4,0.4,0.4,0.8,0.8,0.8],[0.5,0.5,0.5,0.6,0.6,0.6],[0.3,0.3,0.3,0.6,0.6,0.6]]);
+    var rows=[];
+    for(var i=0;i<6;i++){
+      var noise = (i===1||i===4) ? (Math.random()<0.5?-1:1)*(0.12+Math.random()*0.08) : (Math.random()-0.5)*0.08;
+      var dt = Math.round(ds[i]/(v0*(1+noise))*1000)/1000;
+      rows.push({n:i+1,ds:ds[i],dt:dt,v:ds[i]/dt});
+    }
+    var mean = rows.reduce(function(a,r){return a+r.v},0)/6;
+    var k = rows.slice().sort(function(a,b){return Math.abs(b.v-mean)-Math.abs(a.v-mean)})[0];
+    var dev = Math.abs(k.v-mean)/mean*100;
+    var tbl='<div class="tablewrap"><table><tr><th>Nr.</th><th>Δs / m</th><th>Δt / s</th></tr>'+rows.map(function(r){return '<tr'+(r.n===k.n?' class="pick"':'')+'><td>'+r.n+'</td><td>'+fmt(r.ds,3)+'</td><td>'+fmt(r.dt,3)+'</td></tr>'}).join('')+'</table></div>';
+    return {
+      text:'Die Geschwindigkeit einer Drohne wurde sechsmal mit einer Lichtschranke gemessen. Werte die Reihe aus.',
+      table:tbl,
+      inputs:[
+        {label:'v in Messung '+k.n,unit:'m/s',ans:k.v,dec:2,tol:0.02},
+        {label:'Mittelwert v̄',unit:'m/s',ans:mean,dec:2,tol:0.02},
+        {label:'Abweichung von Messung '+k.n,unit:'%',ans:dev,dec:1,tol:0.08}
+      ],
+      steps:['Jede Geschwindigkeit: <code>v = Δs / Δt</code>. Ergebnisse: '+rows.map(function(r){return '<code>v'+r.n+' = '+fmt(r.v,2)+'</code>'}).join(' ')+' (m/s)','Messung '+k.n+': <code>'+fmt(k.ds,3)+' m / '+fmt(k.dt,3)+' s = '+fmt(k.v,2)+' m/s</code>','Mittelwert: Summe aller sechs v geteilt durch 6: <code>v̄ = '+fmt(mean,2)+' m/s</code> (= '+fmt(mean*3.6,1)+' km/h)','<code>Δv = '+fmt(k.v,2)+' − '+fmt(mean,2)+' = '+fmt(k.v-mean,2)+' m/s</code>','Abweichung: <code>|Δv| / v̄ · 100 % = '+fmt(dev,1)+' %</code>'],
+      tip:'Unter 5 % gilt die Messung als gut, darüber als ungenau. Nenne in der Auswertung zwei Fehlerquellen, zum Beispiel Aufbau und Zeitmessung.'
+    };
+  };
+  gens.beschl = function(){
+    if(Math.random()<0.5){
+      var vk = pick([60,80,100,120]), t = pick([5,6,8,10]);
+      var vm = vk/3.6, a = vm/t, s = 0.5*a*t*t;
+      return {
+        text:'Ein Auto beschleunigt gleichmäßig in <b>'+t+' s</b> von 0 auf <b>'+vk+' km/h</b>. Berechne die Beschleunigung und die Strecke in dieser Zeit.',
+        inputs:[{label:'Beschleunigung a',unit:'m/s²',ans:a,dec:2},{label:'Strecke s',unit:'m',ans:s,dec:1}],
+        steps:['Umrechnen: <code>'+vk+' km/h ÷ 3,6 = '+fmt(vm,2)+' m/s</code>','<code>a = Δv / Δt = '+fmt(vm,2)+' / '+t+' = '+fmt(a,2)+' m/s²</code>','<code>s = ½ · a · t² = ½ · '+fmt(a,2)+' · '+t+'² = '+fmt(s,1)+' m</code>'],
+        tip:'Erst km/h in m/s umrechnen, dann a berechnen, sonst passen die Einheiten nicht.'
+      };
+    }
+    var a2 = pick([1.5,2,2.5,3,4]), t2 = pick([4,5,6,8,10]);
+    var v2 = a2*t2, s2 = 0.5*a2*t2*t2;
+    return {
+      text:'Ein Fahrzeug startet aus der Ruhe und beschleunigt <b>'+t2+' s</b> lang mit <b>a = '+fmt(a2,1)+' m/s²</b>. Berechne die Endgeschwindigkeit und die Strecke.',
+      inputs:[{label:'Endgeschwindigkeit v',unit:'m/s',ans:v2,dec:2},{label:'Strecke s',unit:'m',ans:s2,dec:1}],
+      steps:['Aus der Ruhe: <code>v₀ = 0</code>, <code>s₀ = 0</code>','<code>v(t) = a · t = '+fmt(a2,1)+' · '+t2+' = '+fmt(v2,2)+' m/s</code> (= '+fmt(v2*3.6,1)+' km/h)','<code>s(t) = ½ · a · t² = ½ · '+fmt(a2,1)+' · '+t2+'² = '+fmt(s2,1)+' m</code>'],
+      tip:'t wird bei s(t) quadriert. Rechne zuerst t², dann den Rest.'
+    };
+  };
+  var TOPICS=[['geschw','Geschwindigkeit'],['strecke','Strecke und Zeit'],['funk','Funksignale'],['messreihe','Messreihe'],['beschl','Beschleunigung'],['mix','Gemischt']];
+
+  function inputsHtml(task,p){
+    return '<div class="inputs">'+task.inputs.map(function(f,i){
+      return '<div class="field" id="'+p+'f'+i+'"><label for="'+p+'in'+i+'">'+f.label+'</label><div class="row"><input id="'+p+'in'+i+'" inputmode="decimal" autocomplete="off"><span class="unit">'+f.unit+'</span></div><div class="msg" id="'+p+'m'+i+'"></div></div>';
+    }).join('')+'</div>';
+  }
+  function evalInputs(task,p){
+    var good=0;
+    task.inputs.forEach(function(f,i){
+      var v=parse($('#'+p+'in'+i).value), tol=f.tol||0.02;
+      var ok=v!==null&&Math.abs(v-f.ans)<=Math.max(Math.abs(f.ans)*tol,Math.pow(10,-f.dec)*0.6);
+      $('#'+p+'f'+i).className='field '+(ok?'ok':'bad');
+      $('#'+p+'m'+i).textContent=v===null?'Zahl eintragen':ok?'richtig':'nochmal prüfen';
+      if(ok)good++;
+    });
+    return good;
+  }
+  function solutionHtml(task){
+    var ans=task.inputs.map(function(f){return f.label+': <code>'+fmt(f.ans,f.dec)+' '+f.unit+'</code>'}).join('<br>');
+    return '<div class="solution"><div class="kicker">Lösungsweg</div><ol>'+task.steps.map(function(s){return '<li>'+s+'</li>'}).join('')+'</ol><div class="hand">'+ans+'</div><p class="tip">Tipp: '+task.tip+'</p></div>';
+  }
+
+  /* ---------- Gerüst für eine Methode ---------- */
+  var MODES=[
+    {k:'rechnen',t:'Rechnen',d:'Aufgaben mit neuen Zahlen, Lösungsweg zum Nachlesen',c:'c1',m:'10–15 Min'},
+    {k:'karten',t:'Karteikarten',d:'Formeln und Regeln abfragen. Gewusste Karten wandern ins nächste Fach',c:'c2',m:'5–10 Min'},
+    {k:'fehler',t:'Fehlerdetektiv',d:'Eine fertige Rechnung enthält einen Fehler. Finde die Zeile',c:'c5',m:'5–10 Min'},
+    {k:'einheiten',t:'Einheiten-Blitz',d:'60 Sekunden lang Einheiten umrechnen',c:'c3',m:'2 Min'},
+    {k:'zuordnen',t:'Formel wählen',d:'Welche Formel passt zur Aufgabe? Ohne zu rechnen',c:'c4',m:'5 Min'},
+    {k:'erklaeren',t:'Erklären',d:'In eigenen Worten schreiben und mit Stichpunkten vergleichen',c:'c7',m:'10 Min'},
+    {k:'quiz',t:'Quiz',d:'Ankreuzen mit kurzer Erklärung',c:'c6',m:'5–8 Min'},
+    {k:'sim',t:'Probe-Arbeit',d:'Vier Aufgaben wie in der Arbeit, mit Punkten und Uhr',c:'c8',m:'35–45 Min'}
+  ];
+  function modeInfo(k){return MODES.filter(function(m){return m.k===k})[0]}
+  function shell(title,c,inner){
+    return '<div class="mhead"><button class="back" id="bBack">← Alle Methoden</button><span class="mtitle">'+title+'</span></div><div class="card" style="--c:var(--'+c+')">'+inner+'</div>';
+  }
+  function setView(html){$('#view').innerHTML=html;var b=$('#bBack');if(b)b.onclick=function(){cur.mode=null;render()}}
+
+  /* ---------- Methode: Rechnen ---------- */
+  function modeRechnen(sub){
+    sub=sub||cur.sub||'geschw';cur.sub=sub;
+    var g=sub==='mix'?pick(['geschw','strecke','funk','messreihe','beschl']):sub;
+    var task=gens[g], checked=false;task=task();
+    var chips='<div class="chips">'+TOPICS.map(function(t){return '<button class="chip" data-sub="'+t[0]+'" aria-pressed="'+(t[0]===sub)+'">'+t[1]+'</button>'}).join('')+'</div>';
+    setView(shell('Rechnen','c1',chips+'<div class="kicker">Aufgabe</div><p class="task">'+task.text+'</p>'+(task.table||'')+inputsHtml(task,'r')+'<div class="actions"><button class="btn primary" id="bCheck">Prüfen</button><button class="btn" id="bSol">Lösungsweg</button><button class="btn" id="bNew">Neue Aufgabe</button></div><div id="out"></div>'));
+    $$('.chip').forEach(function(c){c.onclick=function(){modeRechnen(c.dataset.sub)}});
+    $('#bNew').onclick=function(){modeRechnen(sub)};
+    $('#bCheck').onclick=function(){
+      var good=evalInputs(task,'r'),all=good===task.inputs.length;
+      if(!checked){checked=true;count(all)}
+      $('#out').innerHTML=all?'<div class="verdict good">Alles richtig.</div>':'<div class="verdict mixed">'+good+' von '+task.inputs.length+' richtig. Prüfe Einheiten und Umrechnung, oder öffne den Lösungsweg.</div>';
+    };
+    $('#bSol').onclick=function(){$('#out').innerHTML=solutionHtml(task);if(!checked){checked=true;count(false)}};
+    $$('input',$('#view')).forEach(function(el){el.addEventListener('keydown',function(e){if(e.key==='Enter')$('#bCheck').click()})});
+    var f=$('#rin0');if(f)f.focus({preventScroll:true});
+  }
+
+  /* ---------- Methode: Karteikarten (Leitner) ---------- */
+  var CARDS=[
+    ['Formel für die Geschwindigkeit (konstant)','v = Δs / Δt'],
+    ['Formel für die Strecke bei konstanter Geschwindigkeit','s = v · t'],
+    ['Formel für die Zeit bei konstanter Geschwindigkeit','t = s / v'],
+    ['km/h in m/s umrechnen','÷ 3,6   (72 km/h = 20 m/s)'],
+    ['m/s in km/h umrechnen','· 3,6   (20 m/s = 72 km/h)'],
+    ['Minuten in Stunden','÷ 60   (12 min = 1/5 h = 0,2 h)'],
+    ['Millimeter in Meter','÷ 1000   (88 mm = 0,088 m)'],
+    ['Lichtgeschwindigkeit','c = 3,00 · 10⁸ m/s = 300.000 km/s'],
+    ['Formel für die Beschleunigung. Welche Einheit?','a = Δv / Δt,  Einheit m/s²'],
+    ['Strecke bei gleichmäßig beschleunigter Bewegung','s(t) = ½ · a · t² + v₀ · t + s₀'],
+    ['Geschwindigkeit bei gleichmäßig beschleunigter Bewegung','v(t) = a · t + v₀'],
+    ['Was gilt bei einer gleichförmigen Bewegung?','v ist konstant, a = 0 m/s²'],
+    ['Unterschied mittlere und momentane Geschwindigkeit','mittlere: v̄ = Δs/Δt über ein Intervall.  momentane: v(t) = ds/dt = ṡ(t) zu einem Zeitpunkt'],
+    ['Prozentuale Abweichung in einer Messreihe','|v − v̄| / v̄ · 100 %'],
+    ['Ab wann gilt eine Messung als gut?','Abweichung unter 5 %'],
+    ['Was gehört in die Skizze einer Geschwindigkeitsmessung?','Zwei Sensoren (Lichtschranken) mit Abstand Δs, Messgerät, Fahrzeug, Messstrecke, alles beschriftet'],
+    ['Drei mögliche Fehlerquellen bei einer Messung','Aufbau (Abstand ungenau), Ablesen oder Reaktion, Messgerät, menschliche Fehler'],
+    ['Frage und Antwort bei einer Live-Schalte: Wie viele Teilstrecken?','4 (hin und zurück, jeweils Studio–Satellit und Satellit–Reporter)']
+  ];
+  function modeKarten(){
+    var last=-1,idx=0,flipped=false;
+    function counts(){var c=[0,0,0];CARDS.forEach(function(_,i){c[(S.cards[i]||1)-1]++});return c}
+    function draw(){var w=[];CARDS.forEach(function(_,i){if(i===last)return;var b=S.cards[i]||1;var wt=b===1?4:b===2?2:1;for(var k=0;k<wt;k++)w.push(i)});return pick(w)}
+    function paint(){
+      var c=counts();
+      var face=flipped
+        ?'<div class="side">Antwort</div><div class="hand">'+CARDS[idx][1]+'</div>'
+        :'<div class="side">Frage</div><div class="txt">'+CARDS[idx][0]+'</div>';
+      var acts=flipped
+        ?'<button class="btn primary" id="kYes">Gewusst</button><button class="btn" id="kNo">Noch nicht</button>'
+        :'<button class="btn primary" id="kFlip">Antwort zeigen</button>';
+      setView(shell('Karteikarten','c2','<div class="boxes"><span>Fach 1: <b>'+c[0]+'</b></span><span>Fach 2: <b>'+c[1]+'</b></span><span>Fach 3: <b>'+c[2]+'</b></span></div><div class="flash">'+face+'</div><div class="actions">'+acts+'</div><p class="muted">Überlege zuerst, was du sagen würdest. Gewusste Karten kommen seltener, schwere öfter.</p>'));
+      if(flipped){
+        $('#kYes').onclick=function(){S.cards[idx]=Math.min(3,(S.cards[idx]||1)+1);save();next()};
+        $('#kNo').onclick=function(){S.cards[idx]=1;save();next()};
+      }else $('#kFlip').onclick=function(){flipped=true;paint()};
+    }
+    function next(){idx=draw();last=idx;flipped=false;paint()}
+    next();
+  }
+
+  /* ---------- Methode: Fehlerdetektiv ---------- */
+  function errGen(){
+    var t=pick(['unit','formel','quad','legs']);
+    if(t==='unit'){
+      var v=pick([45,60,72,80,90]),m=pick([12,15,20,25,30]),s=v*m/60;
+      return {intro:'Ein Fahrzeug fährt '+m+' min lang mit '+v+' km/h. Wie weit kommt es?',lines:['Gegeben: v = '+v+' km/h, t = '+m+' min','Formel: s = v · t','s = '+v+' km/h · '+m+' = '+fmt(v*m,0)+' km','Ergebnis: s = '+fmt(v*m,0)+' km'],err:2,why:'Die Zeit steht in Minuten, v in km/h. Erst umrechnen: '+m+' min = '+fmt(m/60,3)+' h. Richtig ist s = '+v+' · '+fmt(m/60,3)+' = '+fmt(s,2)+' km.'};
+    }
+    if(t==='formel'){
+      var d=pick([60,75,88,90]),tt=pick([0.003,0.004,0.0042,0.005]),vv=d/1000/tt;
+      return {intro:'Zwei Sensoren haben '+d+' mm Abstand. Der zweite wird '+fmt(tt,4)+' s nach dem ersten verdunkelt. Wie schnell ist das Fahrzeug?',lines:['Gegeben: s = '+d+' mm = '+fmt(d/1000,3)+' m, t = '+fmt(tt,4)+' s','Formel: v = t / s','v = '+fmt(tt,4)+' s / '+fmt(d/1000,3)+' m = '+fmt(tt/(d/1000),3),'Ergebnis: v = '+fmt(tt/(d/1000),3)+' m/s'],err:1,why:'Die Geschwindigkeit ist Strecke durch Zeit: v = s / t. Richtig ist v = '+fmt(d/1000,3)+' m / '+fmt(tt,4)+' s = '+fmt(vv,2)+' m/s.'};
+    }
+    if(t==='quad'){
+      var a=pick([2,2.5,3,4]),tm=pick([4,5,6,8]);
+      return {intro:'Ein Auto startet aus der Ruhe und beschleunigt '+tm+' s lang mit '+fmt(a,1)+' m/s². Welche Strecke legt es zurück?',lines:['Gegeben: a = '+fmt(a,1)+' m/s², t = '+tm+' s, Start aus der Ruhe','Formel: s = ½ · a · t²','s = ½ · '+fmt(a,1)+' · '+tm+' = '+fmt(0.5*a*tm,1)+' m','Ergebnis: s = '+fmt(0.5*a*tm,1)+' m'],err:2,why:'Die Zeit muss quadriert werden, wie in der Formel. Richtig ist s = ½ · '+fmt(a,1)+' · '+tm+'² = '+fmt(0.5*a*tm*tm,1)+' m.'};
+    }
+    var L=pick([36000,38000,40000]),s2=2*L;
+    return {intro:'Bei einer Live-Schalte läuft die Frage vom Studio über einen Satelliten zum Reporter, die Antwort denselben Weg zurück. Jede Teilstrecke ist '+fmt(L,0)+' km lang. Wie groß ist die Verzögerung?',lines:['Teilstrecken: Studio–Satellit und Satellit–Reporter, hin und zurück','Gesamtstrecke: s = 2 · '+fmt(L,0)+' km = '+fmt(s2,0)+' km','Laufzeit: t = s / c = '+fmt(s2,0)+' km / 300.000 km/s = '+fmt(s2/300000,3)+' s','Ergebnis: t ≈ '+fmt(s2/300000,2)+' s'],err:1,why:'Hin und zurück sind vier Teilstrecken: s = 4 · '+fmt(L,0)+' km = '+fmt(4*L,0)+' km. Damit ist t = '+fmt(4*L/300000,2)+' s.'};
+  }
+  function modeFehler(){
+    var e=errGen(),done=false;
+    var rows=e.lines.map(function(l,i){return '<div class="lrow" id="l'+i+'"><span class="lt">'+l+'</span><button data-i="'+i+'">Hier ist der Fehler</button></div>'}).join('');
+    setView(shell('Fehlerdetektiv','c5','<div class="kicker">Aufgabe</div><p class="task">'+e.intro+'</p><p class="task">Ein Mitschüler hat gerechnet. <b>In einer Zeile steckt ein Fehler.</b> Tippe auf diese Zeile.</p><div class="lines">'+rows+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNew">Nächste Aufgabe</button></div>'));
+    $$('.lrow button').forEach(function(b){b.onclick=function(){
+      if(done)return;done=true;var i=+b.dataset.i,ok=i===e.err;
+      $$('.lrow button').forEach(function(x){x.disabled=true});
+      $('#l'+e.err).classList.add('right');if(!ok)$('#l'+i).classList.add('wrong');
+      count(ok);
+      $('#out').innerHTML='<div class="solution"><div class="kicker">'+(ok?'Richtig gefunden':'Nicht ganz, der Fehler steckt in Zeile '+(e.err+1))+'</div><p class="hand">'+e.why+'</p></div>';
+    }});
+    $('#bNew').onclick=modeFehler;
+  }
+
+  /* ---------- Methode: Einheiten-Blitz ---------- */
+  function convGen(){
+    var t=pick(['kmh','ms','minh','mmm','kmm']);
+    if(t==='kmh'){var v=pick([18,36,54,72,90,108,144]);return {q:v+' km/h in m/s',a:v/3.6,u:'m/s'}}
+    if(t==='ms'){var w=pick([5,10,15,20,25,30,40]);return {q:w+' m/s in km/h',a:w*3.6,u:'km/h'}}
+    if(t==='minh'){var m=pick([6,12,15,24,30,45,18]);return {q:m+' min in h',a:m/60,u:'h'}}
+    if(t==='mmm'){var d=pick([50,75,88,120,250,60]);return {q:d+' mm in m',a:d/1000,u:'m'}}
+    var k=pick([0.5,1.2,3,12,2.5]);return {q:fmt(k,1)+' km in m',a:k*1000,u:'m'};
+  }
+  function modeEinheiten(){
+    setView(shell('Einheiten-Blitz','c3','<p class="task">Du hast <b>60 Sekunden</b>. Rechne so viele Umrechnungen wie möglich im Kopf oder auf Papier und bestätige mit Enter.</p><div class="actions"><button class="btn primary" id="bStart">Start</button></div><div id="game"></div>'));
+    $('#bStart').onclick=function(){
+      var q=convGen(),right=0,total=0,wrong=[],end=Date.now()+60000;
+      $('#bStart').disabled=true;
+      $('#game').innerHTML='<div class="clock" id="clk">60 s</div><div class="blitz" id="bq"></div><div class="row" style="max-width:320px"><input id="ba" inputmode="decimal" autocomplete="off" style="font-family:var(--font-hand);font-size:1.8rem;color:var(--pen)"><span class="unit" id="bu"></span></div>';
+      function showQ(){$('#bq').textContent=q.q;$('#bu').textContent=q.u;$('#ba').value=''}
+      showQ();$('#ba').focus();
+      var iv=setInterval(function(){
+        var left=Math.max(0,Math.ceil((end-Date.now())/1000));$('#clk').textContent=left+' s';
+        if(left<=0){clearInterval(iv);finish()}
+      },250);timers.push(iv);
+      $('#ba').addEventListener('keydown',function(e){
+        if(e.key!=='Enter')return;
+        var v=parse($('#ba').value);if(v===null)return;
+        total++;var ok=Math.abs(v-q.a)<=Math.abs(q.a)*0.005+1e-9;
+        if(ok)right++;else wrong.push(q.q+' = '+fmt(q.a,3)+' '+q.u);
+        count(ok);q=convGen();showQ();
+      });
+      function finish(){
+        $('#game').innerHTML='<div class="verdict '+(right===total&&total>0?'good':'mixed')+'">'+right+' von '+total+' richtig.</div>'+(wrong.length?'<div class="solution"><div class="kicker">Zum Nachschauen</div><div class="hand">'+wrong.join('<br>')+'</div></div>':'');
+        $('#bStart').disabled=false;$('#bStart').textContent='Nochmal';
+      }
+    };
+  }
+
+  /* ---------- Methode: Formel wählen ---------- */
+  var FORMS=['v = Δs / Δt','s = v · t','t = s / v','a = Δv / Δt','s = ½ · a · t²','v = a · t','Abweichung = |v − v̄| / v̄ · 100 %'];
+  var SCEN=[
+    ['Gegeben: Abstand zweier Sensoren und die Zeit dazwischen. Gesucht: Geschwindigkeit.',0],
+    ['Gegeben: Geschwindigkeit und Fahrzeit. Gesucht: Strecke.',1],
+    ['Gegeben: Strecke und Geschwindigkeit. Gesucht: Zeit.',2],
+    ['Gegeben: Geschwindigkeitsänderung und Zeit. Gesucht: Beschleunigung.',3],
+    ['Gegeben: a und t, Start aus der Ruhe. Gesucht: zurückgelegte Strecke.',4],
+    ['Gegeben: a und t, Start aus der Ruhe. Gesucht: Endgeschwindigkeit.',5],
+    ['Gegeben: Entfernung Erde–Satellit und c. Gesucht: Laufzeit eines Funksignals.',2],
+    ['Ein Radfahrer fährt 9 km in 20 min. Gesucht: mittlere Geschwindigkeit.',0],
+    ['Ein Zug fährt 2,5 h lang mit 120 km/h. Gesucht: zurückgelegte Strecke.',1],
+    ['Ein Auto beschleunigt von 0 auf 27 m/s in 9 s. Gesucht: Beschleunigung.',3],
+    ['Gegeben: ein Messwert und der Mittelwert einer Messreihe. Gesucht: wie ungenau ist der Messwert in Prozent?',6],
+    ['Ein Roller fährt 40 s lang mit a = 0,5 m/s² aus dem Stand. Gesucht: Weg.',4]
+  ];
+  function modeZuordnen(){
+    var s=pick(SCEN),done=false;
+    setView(shell('Formel wählen','c4','<div class="kicker">Situation</div><p class="task"><b>'+s[0]+'</b></p><p class="muted">Welche Formel brauchst du?</p><div class="opts cols">'+FORMS.map(function(f,i){return '<button class="opt" data-i="'+i+'">'+f+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNew">Nächste Situation</button></div>'));
+    $$('.opt').forEach(function(b){b.onclick=function(){
+      if(done)return;done=true;var i=+b.dataset.i,ok=i===s[1];
+      $$('.opt').forEach(function(x){x.disabled=true;if(+x.dataset.i===s[1])x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');count(ok);
+      $('#out').innerHTML='<div class="verdict '+(ok?'good':'mixed')+'">'+(ok?'Richtig.':'Passend wäre: '+FORMS[s[1]])+'</div>';
+    }});
+    $('#bNew').onclick=modeZuordnen;
+  }
+
+  /* ---------- Methode: Erklären ---------- */
+  var EXPL=[
+    {q:'Erläutere, woran die Verzögerung bei einer Live-Schalte ins Ausland liegt.',pts:['Das Signal braucht Zeit, weil es sich nur mit endlicher Geschwindigkeit (Lichtgeschwindigkeit) bewegt','Die Strecke über den Satelliten ist sehr lang','Frage und Antwort laufen den Weg hin und zurück','Optional: t = s / c, hier etwa eine halbe Sekunde'],model:'Das Funksignal läuft mit Lichtgeschwindigkeit vom Studio über den Satelliten zum Reporter und die Antwort wieder zurück. Die Strecke ist sehr lang und das Signal braucht dafür eine messbare Zeit (t = s / c). Deshalb entsteht eine kleine Pause zwischen Frage und Antwort.'},
+    {q:'Beschreibe den Aufbau einer Geschwindigkeitsmessung mit zwei Lichtschranken.',pts:['Zwei Sensoren (Lichtschranken) in bekanntem Abstand Δs','Das Fahrzeug verdunkelt nacheinander beide Sensoren','Ein Messgerät misst die Zeit Δt dazwischen','Berechnung mit v = Δs / Δt','Skizze mit Beschriftung: Sensor 1, Sensor 2, Fahrzeug, Messstrecke'],model:'Zwei Lichtschranken stehen im bekannten Abstand Δs an der Strecke. Fährt das Fahrzeug durch, wird erst Sensor 1 und dann Sensor 2 verdunkelt. Das Messgerät misst die Zeit Δt dazwischen. Die Geschwindigkeit ist v = Δs / Δt.'},
+    {q:'Du hast eine Messreihe mit 6 Werten. Was schreibst du in die Auswertung?',pts:['Mittelwert v̄ berechnet und genannt (auch in km/h)','Abweichung jedes Werts in Prozent','Grenze 5 %: darunter gut, darüber ungenau, die Werte konkret benennen','Mindestens zwei Fehlerquellen (Aufbau, Messen, menschliche Fehler)','Aussage zur Geschwindigkeit, zum Beispiel ob eine Grenze eingehalten wird'],model:'Der Mittelwert der Geschwindigkeit beträgt ... m/s (... km/h). Bei den Messungen 1, 3, 5 und 6 liegt die Abweichung unter 5 %, das spricht für eine gute Messung. Bei Messung 2 und 4 liegt sie darüber, das ist ungenau. Gründe können Fehler beim Aufbau, beim Messen oder menschliche Fehler sein. Das Fahrzeug überschreitet die Grenze von 20 km/h nicht.'},
+    {q:'Erkläre den Unterschied zwischen gleichförmiger und gleichmäßig beschleunigter Bewegung.',pts:['Gleichförmig: v ist konstant, a = 0 m/s²','Beschleunigt: a ist konstant, v ändert sich','Formel gleichförmig: s = v · t + s₀','Formel beschleunigt: s = ½ · a · t² + v₀ · t + s₀ und v = a · t + v₀'],model:'Bei der gleichförmigen Bewegung ist die Geschwindigkeit konstant und die Beschleunigung null (s = v · t + s₀). Bei der gleichmäßig beschleunigten Bewegung ist die Beschleunigung konstant, die Geschwindigkeit wächst gleichmäßig (v = a · t + v₀, s = ½ · a · t² + v₀ · t + s₀).'}
+  ];
+  function modeErklaeren(){
+    var i=Math.floor(Math.random()*EXPL.length),e=EXPL[i];
+    setView(shell('Erklären','c7','<div class="kicker">Schreibe in eigenen Worten</div><p class="task"><b>'+e.q+'</b></p><textarea id="ex" placeholder="Hier schreiben ..."></textarea><div class="actions"><button class="btn primary" id="bCmp">Mit Stichpunkten vergleichen</button><button class="btn" id="bNew">Andere Frage</button></div><div id="out"></div>'));
+    var ta=$('#ex');try{ta.value=S.notes['e'+i]||''}catch(x){}
+    ta.addEventListener('input',function(){S.notes['e'+i]=ta.value;save()});
+    $('#bNew').onclick=modeErklaeren;
+    $('#bCmp').onclick=function(){
+      $('#out').innerHTML='<div class="kicker" style="color:var(--c7)">Hast du das erwähnt?</div><div class="check">'+e.pts.map(function(p,k){return '<label><input type="checkbox" data-k="'+k+'"><span>'+p+'</span></label>'}).join('')+'</div><div class="verdict mixed" id="sc">0 von '+e.pts.length+'</div><div class="solution"><div class="kicker">Beispielantwort</div><p class="hand">'+e.model+'</p></div>';
+      $$('.check input').forEach(function(c){c.onchange=function(){var n=$$('.check input:checked').length;var sc=$('#sc');sc.textContent=n+' von '+e.pts.length+' Punkten';sc.className='verdict '+(n>=e.pts.length-1?'good':'mixed')}});
+    };
+  }
+
+  /* ---------- Methode: Quiz ---------- */
+  var QUIZ = [
+    {q:'Woran liegt die Verzögerung bei einer Live-Schalte ins Ausland?',o:['Das Funksignal braucht für die lange Strecke über den Satelliten Zeit.','Das Funksignal ist schneller als das Licht.','Der Satellit speichert das Signal absichtlich.'],a:0,e:'Das Signal bewegt sich mit endlicher Geschwindigkeit (c). Eine lange Strecke bedeutet eine messbare Laufzeit, t = s / c.'},
+    {q:'12 min in Stunden. Was stimmt?',o:['12 h','1/5 h = 0,2 h','0,12 h'],a:1,e:'12 min / 60 = 0,2 h = 1/5 h.'},
+    {q:'Eine Messung weicht um 12 % vom Mittelwert ab. Was sagst du in der Auswertung?',o:['Sie ist sehr genau.','Sie ist ungenau (über 5 %), mögliche Ursachen sind Aufbau- oder Messfehler.','Die Messreihe ist wertlos.'],a:1,e:'Unter 5 % gilt als gut, darüber als ungenau. Nenne danach konkrete Fehlerquellen.'},
+    {q:'Wie rechnest du 72 km/h in m/s um?',o:['72 · 3,6','72 ÷ 3,6','72 ÷ 60'],a:1,e:'km/h ÷ 3,6 = m/s, also 72 ÷ 3,6 = 20 m/s.'},
+    {q:'Welche Formel gehört zur gleichförmigen Bewegung?',o:['s(t) = ½·a·t² + v₀·t + s₀','s(t) = v·t + s₀ mit v = konstant','v(t) = a·t²'],a:1,e:'Bei gleichförmiger Bewegung ist v konstant und a = 0 m/s².'},
+    {q:'Dein Ergebnis für eine Zeit lautet „19/270000 h“. Was fehlt noch?',o:['Nichts, das ist korrekt.','Eine Umrechnung in Sekunden, wenn die Aufgabe das verlangt (hier ≈ 0,25 s).','Ein Kommentar zum Radius.'],a:1,e:'Lies die geforderte Einheit in der Aufgabe. Bei Funklaufzeiten sind Sekunden die sinnvolle Einheit.'},
+    {q:'Ein Signal läuft Studio → Satellit → Reporter. Jede Teilstrecke ist 38.000 km. Welche Gesamtstrecke gilt?',o:['38.000 km','76.000 km','19.000 km'],a:1,e:'Zwei Teilstrecken: 2 · 38.000 km = 76.000 km. Bei Frage und Antwort wären es vier.'},
+    {q:'Was muss eine Skizze zur Geschwindigkeitsmessung enthalten?',o:['Nur das Fahrzeug.','Zwei Sensoren mit bekanntem Abstand Δs, Messgerät für Δt und das Fahrzeug auf der Messstrecke.','Nur ein Diagramm mit Zahlen.'],a:1,e:'v = Δs / Δt: Du brauchst den Abstand und die Zeit zwischen beiden Sensoren. Beschrifte alle Teile.'},
+    {q:'Ein Auto beschleunigt gleichmäßig aus der Ruhe. Nach 4 s hat es doppelt so lange beschleunigt wie nach 2 s. Wie verhält sich die Strecke?',o:['Doppelt so groß.','Viermal so groß.','Gleich groß.'],a:1,e:'s = ½·a·t². Verdoppelt sich t, wird t² viermal so groß.'}
+  ];
+  var quizOrder=[],quizIdx=0;
+  function modeQuiz(){
+    if(quizIdx>=quizOrder.length){quizOrder=shuffle(QUIZ.map(function(_,i){return i}));quizIdx=0}
+    var q=QUIZ[quizOrder[quizIdx++]],order=shuffle(q.o.map(function(_,i){return i})),answered=false;
+    setView(shell('Quiz','c6','<div class="kicker">Frage '+quizIdx+' von '+QUIZ.length+'</div><p class="task"><b>'+q.q+'</b></p><div class="opts">'+order.map(function(i){return '<button class="opt" data-i="'+i+'">'+q.o[i]+'</button>'}).join('')+'</div><div id="out"></div><div class="actions"><button class="btn" id="bNext" disabled>Nächste Frage</button></div>'));
+    $$('.opt').forEach(function(b){b.onclick=function(){
+      if(answered)return;answered=true;var ok=+b.dataset.i===q.a;
+      $$('.opt').forEach(function(x){x.disabled=true;if(+x.dataset.i===q.a)x.classList.add('right')});
+      if(!ok)b.classList.add('wrong');count(ok);
+      $('#out').innerHTML='<div class="solution"><div class="kicker">'+(ok?'Richtig':'Nicht ganz')+'</div><p>'+q.e+'</p></div>';
+      $('#bNext').disabled=false;
+    }});
+    $('#bNext').onclick=modeQuiz;
+  }
+
+  /* ---------- Methode: Probe-Arbeit ---------- */
+  function modeSim(){
+    var parts=[
+      {t:'Aufgabe 1: Mobiler Blitzer',task:gens.geschw()},
+      {t:'Aufgabe 2: Funksignale',task:gens.funk()},
+      {t:'Aufgabe 3: Geschwindigkeit eines Fahrzeugs',task:gens.messreihe()},
+      {t:'Aufgabe 4: Beschleunigung',task:gens.beschl()}
+    ];
+    var total=parts.reduce(function(a,p){return a+p.task.inputs.length},0),start=Date.now(),submitted=false;
+    var body='<p class="task">Rechne wie in der Arbeit. Jedes richtige Ergebnis gibt einen Punkt. Das Formelblatt unten darfst du benutzen. <b>Gesamt: '+total+' Punkte</b></p><div class="clock" id="clk">0:00</div>';
+    parts.forEach(function(p,i){body+='<div class="sec" style="display:flex;flex-direction:column;gap:12px;border-top:1.5px solid var(--strong);padding-top:14px"><h3>'+p.t+'</h3><p class="task">'+p.task.text+'</p>'+(p.task.table||'')+inputsHtml(p.task,'s'+i+'_')+'<div id="sol'+i+'"></div></div>'});
+    body+='<div class="actions"><button class="btn primary" id="bSub">Abgeben und prüfen</button></div><div id="out"></div>';
+    setView(shell('Probe-Arbeit','c8',body));
+    var iv=setInterval(function(){var s=Math.floor((Date.now()-start)/1000);var c=$('#clk');if(c)c.textContent=Math.floor(s/60)+':'+pad(s%60)},1000);timers.push(iv);
+    $('#bSub').onclick=function(){
+      if(submitted)return;submitted=true;clearInterval(iv);
+      var pts=0;
+      parts.forEach(function(p,i){var g=evalInputs(p.task,'s'+i+'_');pts+=g;count(g===p.task.inputs.length);$('#sol'+i).innerHTML=solutionHtml(p.task)});
+      var pct=Math.round(pts/total*100),sec=Math.floor((Date.now()-start)/1000);
+      $('#out').innerHTML='<div class="verdict '+(pct>=75?'good':'mixed')+'">'+pts+' von '+total+' Punkten ('+pct+' %) in '+Math.floor(sec/60)+' min '+pad(sec%60)+' s. Die Lösungswege stehen unter jeder Aufgabe.</div>';
+      $('#bSub').disabled=true;
+      $('#out').scrollIntoView({block:'nearest'});
+    };
+  }
+
+  /* ---------- Bereich Üben ---------- */
+  var RUN={rechnen:modeRechnen,karten:modeKarten,fehler:modeFehler,einheiten:modeEinheiten,zuordnen:modeZuordnen,erklaeren:modeErklaeren,quiz:modeQuiz,sim:modeSim};
+  function renderLearn(){
+    if(cur.mode){RUN[cur.mode](cur.sub);return}
+    setView('<div class="card" style="--c:var(--c1)"><h2>Wie willst du heute lernen?</h2><p class="muted">Wechsle die Methode ab. Aktives Abfragen und Fehler suchen bringt mehr als nur Lesen.</p><div class="grid">'+MODES.map(function(m){return '<button class="mcard" style="--c:var(--'+m.c+')" data-m="'+m.k+'"><b>'+m.t+'</b><span>'+m.d+'</span><small>'+m.m+'</small></button>'}).join('')+'</div></div>');
+    $$('.mcard').forEach(function(b){b.onclick=function(){cur.mode=b.dataset.m;cur.sub=null;render()}});
+  }
+
+  /* ---------- Lernplan ---------- */
+  function I(l,m,s,min){return {l:l,m:m,s:s,min:min}}
+  var P1=[
+    [I('Karteikarten: alle Karten einmal','karten',null,10),I('Einheiten-Blitz','einheiten',null,5),I('Aufgaben: Geschwindigkeit','rechnen','geschw',10)],
+    [I('Aufgaben: Strecke und Zeit','rechnen','strecke',15),I('Formel wählen','zuordnen',null,8)],
+    [I('Aufgaben: Funksignale','rechnen','funk',12),I('Karteikarten','karten',null,8)],
+    [I('Einheiten-Blitz','einheiten',null,5),I('Aufgaben: Beschleunigung','rechnen','beschl',15),I('Formel wählen','zuordnen',null,6)]
+  ];
+  var P2=[
+    [I('Aufgaben: Messreihe','rechnen','messreihe',15),I('Erklären: Auswertung schreiben','erklaeren',null,10)],
+    [I('Fehlerdetektiv','fehler',null,10),I('Aufgaben gemischt','rechnen','mix',15)],
+    [I('Aufgaben: Beschleunigung','rechnen','beschl',12),I('Quiz','quiz',null,8),I('Karteikarten','karten',null,6)],
+    [I('Erklären: Funk und Messaufbau','erklaeren',null,12),I('Fehlerdetektiv','fehler',null,8),I('Aufgaben: Messreihe','rechnen','messreihe',10)]
+  ];
+  var P3=[
+    [I('Probe-Arbeit mit Uhr','sim',null,40)],
+    [I('Fehler nachrechnen: gemischt','rechnen','mix',20),I('Karteikarten','karten',null,10)],
+    [I('Probe-Arbeit mit Uhr','sim',null,40)],
+    [I('Quiz','quiz',null,10),I('Erklären','erklaeren',null,10),I('Karteikarten','karten',null,10)]
+  ];
+  function fit(list,m){var out=[],sum=0;list.forEach(function(it){if(!out.length||sum+it.min<=m){out.push(it);sum+=it.min}});return out}
+  function buildPlan(){
+    var P=S.plan,T=today();
+    if(!P.exam)return null;
+    var E=pd(P.exam);if(E<T)return {past:true};
+    var others={};P.others.forEach(function(o){if(o.d)others[o.d]=o.n||'andere Arbeit'});
+    var res=[],study=[];
+    for(var d=new Date(T);d<=E;d=addDays(d,1)){
+      var k=ymd(d),kn=ymd(addDays(d,1)),r={date:new Date(d),key:k,items:[],type:'study',note:''};
+      if(k===P.exam){r.type='exam';r.note='Prüfungstag. Taschenrechner, Stifte und Formelblatt einpacken, ruhig bleiben.'}
+      else if(others[k]){r.type='other';r.note='Heute Arbeit in '+others[k]+'. Kein Physik nötig.'}
+      else if(kn===P.exam){r.type='light';r.items=[I('Karteikarten','karten',null,10),I('Formelblatt einmal lesen',null,null,5)];r.note='Letzter Tag. Früh aufhören und gut schlafen.'}
+      else if(others[kn]){r.type='light';r.items=[I('Karteikarten','karten',null,10)];r.note='Morgen: '+others[kn]+'. Heute nur kurz.'}
+      else if(P.sunFree&&d.getDay()===0){r.type='rest';r.note='Freier Tag.'}
+      else study.push(r);
+      res.push(r);
+    }
+    var n=study.length,c=[0,0,0];
+    study.forEach(function(r,j){
+      var f=n>1?j/(n-1):1,ph=(n-j<=3&&n>=4)?2:(f<0.35?0:1),pool=[P1,P2,P3][ph];
+      r.phase=ph;r.items=fit(pool[c[ph]++%pool.length],P.minutes);
+    });
+    return {days:res,n:n};
+  }
+  var PHASE=['Grundlagen und Formeln','Üben und Fehler finden','Prüfungsnah wiederholen'];
+  function renderPlan(){
+    var P=S.plan;
+    var setup='<div class="card" style="--c:var(--c1)"><h2>Dein Lernplan</h2><p class="muted">Trag das Datum der Physik-Arbeit ein. Die anderen Arbeiten werden mit eingeplant: am Tag davor nur kurz, am Arbeitstag Pause.</p><div class="setup">'
+      +'<div class="f"><label class="l" for="pExam">Physik-Arbeit am</label><input type="date" id="pExam" value="'+P.exam+'">'+(P.suggested?'<span class="muted">Vorschlag. Ändere das Datum auf deinen Termin.</span>':'')+'</div>'
+      +'<div class="f"><label class="l" for="pMin">Zeit pro Lerntag</label><select id="pMin">'+[15,20,30,45,60].map(function(m){return '<option value="'+m+'"'+(m==P.minutes?' selected':'')+'>'+m+' Minuten</option>'}).join('')+'</select></div>'
+      +[0,1].map(function(i){return '<div class="f"><label class="l">Andere Arbeit '+(i+1)+' (Fach und Datum)</label><div class="two"><input type="text" id="pOn'+i+'" placeholder="Fach" value="'+(P.others[i].n||'').replace(/"/g,'&quot;')+'"><input type="date" id="pOd'+i+'" value="'+P.others[i].d+'"></div></div>'}).join('')
+      +'<div class="f"><label class="l" style="display:flex;gap:8px;align-items:center;margin-top:22px"><input type="checkbox" id="pSun"'+(P.sunFree?' checked':'')+' style="width:18px;height:18px"> Sonntags frei</label></div>'
+      +'</div></div>';
+    var tips='<div class="card" style="--c:var(--c2)"><h2>Strategien für drei Fächer gleichzeitig</h2><div class="tips">'
+      +'<div style="--c:var(--c1)"><h3>Kurz und oft</h3><p>20 bis 30 Minuten pro Fach und Tag schlagen einen langen Block am Vorabend.</p></div>'
+      +'<div style="--c:var(--c3)"><h3>Fächer abwechseln</h3><p>Physik, Pause, anderes Fach. Das Gehirn behält Gemischtes besser.</p></div>'
+      +'<div style="--c:var(--c5)"><h3>Abfragen statt lesen</h3><p>Erst Karten und Aufgaben, dann nachschauen. Fehler sind die beste Übung.</p></div>'
+      +'<div style="--c:var(--c4)"><h3>Am nächsten Tag wiederholen</h3><p>Starte jeden Tag mit 3 Minuten Karteikarten vom Vortag.</p></div>'
+      +'<div style="--c:var(--c8)"><h3>Pausen und Schlaf</h3><p>Nach 25 Minuten 5 Minuten Pause. Vor der Arbeit früh ins Bett.</p></div>'
+      +'</div></div>';
+    setView(setup+'<div id="planList" style="display:flex;flex-direction:column;gap:20px;min-width:0"></div>'+tips);
+    function upd(){
+      P.exam=$('#pExam').value;P.suggested=false;P.minutes=+$('#pMin').value;P.sunFree=$('#pSun').checked;
+      [0,1].forEach(function(i){P.others[i]={n:$('#pOn'+i).value,d:$('#pOd'+i).value}});
+      save();paintPlan();
+    }
+    ['pExam','pMin','pSun','pOn0','pOd0','pOn1','pOd1'].forEach(function(id){$('#'+id).addEventListener(id.indexOf('pOn')===0?'input':'change',upd)});
+    paintPlan();
+  }
+  function paintPlan(){
+    var box=$('#planList'),plan=buildPlan();
+    if(!plan){box.innerHTML='';return}
+    if(plan.past){box.innerHTML='<div class="card"><p>Das Datum liegt in der Vergangenheit. Wähle einen späteren Termin.</p></div>';return}
+    var days=plan.days,tT=ymd(today()),mins=0,doneN=0,planN=0;
+    days.forEach(function(r){if(r.type==='study'||r.type==='light'){planN++;if(S.done[r.key])doneN++;r.items.forEach(function(i){mins+=i.min})}});
+    var html='<div class="card" style="--c:var(--c8)"><div class="summary"><div><b>'+(days.length-1)+'</b><span>Tage bis zur Arbeit</span></div><div><b>'+plan.n+'</b><span>volle Lerntage</span></div><div><b>'+Math.round(mins/60*10)/10+' h</b><span>Physik insgesamt</span></div><div><b>'+doneN+' / '+planN+'</b><span>Tage erledigt</span></div></div><div class="bar"><i style="width:'+(planN?doneN/planN*100:0)+'%"></i></div>';
+    var phases=[0,1,2].map(function(p){return days.filter(function(r){return r.type==='study'&&r.phase===p}).length}).map(function(c,p){return c?'<span class="muted">'+PHASE[p]+': '+c+' Tage</span>':''}).join('<br>');
+    html+=phases+'</div>';
+    // weeks (Monday start)
+    var weeks={},order=[];
+    days.forEach(function(r){var wd=(r.date.getDay()+6)%7,mon=ymd(addDays(r.date,-wd));if(!weeks[mon]){weeks[mon]=[];order.push(mon)}weeks[mon].push(r)});
+    order.forEach(function(mon){
+      var w=weeks[mon],m=pd(mon);
+      html+='<div class="week"><h3>Woche ab '+dshort(m)+'</h3>'+w.map(function(r){
+        var isT=r.key===tT,cls='day '+r.type+(isT?' today':'')+(S.done[r.key]?' done':'');
+        var items=r.items.length?'<ul>'+r.items.map(function(it){return '<li><span>'+it.l+'</span><span class="m">'+it.min+' Min</span>'+(it.m?'<button data-m="'+it.m+'" data-s="'+(it.s||'')+'">Starten</button>':'')+'</li>'}).join('')+'</ul>':'';
+        var note=r.note?'<p class="muted">'+r.note+'</p>':'';
+        var chk=(r.type==='study'||r.type==='light')?'<input type="checkbox" aria-label="Erledigt" data-k="'+r.key+'"'+(S.done[r.key]?' checked':'')+'>':'<span></span>';
+        return '<div class="'+cls+'">'+chk+'<div class="dd">'+WD[r.date.getDay()]+' '+dshort(r.date)+(isT?'<small>heute</small>':'')+'</div><div class="items">'+items+'</div>'+(r.note?'<div style="grid-column:2/-1">'+note+'</div>':'')+'</div>';
+      }).join('')+'</div>';
+    });
+    box.innerHTML=html;
+    $$('#planList input[type=checkbox]').forEach(function(c){c.onchange=function(){if(c.checked)S.done[c.dataset.k]=true;else delete S.done[c.dataset.k];save();paintPlan()}});
+    $$('#planList .day button').forEach(function(b){b.onclick=function(){S.nav='learn';cur.mode=b.dataset.m;cur.sub=b.dataset.s||null;render();window.scrollTo(0,0)}});
+  }
+
+  /* ---------- Routing ---------- */
+  function render(){
+    stopTimers();
+    $('#navPlan').setAttribute('aria-selected',S.nav==='plan');
+    $('#navLearn').setAttribute('aria-selected',S.nav==='learn');
+    save();
+    if(S.nav==='plan')renderPlan();else renderLearn();
+  }
+  $$('.nav button').forEach(function(b){b.onclick=function(){S.nav=b.dataset.nav;if(S.nav==='learn')cur.mode=null;render()}});
+  ['nm','dt'].forEach(function(id){
+    var el=$('#'+id),k=id==='nm'?'name':'date';
+    el.value=S[k]||(id==='dt'?new Date().toLocaleDateString('de-DE'):'');
+    el.addEventListener('input',function(){S[k]=el.value;save()});
+  });
+  updateProgress();render();
+})();
+</script>
