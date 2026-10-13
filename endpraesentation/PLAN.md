@@ -41,3 +41,31 @@
 2. Reflexion und Bezug zur Gründung gemeinsam durchgehen.
 3. Probelauf mit Stoppuhr, auf 10–12 Min. kürzen/strecken.
 4. Als PPTX und PDF an die Lehrkraft.
+
+## Vorgaben der Lehrkraft (Arbeitsblatt M14 / Präsentationsbögen M15)
+Die Präsentation soll die Unternehmensentwicklung zeigen und den Bogen M15 verwenden.
+Aufgaben:
+1. **Wirtschaftlichkeit** pro Runde berechnen und grafisch darstellen (Wirtschaftlichkeit = Leistungen / Kosten = Umsatzerlöse / Gesamtkosten).
+2. **Entwicklung des Startkapitals** über die Schlussbestände ermitteln und als Kurve darstellen (Anfangsbestand 100.000 €).
+3. **Ursachen** für die jeweilige Entwicklung erläutern, mit Hilfe des Entscheidungsprotokolls.
+
+Ausgefüllte Bögen für Elbharz: `Auswertung_Elbharz_ausgefuellt.pdf` (erzeugt mit `auswertung_ausfuellen.py`).
+
+| | R1 | R2 | R3 | R4 | R5 | R6 |
+|---|---|---|---|---|---|---|
+| Kosten gesamt | 69.000 | 75.000 | 54.000 | 18.000 | 25.000 | 45.500 |
+| Umsatzerlöse | 45.000 | 55.900 | 79.940 | 5.250 | 2.700 | 51.480 |
+| Wirtschaftlichkeit | 0,65 | 0,75 | 1,48 | 0,29 | 0,11 | 1,13 |
+| Schlussbestand | 76.000 | 56.900 | 82.840 | 70.090 | 47.790 | 53.770 |
+
+## Geklärt
+- Sonstige Kosten im Kassenbuch = Zusatzkosten durch den Wirtschaftsdienst: R2 10.000, R3 5.000, R4 2.500, R5 10.000, R6 6.500 (zusammen 34.000 €).
+- R2: zweite Maschine gekauft, aber ohne Mitarbeiter ungenutzt (jede Maschine braucht eine Bedienung). Darum nur 13 Paletten.
+- Restwert Maschine 2 (18.000 €): Nutzungsdauer 4 Runden (R3–R6), damit stimmt der Verkaufswert von 83.770 €.
+- Platzierung gibt es noch nicht. Zweite Seite „Unternehmensverkauf" wird nicht benötigt.
+
+## Noch offen
+- Optional: Wortlaut der Wirtschaftsdienst-Nachrichten (Stichworte genügen)
+- R4: Materialpreis 1.500 € pro Palette – war das eine Wirtschaftsdienst-Meldung?
+- Sprecher je Folie, Reflexion und Bezug zur Gründung gemeinsam durchgehen
+- Präsentation ist noch nicht angepasst (Wirtschaftlichkeit als Hauptkennzahl, Folie 5/9/10 korrigieren) – erst nach Freigabe
