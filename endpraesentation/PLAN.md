@@ -1,90 +1,62 @@
-# Plan: Endpräsentation Planspiel „Bertis Brause“ (Elbharz Getränke GbR)
+# Plan: Endpräsentation Version 1 – Elbharz Getränke GbR
 
-**Vorgaben:** 10–12 Min., digital an die Lehrkraft, zählt 60 % (Phase III).
-**Datei:** `Elbharz_Endpraesentation.pptx` (12 Folien, mit echten Zahlen und Sprechtext-Entwürfen in den Notizen). Neu erzeugen mit `node build.js`.
+Zahlen und Aussagen: siehe `FAKTEN.md` (einzige Quelle). Erzeugen: `node build.js`.
 
-## Folienplan (≈ 12 Min.)
+## Leitidee
+**„Von der Idee zum Verkaufswert“** – die Endpräsentation erzählt das Spiel, nicht noch einmal die Gründung.
+- Die Firmenpräsentation (Phase I) wird nur kurz aufgegriffen (2 Folien), damit sie wiedererkennbar ist, aber nicht wiederholt wird.
+- Schwerpunkt auf dem, was 60 % der Note trägt: Verlauf, Auswertung, Reflexion, Bezug zur Gründung.
+- Ehrlicher roter Faden: Wir haben 16.230 € verloren – und können genau erklären, warum.
 
-| # | Folie | Pflichtteil laut Aufgabe | Min. | Inhalt kommt von |
+## Design
+- **Farben unverändert:** Petrol `0F5C6B`, Bernstein `D9822B`, Limette `8DB33A`, gebrochenes Weiß `F3F1EA`, Text `1B2A2F`.
+- **Wiedererkennung:** Logo, Flasche, Limette und Tamarinde aus der Firmenpräsentation; Sonne/Kreis aus dem Logo als Motiv.
+- **Abgrenzung zur Firmenpräsentation:** Serifen-Überschriften (Cambria) statt Großbuchstaben-Sans, abgerundete Karten statt Balken oben/unten, Daten im Mittelpunkt.
+- **Kapitel-Leiste unten auf jeder Inhaltsfolie:** Einleitung · Verlauf · Auswertung · Reflexion · Gründung (aktuelles Kapitel orange). Zeigt der Lehrkraft, dass alle Pflichtteile da sind.
+- **Diagramme:** native PowerPoint-Diagramme (bearbeitbar), eine Achse, Legende ab 2 Reihen, gezielte Beschriftung, ruhiges Raster.
+
+## Folien (Ziel ca. 11 Minuten)
+| # | Folie | Pflichtteil | Visuell | Min. |
 |---|---|---|---|---|
-| 1 | Titel | – | 0:30 | Gruppenname, Klasse, Datum |
-| 2 | Wer wir sind, warum gegründet | Kurze Einleitung | 1:00 | Firmenpräsentation (fertig) |
-| 3 | Nachhaltigkeit | Kurze Einleitung | 1:00 | Firmenpräsentation + Verknüpfung zum Spiel |
-| 4 | Verlauf der Runden (Zeitstrahl R1–R6) | Verlauf der Runden | 1:30 | Entscheidungsprotokoll |
-| 5 | Entscheidungen je Runde (Tabelle) | Verlauf der Runden | 1:30 | Excel + Protokoll |
-| 6 | Wirtschaftsdienst & Reaktion | Verlauf der Runden | 1:00 | Nachrichten Runde 2–6 |
-| 7 | Kennzahlen pro Runde + Rechenweg | Auswertung | 1:30 | Excel (Kassenbuch, Umsatz) |
-| 8 | Diagramme (Umsatz/Kosten/Gewinn, Kassenbestand) | Auswertung | 1:30 | Excel |
-| 9 | Endbestand & Unternehmensverkaufswert | Auswertung | 1:00 | Excel (Unternehmensverkauf) |
-| 10 | Reflexion + Handlungsalternativen | Reflexion Entscheidungen | 1:30 | eure Einschätzung |
-| 11 | Bezug zur Gründung + Spielerweiterung | Bezug zur Gründung | 1:30 | Firmenpräsentation vs. Spielregeln |
-| 12 | Danke & Quellen | – | 0:30 | – |
+| 1 | Titel | – | Flasche im orangen Kreis, Limette + Tamarinde am grünen Kreis (Idee der Gruppe), Logo | 0:15 |
+| 2 | Wer wir sind | Einleitung | Leitgedanke + **Rückseite**: Etikett mit den 6 Zutaten (Idee der Gruppe) + 3 Fakten | 0:45 |
+| 3 | Nachhaltigkeit | Einleitung | Mehrweg / Regional / Eine Sorte (Produktion → Lager → Transport als Icon-Kette) + ehrlicher Hinweis „im Spiel keine Rolle“ | 0:45 |
+| 4 | Produziert, angeboten, verkauft | Verlauf | Gestapelte Säulen je Runde: Markt vs. Schnäppchenmarkt, Preis über jeder Säule | 1:00 |
+| 5 | Warum wir so entschieden haben | Verlauf | 6 Rundenkarten (Preis, Kernaussage aus dem Protokoll, Ergebnis-Marke) | 1:15 |
+| 6 | Wirtschaftsdienst | Verlauf | Zusatzkosten je Runde (Säulen) + Kennzahl 34.000 € + Wirkung | 0:45 |
+| 7 | Kennzahl Wirtschaftlichkeit | Auswertung | Formel groß + Kostentabelle wie Bogen M15, W-Zeile farbig markiert | 1:15 |
+| 8 | Entwicklung | Auswertung | Säulen Wirtschaftlichkeit mit Linie bei 1,0 + Kurve Kassenbestand (beides wie M15) | 1:15 |
+| 9 | Verkaufswert | Auswertung | Rechnung 53.770 + 12.000 + 18.000 = 83.770 € mit Icons (Geld, Maschinen, Gebäude) + Vergleich zum Startkapital | 0:45 |
+| 10 | Reflexion | Reflexion | gut / schlechter / Alternative je Entscheidung, mit Zahlen belegt | 1:15 |
+| 11 | Bezug zur Gründung | Gründung | Was fehlte (Mehrweg, Persona Jasper, Marketing, Sorte) → Auswirkung → Spielerweiterung | 1:15 |
+| 12 | Danke | – | Flasche + Platz für KI-Teambild | 0:15 |
+| 13 | Quellen | – | Spielmaterial, eigene Berechnungen, KI-Bilder gekennzeichnet | – |
 
-## Was noch fehlt (Checkliste)
-- [x] Zahlen aller 6 Runden (als ausgefüllte Arbeitsblätter-PDF erhalten: Maschinen, Mitarbeiter, Paletten, Preis, Absatz, Umsatz, Kosten, Kassenbuch)
-- [x] Entscheidungsprotokoll (Begründungen pro Runde, handschriftlich erhalten)
-- [ ] Wirtschaftsdienst-Nachrichten Runde 2–6
-- [x] Unternehmensverkaufswert: 83.770 € (Restwert Economy 2 noch prüfen: evtl. 80.770 €); Platzierung offen
-- [x] Gruppenname (Elbharz Getränke GbR) und Klasse (11b) auf der Titelfolie
-- [ ] Sprecher je Folie festlegen (später; jeder passt dann seinen Sprechtext in den Notizen an)
-- [x] Firma bleibt Elbharz / Primatenbrause (so auf den Arbeitsblättern eingetragen)
+## Bilder
+- Im Repo verfügbar und eingebaut: Logo, Flasche, Limette, Tamarinde (aus der Firmenpräsentation).
+- Als Icons gelöst: Produktion/Lager/Transport, Geld, Maschinen, Gebäude.
+- **Fehlen (Netzwerk blockiert Bilddienste):** echte Fotos für leere Mehrwegflasche, Karte Norddeutschland mit Elbe, optional Geldstapel/Abfüllmaschine/Firmengebäude; KI-Teambild. → Platzhalter sind markiert, Bilder liefert die Gruppe oder der Zugriff wird freigegeben.
 
-## Stand
-- [x] Folien 1–5 und 7–9 mit echten Zahlen und Diagrammen gebaut
-- [x] Folien 10 und 11 als Entwurf aus dem Entscheidungsprotokoll (gemeinsam prüfen)
-- [ ] Folie 6 (Wirtschaftsdienst) wartet auf die Nachrichten
-- [ ] Restwert Maschine 2 mit der Lehrkraft klären (83.770 € oder 80.770 €)
-- [ ] Platzierung nachtragen, sobald es sie gibt
+## Skills
+- Genutzt: `pptx` (Aufbau, Prüfung), `dataviz` (Diagrammregeln), `pdf` (Auswertungsbogen M15).
+- Team-Leitfaden: als Dokument zum Teilen (Sprechtexte, Rollen, Zeitplan, Fragen-Vorbereitung).
+- Optional, nur nach Rückfrage: `the-council` (5 Agenten prüfen die Präsentation kritisch, kostet viele Tokens), Goodnotes-Verbindung (Leitfaden direkt in Goodnotes ablegen).
 
-## Nächste Schritte
-1. Wirtschaftsdienst-Nachrichten schicken -> Folie 6 füllen.
-2. Reflexion und Bezug zur Gründung gemeinsam durchgehen.
-3. Probelauf mit Stoppuhr, auf 10–12 Min. kürzen/strecken.
-4. Als PPTX und PDF an die Lehrkraft.
+## Prüfung
+1. Datei-Validierung und Render jeder Folie.
+2. Blick als Zuschauer und als Lehrkraft: Pflichtteile abgedeckt? Zahlen nachvollziehbar? Kein Widerspruch zur Firmenpräsentation?
+3. Zahlen-Abgleich Folie ↔ `FAKTEN.md`.
 
-## Vorgaben der Lehrkraft (Arbeitsblatt M14 / Präsentationsbögen M15)
-Die Präsentation soll die Unternehmensentwicklung zeigen und den Bogen M15 verwenden.
-Aufgaben:
-1. **Wirtschaftlichkeit** pro Runde berechnen und grafisch darstellen (Wirtschaftlichkeit = Leistungen / Kosten = Umsatzerlöse / Gesamtkosten).
-2. **Entwicklung des Startkapitals** über die Schlussbestände ermitteln und als Kurve darstellen (Anfangsbestand 100.000 €).
-3. **Ursachen** für die jeweilige Entwicklung erläutern, mit Hilfe des Entscheidungsprotokolls.
+## Offen (braucht die Gruppe)
+- [ ] Herkunft der Bilder Limette und Tamarinde (für die Quellenfolie)
+- [ ] Fotos: leere Flasche, Karte Norddeutschland, optional Geld/Maschine/Gebäude
+- [ ] KI-Teambild (mit Tool-Angabe)
+- [ ] Optional: Wortlaut der Wirtschaftsdienst-Meldungen; Ursache Materialpreis R4
+- [ ] Sprecher festlegen, Sprechtexte persönlich anpassen
+- [ ] Reflexion gemeinsam prüfen (ist eure Bewertung, nicht meine)
+- [ ] Platzierung nach der Siegerehrung ergänzen (optional)
 
-Ausgefüllte Bögen für Elbharz: `Auswertung_Elbharz_ausgefuellt.pdf` (erzeugt mit `auswertung_ausfuellen.py`).
-
-| | R1 | R2 | R3 | R4 | R5 | R6 |
-|---|---|---|---|---|---|---|
-| Kosten gesamt | 69.000 | 75.000 | 54.000 | 18.000 | 25.000 | 45.500 |
-| Umsatzerlöse | 45.000 | 55.900 | 79.940 | 5.250 | 2.700 | 51.480 |
-| Wirtschaftlichkeit | 0,65 | 0,75 | 1,48 | 0,29 | 0,11 | 1,13 |
-| Schlussbestand | 76.000 | 56.900 | 82.840 | 70.090 | 47.790 | 53.770 |
-
-## Geklärt
-- Sonstige Kosten im Kassenbuch = Zusatzkosten durch den Wirtschaftsdienst: R2 10.000, R3 5.000, R4 2.500, R5 10.000, R6 6.500 (zusammen 34.000 €).
-- R2: zweite Maschine gekauft, aber ohne Mitarbeiter ungenutzt (jede Maschine braucht eine Bedienung). Darum nur 13 Paletten.
-- Restwert Maschine 2 (18.000 €): Nutzungsdauer 4 Runden (R3–R6), damit stimmt der Verkaufswert von 83.770 €.
-- Platzierung gibt es noch nicht. Zweite Seite „Unternehmensverkauf" wird nicht benötigt.
-
-## Noch offen
-- Optional: Wortlaut der Wirtschaftsdienst-Nachrichten (Stichworte genügen)
-- R4: Materialpreis 1.500 € pro Palette – war das eine Wirtschaftsdienst-Meldung?
-- Sprecher je Folie, Reflexion und Bezug zur Gründung gemeinsam durchgehen
-- Präsentation ist noch nicht angepasst (Wirtschaftlichkeit als Hauptkennzahl, Folie 5/9/10 korrigieren) – erst nach Freigabe
-
-## Visuelle Ideen der Gruppe (handschriftliche Anmerkungen im hochgeladenen Gerüst)
-Datei: `vorlagen/Elbharz_Endpraesentation_Geruest_mit_Ideen_der_Gruppe.pptx` (Stift-Anmerkungen auf den Folien; Folien-Nummern entsprechen der aktuellen Präsentation).
-
-| Folie | Idee der Gruppe |
-|---|---|
-| 1 Titel | „Bilder der Flasche" (in den orangen Kreis); zweite Notiz mit Pfeilen zum grünen Kreis, schwer lesbar (evtl. „Farben"/„Fotos") – nachfragen |
-| 2 Einleitung | „Rückseite zeigen" (Flaschenrückseite mit der Zutatenliste, passt zum Leitgedanken) |
-| 3 Nachhaltigkeit | „Bild von leerer Flasche" (Mehrweg); „Bild von Norddeutschland, Elbe rot eingezeichnet" (Regional); Eine Sorte: „Produktion – Lager – Transport" je mit Pfeil und „Bilder" |
-| 5 Entscheidungen | „Besseres Design" (Tabelle wirkt zu schlicht) |
-| 7 Kennzahlen | „Besseres Design" |
-| 9 Endbestand | „Bild von Geldstapel" (Schlussbestand); „Bild unserer 2 Maschinen" (Restwert); „Bild von Unternehmensgebäude" (Verkaufswert) |
-| 12 Danke | „Wieder Bild von Flasche und uns als KI-generierte Personen" |
-
-Folgerungen für später:
-- Bilder der Flasche und Personen: Vorhandenes aus der Firmenpräsentation wiederverwenden bzw. neu erzeugen.
-- KI-generierte Bilder auf der Quellenfolie kennzeichnen (Tool nennen).
-- Folie 5 und 7 gestalterisch aufwerten (z. B. Farbmarkierung, Mini-Diagramme).
-- Gemeinsam: Wo kommen die Bilder her, wer liefert sie?
+## Bereits erledigt
+- [x] Zahlen aller 6 Runden, Entscheidungsprotokoll, Verkaufswert, Auswertungsbogen M15 (`Auswertung_Elbharz_ausgefuellt.pdf`)
+- [x] Wirtschaftsdienst = sonstige Kosten; R2 zweite Maschine ungenutzt; Restwert über Nutzungsdauer geklärt
+- [x] Ideen der Gruppe aus den Stift-Notizen übernommen (`vorlagen/`)
