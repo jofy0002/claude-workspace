@@ -87,7 +87,7 @@ function build() {
   s.addText("PLANSPIEL BERTIS BRAUSE · ENDPRÄSENTATION", { x: 0.9, y: 1.2, w: 11, h: 0.4, fontSize: 14, bold: true, color: C.accent2, charSpacing: 3, isTextBox: true, margin: 0 });
   s.addText("Primatenbrause", { x: 0.9, y: 2.0, w: 11, h: 1.4, fontSize: 64, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
   s.addText("Elbharz Getränke GbR – unser Weg durch sechs Spielrunden", { x: 0.9, y: 3.5, w: 7.6, h: 1.2, fontSize: 24, color: C.background2, isTextBox: true, margin: 0 });
-  s.addText("Namen der Gruppe · Klasse · Datum", { x: 0.9, y: 5.6, w: 11, h: 0.4, fontSize: 16, color: C.accent3, isTextBox: true, margin: 0 });
+  s.addText("Elbharz Getränke GbR · Klasse 11b", { x: 0.9, y: 5.6, w: 11, h: 0.4, fontSize: 16, color: C.accent3, isTextBox: true, margin: 0 });
   s.addNotes("ca. 0:30 min. Gruppe nennen, kurz sagen was kommt: Einleitung, Rundenverlauf, Auswertung, Reflexion, Bezug zur Gründung.");
 }
 

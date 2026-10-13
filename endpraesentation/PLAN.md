@@ -25,7 +25,8 @@
 - [x] Entscheidungsprotokoll (Begründungen pro Runde, handschriftlich erhalten)
 - [ ] Wirtschaftsdienst-Nachrichten Runde 2–6
 - [x] Unternehmensverkaufswert: 83.770 € (Restwert Economy 2 noch prüfen: evtl. 80.770 €); Platzierung offen
-- [ ] Gruppenname, Klasse, Datum, Sprecher je Folie
+- [x] Gruppenname (Elbharz Getränke GbR) und Klasse (11b) auf der Titelfolie
+- [ ] Sprecher je Folie festlegen (4 Gesellschafter, 12 Folien: Namen und Aufteilung fehlen noch)
 - [x] Firma bleibt Elbharz / Primatenbrause (so auf den Arbeitsblättern eingetragen)
 
 ## Nächste Schritte
