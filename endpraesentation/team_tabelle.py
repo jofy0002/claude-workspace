@@ -29,10 +29,10 @@ wb = Workbook()
 # ---------------------------------------------------------------- Start
 st = wb.active; st.title = "Start"
 title(st, "Team-Leitfaden Endpräsentation – Elbharz Getränke GbR", "Gemeinsam in OneDrive/SharePoint öffnen – alle können gleichzeitig bearbeiten.")
-st["A4"] = "Unsere Namen (hier eintragen – erscheinen dann überall als Spalten und in den Auswahllisten):"; st["A4"].font = F(bold=True)
+st["A4"] = "Unsere Namen (erscheinen überall als Spalten und in den Auswahllisten – nur hier ändern):"; st["A4"].font = F(bold=True)
 for i in range(4):
     st.cell(5 + i, 1, f"Person {i+1}").font = F()
-    c = st.cell(5 + i, 2); c.fill = INPUT; c.border = BOX; c.font = F(bold=True)
+    c = st.cell(5 + i, 2, ["Jona", "Lennart", "Sönke", "Nio"][i]); c.fill = INPUT; c.border = BOX; c.font = F(bold=True)
 wb.defined_names["Team"] = DefinedName("Team", attr_text="Start!$B$5:$B$8")
 legend = [
     ("So funktioniert's", ""),
