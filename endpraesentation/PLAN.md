@@ -21,12 +21,12 @@
 | 12 | Danke & Quellen | – | 0:30 | – |
 
 ## Was noch fehlt (Checkliste)
-- [ ] Excel mit allen 6 Runden (Maschinen, Mitarbeiter, Paletten, Preis, Absatz, Umsatz, Kosten, Kassenbestand)
-- [ ] Entscheidungsprotokoll (Begründungen pro Runde)
+- [x] Zahlen aller 6 Runden (als ausgefüllte Arbeitsblätter-PDF erhalten: Maschinen, Mitarbeiter, Paletten, Preis, Absatz, Umsatz, Kosten, Kassenbuch)
+- [x] Entscheidungsprotokoll (Begründungen pro Runde, handschriftlich erhalten)
 - [ ] Wirtschaftsdienst-Nachrichten Runde 2–6
-- [ ] Unternehmensverkaufswert (+ Platzierung, falls bekannt)
+- [x] Unternehmensverkaufswert: 83.770 € (Restwert Economy 2 noch prüfen: evtl. 80.770 €); Platzierung offen
 - [ ] Gruppenname, Klasse, Datum, Sprecher je Folie
-- [ ] Entscheiden: Firma bleibt Elbharz / Primatenbrause?
+- [x] Firma bleibt Elbharz / Primatenbrause (so auf den Arbeitsblättern eingetragen)
 
 ## Nächste Schritte
 1. Zahlen schicken -> Tabellen und echte Diagramme einbauen.
