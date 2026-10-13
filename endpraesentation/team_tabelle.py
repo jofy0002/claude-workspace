@@ -39,7 +39,7 @@ legend = [
     ("Gelbe Felder", "Hier tragt ihr etwas ein. Alles andere rechnet die Tabelle selbst."),
     ("Blatt „Aufgaben“, Teil A", "Jede:r muss das selbst machen → in der EIGENEN Spalte „✓“ auswählen (Pfeil am Feld). Beispiel: Person 2 hat geprobt → ✓ in der Spalte von Person 2."),
     ("Blatt „Aufgaben“, Teil B", "Eine:r reicht → bei „Erledigt von“ den eigenen Namen auswählen und Datum eintragen. Dann wird die Zeile grün."),
-    ("Blatt „Rollen & Zeitplan“", "Wer spricht welche Folie – Namen auswählen. Die Zeiten rechnen sich mit."),
+    ("Blatt „Rollen & Zeitplan“", "Jede Folie einzeln vergeben, auch abwechselnd; optional eine 2. Person pro Folie. Zeit und Anzahl Folien je Person rechnen sich mit."),
     ("Blatt „Sprechtexte“", "Vorschlag je Folie; in der gelben Spalte schreibt jede:r die eigene Version."),
     ("Blatt „Fragen“", "Mögliche Fragen der Lehrkraft; bei „Wer antwortet“ den Namen auswählen."),
 ]
@@ -130,29 +130,41 @@ ws.freeze_panes = "B5"
 
 # ---------------------------------------------------------------- Rollen & Zeitplan
 zp = wb.create_sheet("Rollen & Zeitplan")
-title(zp, "Rollen & Zeitplan", "Sprecher:in je Folie auswählen. Vorschlag: Person 1 = Folien 1–4, Person 2 = 5–6, Person 3 = 7–9, Person 4 = 10–12.")
-head(zp, 4, ["Folie", "Titel", "Pflichtteil", "Sprecher:in", "Dauer", "bis (Stoppuhr)"], [7, 42, 14, 18, 10, 15])
+title(zp, "Rollen & Zeitplan", "Jede Folie einzeln vergeben – gern abwechselnd. Teilen sich zwei eine Folie, zweite Person eintragen: die Zeit wird halbiert.")
+head(zp, 4, ["Folie", "Titel", "Pflichtteil", "Sprecher:in", "2. Sprecher:in (optional)", "Dauer", "bis (Stoppuhr)", "Übergabe / Notiz"], [7, 40, 13, 17, 17, 9, 13, 34])
 plan = [(1, "Primatenbrause (Titel)", "–", 0, 20), (2, "Wer wir sind – in 30 Sekunden", "Einleitung", 0, 45), (3, "Nachhaltigkeit war Teil der Idee", "Einleitung", 0, 45),
         (4, "Produziert, angeboten, verkauft", "Verlauf", 1, 0), (5, "Warum wir so entschieden haben", "Verlauf", 1, 5), (6, "Wirtschaftsdienst: Kosten von außen", "Verlauf", 0, 50),
         (7, "Unsere Kennzahlen je Runde", "Auswertung", 1, 0), (8, "Wirtschaftlichkeit und Schlussbestand", "Auswertung", 0, 55), (9, "Was unser Unternehmen am Ende wert ist", "Auswertung", 0, 50),
         (10, "Reflexion", "Reflexion", 1, 20), (11, "Bezug zur Gründung", "Gründung", 1, 10), (12, "Vielen Dank", "–", 0, 10)]
 dv_n2 = DataValidation(type="list", formula1="=Team", allow_blank=True); zp.add_data_validation(dv_n2)
-for k, (n, t, p, m, s) in enumerate(plan):
+for k, (n, t, p, m, s_) in enumerate(plan):
     r = 5 + k
     zp.cell(r, 1, n); zp.cell(r, 2, t); zp.cell(r, 3, p)
-    d = zp.cell(r, 4); d.fill = INPUT; dv_n2.add(d.coordinate)
-    e = zp.cell(r, 5, time(0, m, s)); e.number_format = "[m]:ss"
-    f = zp.cell(r, 6, f"=SUM($E$5:E{r})"); f.number_format = "[m]:ss"
-    for col in range(1, 7):
+    for col in (4, 5, 8):
+        c = zp.cell(r, col); c.fill = INPUT
+        if col < 8: dv_n2.add(c.coordinate)
+    e = zp.cell(r, 6, time(0, m, s_)); e.number_format = "[m]:ss"
+    f = zp.cell(r, 7, f"=SUM($F$5:F{r})"); f.number_format = "[m]:ss"
+    for col in range(1, 9):
         c = zp.cell(r, col); c.border = BOX; c.font = F(); c.alignment = Alignment(vertical="center", wrap_text=True)
 zp.cell(18, 2, "Summe Sprechzeit (ohne Wechsel)").font = F(bold=True)
-z = zp.cell(18, 5, "=SUM(E5:E16)"); z.number_format = "[m]:ss"; z.font = F(bold=True)
-zp.cell(20, 2, "Zeit je Person").font = F(bold=True, color=PETROL)
+z = zp.cell(18, 6, "=SUM(F5:F16)"); z.number_format = "[m]:ss"; z.font = F(bold=True)
+zp.cell(19, 2, "Folien ohne Sprecher:in").font = F(bold=True)
+zp.cell(19, 6, "=COUNTBLANK(D5:D16)").font = F(bold=True, color=AMBER)
+head_r = 21
+for i, h in enumerate(["", "Zeit und Folien je Person", "", "Folien", "", "Zeit"]):
+    c = zp.cell(head_r, 1 + i, h if h else None)
+zp.cell(head_r, 2).font = F(bold=True, color=PETROL)
+zp.cell(head_r, 4).font = F(bold=True, color=PETROL); zp.cell(head_r, 6).font = F(bold=True, color=PETROL)
 for i in range(4):
-    r = 21 + i
-    zp.cell(r, 2, f'=IF(Start!$B${5+i}="","Person {i+1}",Start!$B${5+i})').font = F()
-    c = zp.cell(r, 5, f'=SUMIF($D$5:$D$16,Start!$B${5+i},$E$5:$E$16)'); c.number_format = "[m]:ss"; c.font = F()
-zp.cell(26, 2, "Grenze laut Aufgabe: 10–12 Minuten. Mit Sprecherwechseln etwa 20–30 Sekunden mehr einplanen.").font = F(italic=True, color="5F8F99")
+    r = head_r + 1 + i; nm = f"Start!$B${5+i}"
+    zp.cell(r, 2, f'=IF({nm}="","Person {i+1}",{nm})').font = F()
+    zp.cell(r, 4, f'=IF({nm}="",0,COUNTIF($D$5:$D$16,{nm})+COUNTIF($E$5:$E$16,{nm}))').font = F()
+    c = zp.cell(r, 6, f'=IF({nm}="",0,SUMPRODUCT((($D$5:$D$16={nm})+($E$5:$E$16={nm}))*$F$5:$F$16/(($E$5:$E$16<>"")+1)))')
+    c.number_format = "[m]:ss"; c.font = F()
+zp.cell(27, 2, "Grenze laut Aufgabe: 10–12 Minuten. Pro Sprecherwechsel etwa 5 Sekunden mehr einplanen – viele Wechsel kosten Zeit.").font = F(italic=True, color="5F8F99")
+zp.cell(28, 2, "Faustregel: Wechsel an Kapitelgrenzen wirken ruhiger; ein Wechsel mitten in einer Folie braucht einen klaren Übergabesatz (Spalte H).").font = F(italic=True, color="5F8F99")
+zp.freeze_panes = "D5"
 
 # ---------------------------------------------------------------- Sprechtexte
 sp = wb.create_sheet("Sprechtexte")
@@ -163,7 +175,7 @@ for k, s in enumerate(list(prs.slides)[:12]):
     r = 5 + k
     txt = s.notes_slide.notes_text_frame.text.split("anpassen):\n")[-1].strip()
     sp.cell(r, 1, k + 1)
-    sp.cell(r, 2, f"='Rollen & Zeitplan'!D{5+k}")
+    sp.cell(r, 2, f"=IF('Rollen & Zeitplan'!D{5+k}=\"\",\"\",IF('Rollen & Zeitplan'!E{5+k}=\"\",'Rollen & Zeitplan'!D{5+k},'Rollen & Zeitplan'!D{5+k}&\" + \"&'Rollen & Zeitplan'!E{5+k}))")
     sp.cell(r, 3, txt)
     sp.cell(r, 4).fill = INPUT
     for col in range(1, 5):
