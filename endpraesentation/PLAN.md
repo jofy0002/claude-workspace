@@ -69,3 +69,22 @@ Ausgefüllte Bögen für Elbharz: `Auswertung_Elbharz_ausgefuellt.pdf` (erzeugt 
 - R4: Materialpreis 1.500 € pro Palette – war das eine Wirtschaftsdienst-Meldung?
 - Sprecher je Folie, Reflexion und Bezug zur Gründung gemeinsam durchgehen
 - Präsentation ist noch nicht angepasst (Wirtschaftlichkeit als Hauptkennzahl, Folie 5/9/10 korrigieren) – erst nach Freigabe
+
+## Visuelle Ideen der Gruppe (handschriftliche Anmerkungen im hochgeladenen Gerüst)
+Datei: `vorlagen/Elbharz_Endpraesentation_Geruest_mit_Ideen_der_Gruppe.pptx` (Stift-Anmerkungen auf den Folien; Folien-Nummern entsprechen der aktuellen Präsentation).
+
+| Folie | Idee der Gruppe |
+|---|---|
+| 1 Titel | „Bilder der Flasche" (in den orangen Kreis); zweite Notiz mit Pfeilen zum grünen Kreis, schwer lesbar (evtl. „Farben"/„Fotos") – nachfragen |
+| 2 Einleitung | „Rückseite zeigen" (Flaschenrückseite mit der Zutatenliste, passt zum Leitgedanken) |
+| 3 Nachhaltigkeit | „Bild von leerer Flasche" (Mehrweg); „Bild von Norddeutschland, Elbe rot eingezeichnet" (Regional); Eine Sorte: „Produktion – Lager – Transport" je mit Pfeil und „Bilder" |
+| 5 Entscheidungen | „Besseres Design" (Tabelle wirkt zu schlicht) |
+| 7 Kennzahlen | „Besseres Design" |
+| 9 Endbestand | „Bild von Geldstapel" (Schlussbestand); „Bild unserer 2 Maschinen" (Restwert); „Bild von Unternehmensgebäude" (Verkaufswert) |
+| 12 Danke | „Wieder Bild von Flasche und uns als KI-generierte Personen" |
+
+Folgerungen für später:
+- Bilder der Flasche und Personen: Vorhandenes aus der Firmenpräsentation wiederverwenden bzw. neu erzeugen.
+- KI-generierte Bilder auf der Quellenfolie kennzeichnen (Tool nennen).
+- Folie 5 und 7 gestalterisch aufwerten (z. B. Farbmarkierung, Mini-Diagramme).
+- Gemeinsam: Wo kommen die Bilder her, wer liefert sie?
