@@ -26,6 +26,8 @@ Einzige Quelle für alle Zahlen und Aussagen in der Präsentation. Alles ist geg
 - Wirtschaftsdienst ab Runde 2: wirkt direkt auf Kosten/Erfolg.
 - Verkaufswert = Schlussbestand R6 + Restwert der Maschinen (10 % Wertverlust je Runde **Nutzungsdauer**).
 - Wirtschaftlichkeit = Leistungen / Kosten = Umsatzerlöse / Gesamtkosten.
+- Tipp der Spielanleitung: „Es empfiehlt sich in der ersten Spielrunde nur eine Maschine zu kaufen.“
+- Spielmaterial: © 2006 Cornelsen Verlag, Berlin.
 
 ## 4. Unsere Runden (aus den ausgefüllten Arbeitsblättern)
 | | R1 | R2 | R3 | R4 | R5 | R6 |
@@ -61,10 +63,17 @@ Summen: Umsatz 240.270 €, Kosten 286.500 €, Wirtschaftlichkeit gesamt 0,84. 
 - **Verkaufswert = 53.770 + 12.000 + 18.000 = 83.770 €** → 16.230 € (16,2 %) unter dem Startkapital.
 - Platzierung: gibt es noch nicht.
 
+## 5b. Zweite Kennzahl und Einordnung
+- Absatzquote = am Markt verkauft ÷ produziert: 100 % · 50 % · 70 % · 50 % · 20 % · 40 %.
+- Wirtschaftlichkeit gesamt 0,84 (240.270 € ÷ 286.500 €).
+- Mit Wertverlust (10 %) statt Kaufpreis wären R1 (45.000 ÷ 42.000 = 1,07) und R2 (55.900 ÷ 48.000 = 1,16) knapp wirtschaftlich (eigene Rechnung).
+- Ohne Wirtschaftsdienst-Kosten: Verkaufswert 117.770 € (rein rechnerisch).
+- Preise R4–R6 (9.500 / 9.500 / 8.400 €) waren die höchsten des Spiels, obwohl wir weniger Absatz erwarteten.
+
 ## 6. Begründungen (Entscheidungsprotokoll, sinngemäß)
 - R1: Economy statt Standard, weil Standard sich wegen des Extra-Mitarbeiters nicht lohnt. 15 Paletten zu 3.000 €: lieber zu Beginn alles verkaufen und sehen, wie die anderen ihre Preise ändern.
 - R2: Letzte Runde 100 % verkauft → andere Anbieter vermutlich teurer → Preis „drastisch“ auf 7.600 €, in der Annahme, weniger zu verkaufen; zweite Maschine für mehr Produktion gekauft.
-- R3: Preis war zu hoch → 5.900 €, weil wir die anderen bei etwa 6.000 € vermuteten. Keine neue Maschine, kein neues Personal, Fokus Produktion.
+- R3: Preis war zu hoch → 5.900 €, weil wir die anderen bei etwa 6.000 € vermuteten. Laut Protokoll „keine neuen Maschinen, keine neuen Mitarbeiter“ – laut Arbeitsblatt aber 2 Mitarbeiter ab R3 (8.000 €). **Widerspruch in unseren Unterlagen; in der Präsentation gilt das Arbeitsblatt.**
 - R4: Wir vermuteten deutlich weniger Absatz („Beliebtheit nicht dauerhaft“) → nur 1 Palette, um kein Minus zu machen.
 - R5: Marktanalyse sagte weniger Absatz voraus → wieder nur 1 Palette.
 - R6: Vor Abschluss noch einmal alles verkaufen und Umsatz machen.

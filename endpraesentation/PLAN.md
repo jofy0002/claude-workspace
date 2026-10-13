@@ -24,7 +24,7 @@ Zahlen und Aussagen: siehe `FAKTEN.md` (einzige Quelle). Erzeugen: `node build.j
 | 4 | Produziert, angeboten, verkauft | Verlauf | Gestapelte Säulen je Runde: Markt vs. Schnäppchenmarkt, Preis über jeder Säule | 1:00 |
 | 5 | Warum wir so entschieden haben | Verlauf | 6 Rundenkarten (Preis, Kernaussage aus dem Protokoll, Ergebnis-Marke) | 1:15 |
 | 6 | Wirtschaftsdienst | Verlauf | Zusatzkosten je Runde (Säulen) + Kennzahl 34.000 € + Wirkung | 0:45 |
-| 7 | Kennzahl Wirtschaftlichkeit | Auswertung | Formel groß + Kostentabelle wie Bogen M15, W-Zeile farbig markiert | 1:15 |
+| 7 | Kennzahlen je Runde | Auswertung | Kompakte Kostentabelle, Wirtschaftlichkeit + Absatzquote farbig, Formeln und Aussagekraft | 1:00 |
 | 8 | Entwicklung | Auswertung | Säulen Wirtschaftlichkeit mit Linie bei 1,0 + Kurve Kassenbestand (beides wie M15) | 1:15 |
 | 9 | Verkaufswert | Auswertung | Rechnung 53.770 + 12.000 + 18.000 = 83.770 € mit Icons (Geld, Maschinen, Gebäude) + Vergleich zum Startkapital | 0:45 |
 | 10 | Reflexion | Reflexion | gut / schlechter / Alternative je Entscheidung, mit Zahlen belegt | 1:15 |
@@ -57,6 +57,8 @@ Zahlen und Aussagen: siehe `FAKTEN.md` (einzige Quelle). Erzeugen: `node build.j
 - [ ] Platzierung nach der Siegerehrung ergänzen (optional)
 
 ## Bereits erledigt
+- [x] Version 1 gebaut (`Elbharz_Endpraesentation.pptx` + `.pdf`), unabhängig geprüft (Zuschauer- und Lehrkraftsicht), Korrekturen eingearbeitet
+- [x] Team-Leitfaden (Rollen, Zeitplan, Sprechtexte, Fragen, To-dos, Checkliste): https://claude.ai/code/artifact/4ef3e79e-1018-4975-a9c0-da88face15e6
 - [x] Zahlen aller 6 Runden, Entscheidungsprotokoll, Verkaufswert, Auswertungsbogen M15 (`Auswertung_Elbharz_ausgefuellt.pdf`)
 - [x] Wirtschaftsdienst = sonstige Kosten; R2 zweite Maschine ungenutzt; Restwert über Nutzungsdauer geklärt
 - [x] Ideen der Gruppe aus den Stift-Notizen übernommen (`vorlagen/`)
