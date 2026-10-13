@@ -19,11 +19,29 @@ pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFac
 pres.title = "Elbharz Getränke GbR – Endpräsentation Planspiel Bertis Brause";
 const C = pres.SchemeColor;
 
+const React = require("react");
+const RDS = require("react-dom/server");
+const sharp = require("sharp");
+const FA = require("react-icons/fa");
+const ICONS = {};
+async function loadIcons(names) {
+  for (const n of names) {
+    const svg = RDS.renderToStaticMarkup(React.createElement(FA[n], { color: "#FFFFFF", size: 256 }));
+    const buf = await sharp(Buffer.from(svg)).png().toBuffer();
+    ICONS[n] = "image/png;base64," + buf.toString("base64");
+  }
+}
+function iconCircle(s, name, x, y, d, color) {
+  s.addShape(pres.ShapeType.ellipse, { x, y, w: d, h: d, fill: { color }, line: { type: "none" }, objectName: "Icon-Kreis " + name });
+  const p = d * 0.28;
+  s.addImage({ data: ICONS[name], x: x + p, y: y + p, w: d - 2 * p, h: d - 2 * p, altText: "Symbol", objectName: "Icon " + name });
+}
+
 pres.defineSlideMaster({
   title: "CONTENT",
   background: { color: C.background1 },
   objects: [
-    { placeholder: { options: { name: "title", type: "title", x: 0.7, y: 0.4, w: 11.9, h: 0.9, fontSize: 34, bold: true, fontFace: "Cambria", color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
+    { placeholder: { options: { name: "title", type: "title", x: 0.7, y: 0.4, w: 11.9, h: 0.9, fontSize: 36, bold: true, fontFace: "Cambria", color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
     { text: { text: "PRIMATENBRAUSE · ELBHARZ GETRÄNKE GBR", options: { x: 0.7, y: 7.0, w: 8, h: 0.3, fontSize: 10, color: C.accent4, margin: 0 } } },
   ],
   slideNumber: { x: 12.0, y: 7.0, w: 0.6, h: 0.3, fontSize: 10, color: C.accent4, align: "right" },
@@ -53,18 +71,22 @@ function todo(s, x, y, w, h, label, hint) {
     { text: hint, options: { fontSize: 14, color: C.text1 } },
   ], { x: x + 0.25, y, w: w - 0.5, h, valign: "middle", isTextBox: true, margin: 0 });
 }
-function card(s, x, y, w, h, head, body, accent) {
+function card(s, x, y, w, h, head, body, accent, icon) {
   s.addShape(pres.ShapeType.roundRect, { x, y, w, h, rectRadius: 0.12, fill: { color: C.background2 }, line: { type: "none" }, objectName: "Karte " + head });
-  s.addText(head, { x: x + 0.25, y: y + 0.15, w: w - 0.5, h: 0.45, fontSize: 18, bold: true, color: accent || C.text2, isTextBox: true, margin: 0 });
-  s.addText(body, { x: x + 0.25, y: y + 0.65, w: w - 0.5, h: h - 0.8, fontSize: 14, color: C.text1, valign: "top", isTextBox: true, margin: 0 });
+  iconCircle(s, icon, x + 0.3, y + 0.3, 0.7, accent || C.accent1);
+  s.addText(head, { x: x + 1.2, y: y + 0.3, w: w - 1.5, h: 0.7, fontSize: 20, bold: true, color: C.text2, valign: "middle", isTextBox: true, margin: 0 });
+  s.addText(body, { x: x + 0.3, y: y + 1.3, w: w - 0.6, h: h - 1.5, fontSize: 16, color: C.text1, valign: "top", paraSpaceAfter: 6, isTextBox: true, margin: 0 });
 }
 
+function build() {
 // 1 Titel
 {
   const s = slide("DARK", "Einleitung");
+  s.addShape(pres.ShapeType.ellipse, { x: 9.5, y: 1.2, w: 3.4, h: 3.4, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Sonne" });
+  s.addShape(pres.ShapeType.ellipse, { x: 8.7, y: 4.1, w: 1.3, h: 1.3, fill: { color: C.accent3, transparency: 25 }, line: { type: "none" }, objectName: "Punkt grün" });
   s.addText("PLANSPIEL BERTIS BRAUSE · ENDPRÄSENTATION", { x: 0.9, y: 1.2, w: 11, h: 0.4, fontSize: 14, bold: true, color: C.accent2, charSpacing: 3, isTextBox: true, margin: 0 });
   s.addText("Primatenbrause", { x: 0.9, y: 2.0, w: 11, h: 1.4, fontSize: 64, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
-  s.addText("Elbharz Getränke GbR – unser Weg durch sechs Spielrunden", { x: 0.9, y: 3.5, w: 11, h: 0.7, fontSize: 24, color: C.background2, isTextBox: true, margin: 0 });
+  s.addText("Elbharz Getränke GbR – unser Weg durch sechs Spielrunden", { x: 0.9, y: 3.5, w: 7.6, h: 1.2, fontSize: 24, color: C.background2, isTextBox: true, margin: 0 });
   s.addText("Namen der Gruppe · Klasse · Datum", { x: 0.9, y: 5.6, w: 11, h: 0.4, fontSize: 16, color: C.accent3, isTextBox: true, margin: 0 });
   s.addNotes("ca. 0:30 min. Gruppe nennen, kurz sagen was kommt: Einleitung, Rundenverlauf, Auswertung, Reflexion, Bezug zur Gründung.");
 }
@@ -73,18 +95,34 @@ function card(s, x, y, w, h, head, body, accent) {
 {
   const s = content("Wer wir sind und warum wir gegründet haben", "Einleitung",
     "ca. 1 min. Hauptaspekte der Firma + Gründungsintention. Quelle: Firmenpräsentation Folie 2–4.");
-  card(s, 0.7, 1.6, 3.8, 4.9, "Das Unternehmen", "Elbharz Getränke GbR, Hamburg\n4 Gesellschafter\nProdukt: Primatenbrause (Tamarinde-Limette)\nSlogan: „Was dein Körper schon immer wollte.“");
-  card(s, 4.75, 1.6, 3.8, 4.9, "Die Gründungsidee", "Ein Getränk, dessen Rückseite man zu Ende lesen kann.\nKurze, bekannte Zutaten, nichts versprechen, was das Etikett nicht belegt.");
-  card(s, 8.8, 1.6, 3.8, 4.9, "Zielgruppe & Vertrieb", "16–25 Jahre, Etiketten-Leser\nOnlineshop + Social Media, regionaler Handel, Messen und Märkte");
+  s.addShape(pres.ShapeType.roundRect, { x: 0.7, y: 1.6, w: 5.2, h: 4.9, rectRadius: 0.12, fill: { color: C.accent1 }, line: { type: "none" }, objectName: "Leitgedanke" });
+  s.addText([
+    { text: "Ein Getränk, dessen Rückseite man zu Ende lesen kann.", options: { fontSize: 32, bold: true, fontFace: "Cambria", color: C.background1, breakLine: true, paraSpaceAfter: 14 } },
+    { text: "Unsere einzige Vorgabe – daran haben wir alles andere gemessen.", options: { fontSize: 16, color: C.background2 } },
+  ], { x: 1.1, y: 1.9, w: 4.4, h: 4.3, valign: "middle", isTextBox: true, margin: 0 });
+  const rows = [
+    ["FaBuilding", "Das Unternehmen", "Elbharz Getränke GbR, Hamburg, 4 Gesellschafter. Produkt: Primatenbrause (Tamarinde-Limette)", C.accent1],
+    ["FaBullseye", "Die Zielgruppe", "16–25 Jahre, liest Etiketten aus Misstrauen – Slogan: „Was dein Körper schon immer wollte.“", C.accent2],
+    ["FaStore", "Der Vertrieb", "Onlineshop und Social Media, dann regionaler Handel, dazu Messen und Märkte", C.accent3],
+  ];
+  rows.forEach(([ic, h, t, col], i) => {
+    const y = 1.6 + i * 1.7;
+    s.addShape(pres.ShapeType.roundRect, { x: 6.2, y, w: 6.4, h: 1.5, rectRadius: 0.12, fill: { color: C.background2 }, line: { type: "none" }, objectName: "Karte " + h });
+    iconCircle(s, ic, 6.5, y + 0.4, 0.7, col);
+    s.addText([
+      { text: h, options: { bold: true, fontSize: 20, color: C.text2, breakLine: true } },
+      { text: t, options: { fontSize: 16, color: C.text1 } },
+    ], { x: 7.45, y, w: 4.9, h: 1.5, valign: "middle", isTextBox: true, margin: 0 });
+  });
 }
 
 // 3 Nachhaltigkeit
 {
   const s = content("Nachhaltigkeit von Anfang an", "Einleitung",
     "ca. 1 min. Die Aufgabe fragt ausdrücklich nach Nachhaltigkeit bei der Gründung. Mehrweg lohnt nur bei kurzen Wegen -> regional.");
-  card(s, 0.7, 1.6, 3.8, 3.2, "Mehrweg-Glas", "Pfandsystem statt Einweg", C.accent3);
-  card(s, 4.75, 1.6, 3.8, 3.2, "Regional", "Hier gebraut, hier abgefüllt – kurze Wege, damit Mehrweg ökologisch wirklich besser ist", C.accent3);
-  card(s, 8.8, 1.6, 3.8, 3.2, "Eine Sorte", "Weniger Produktion, Lager und Transport", C.accent3);
+  card(s, 0.7, 1.6, 3.8, 3.2, "Mehrweg-Glas", "Pfandsystem statt Einweg", C.accent3, "FaRecycle");
+  card(s, 4.75, 1.6, 3.8, 3.2, "Regional", "Hier gebraut, hier abgefüllt – kurze Wege, damit Mehrweg ökologisch wirklich besser ist", C.accent3, "FaMapMarkerAlt");
+  card(s, 8.8, 1.6, 3.8, 3.2, "Eine Sorte", "Weniger Produktion, Lager und Transport", C.accent3, "FaLeaf");
   todo(s, 0.7, 5.1, 11.9, 1.5, "Verknüpfung zum Spiel", "Wie floss Nachhaltigkeit im Spiel ein? (z. B. Maschinenwahl, Produktionsmenge, Preis) – später ergänzen");
 }
 
@@ -132,7 +170,7 @@ function card(s, x, y, w, h, head, body, accent) {
   for (const k of ["Umsatzerlöse (€)", "Gesamtkosten (€)", "Gewinn der Runde (€)", "Kassenbestand Ende (€)", "Abgesetzte Paletten", "Auslastung (Absatz / Produktion)"])
     rows.push([{ text: k, options: { bold: true } }, "–", "–", "–", "–", "–", "–"]);
   s.addTable(rows, { x: 0.7, y: 1.6, w: 7.9, colW: [3.1, 0.8, 0.8, 0.8, 0.8, 0.8, 0.8], fontSize: 14, color: "1B2A2F", border: { type: "solid", color: "B8B8B0", pt: 0.75 }, rowH: 0.62, valign: "middle", objectName: "Tabelle Kennzahlen" });
-  card(s, 8.9, 1.6, 3.7, 4.4, "So haben wir gerechnet", "Umsatz = Menge × Preis (+ Schnäppchenmarkt zu 1.000 €/Palette)\n\nKosten = Maschinen, Personal, Miete 5.000 €, Produktion, Material\n\nSchlussbestand = Anfangsbestand − Kosten + Umsatz");
+  card(s, 8.9, 1.6, 3.7, 4.6, "So haben wir gerechnet", "Umsatz = Menge × Preis (Rest am Schnäppchenmarkt: 1.000 €/Palette)\nKosten = Maschinen, Personal, Miete, Produktion, Material\nSchlussbestand = Anfangsbestand − Kosten + Umsatz", C.accent1, "FaChartLine");
   s.addText("Aussagekraft der Kennzahlen: später ergänzen", { x: 0.7, y: 6.3, w: 7.9, h: 0.4, fontSize: 14, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
 }
 
@@ -165,30 +203,37 @@ function card(s, x, y, w, h, head, body, accent) {
 {
   const s = content("Reflexion: Würden wir wieder so entscheiden?", "Reflexion",
     "ca. 1,5 min. Begründet Stellung nehmen und Handlungsalternativen zeigen (Aufgabentext). Pro Entscheidung: Bewertung + was wir stattdessen tun könnten.");
-  card(s, 0.7, 1.6, 3.8, 4.9, "Das lief gut", "– Entscheidung 1: Begründung\n– Entscheidung 2: Begründung", C.accent3);
-  card(s, 4.75, 1.6, 3.8, 4.9, "Das lief schlechter", "– Entscheidung 1: Begründung\n– Entscheidung 2: Begründung", C.accent2);
-  card(s, 8.8, 1.6, 3.8, 4.9, "Handlungsalternativen", "– Statt X hätten wir Y tun können\n– Erwartete Wirkung auf den Unternehmenswert");
+  card(s, 0.7, 1.6, 3.8, 3.9, "Das lief gut", "– Entscheidung 1: Begründung\n– Entscheidung 2: Begründung", C.accent3, "FaThumbsUp");
+  card(s, 4.75, 1.6, 3.8, 3.9, "Das lief schlechter", "– Entscheidung 1: Begründung\n– Entscheidung 2: Begründung", C.accent2, "FaThumbsDown");
+  card(s, 8.8, 1.6, 3.8, 3.9, "Alternativen", "– Statt X hätten wir Y tun können\n– Erwartete Wirkung auf den Unternehmenswert", C.accent1, "FaExchangeAlt");
+  todo(s, 0.7, 5.75, 11.9, 0.95, "Gesamtfazit", "Würden wir als Gruppe insgesamt wieder so vorgehen? Ein Satz");
 }
 
 // 11 Bezug zur Gründung
 {
   const s = content("Bezug zur Gründung: was im Spiel fehlte", "Bezug zur Gründung",
     "ca. 1,5 min. Aufgabe: Welche Gründungsideen fanden im Spiel keine Berücksichtigung, welche Auswirkung hätte das gehabt, und wie könnte man das Spiel erweitern, ohne es zu komplex zu machen?");
-  card(s, 0.7, 1.6, 3.8, 4.9, "Nicht im Spiel", "– Mehrweg-Glas und Pfand\n– Social-Media-Marketing / Onlineshop\n– Nur eine Sorte, Tamarinde\n– Zielgruppe, Vertriebsweg");
-  card(s, 4.75, 1.6, 3.8, 4.9, "Mögliche Auswirkung", "Wie hätte sich das auf Kosten, Absatz und Preis ausgewirkt?\n(später mit euren Zahlen untermauern)");
-  card(s, 8.8, 1.6, 3.8, 4.9, "Idee zur Spielerweiterung", "Konkreter, einfacher Vorschlag, z. B. eine zusätzliche Entscheidung pro Runde (Marketingbudget), ohne das Rechnen aufzublähen", C.accent2);
+  card(s, 0.7, 1.6, 3.8, 3.9, "Nicht im Spiel", "– Mehrweg-Glas und Pfand\n– Social-Media-Marketing / Onlineshop\n– Nur eine Sorte, Tamarinde\n– Zielgruppe, Vertriebsweg", C.accent1, "FaBan");
+  card(s, 4.75, 1.6, 3.8, 3.9, "Mögliche Auswirkung", "Wie hätte sich das auf Kosten, Absatz und Preis ausgewirkt?\n(später mit euren Zahlen untermauern)", C.accent1, "FaChartLine");
+  card(s, 8.8, 1.6, 3.8, 3.9, "Idee zur Spielerweiterung", "Konkreter, einfacher Vorschlag, z. B. eine zusätzliche Entscheidung pro Runde (Marketingbudget), ohne das Rechnen aufzublähen", C.accent2, "FaLightbulb");
+  todo(s, 0.7, 5.75, 11.9, 0.95, "Kernbotschaft", "Was hätte die Gründungsidee im Spiel verändert? Ein Satz");
 }
 
 // 12 Danke
 {
   const s = slide("DARK", "Abschluss");
+  s.addShape(pres.ShapeType.ellipse, { x: 9.5, y: 1.9, w: 3.0, h: 3.0, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Sonne" });
   s.addText("Vielen Dank", { x: 0.9, y: 2.4, w: 11, h: 1.3, fontSize: 60, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
   s.addText("Wir freuen uns über eure Fragen.", { x: 0.9, y: 3.8, w: 11, h: 0.6, fontSize: 24, color: C.background2, isTextBox: true, margin: 0 });
   s.addText("Quellen: Planspiel Bertis Brause (Cornelsen), eigene Berechnungen aus Excel und Entscheidungsprotokoll", { x: 0.9, y: 6.3, w: 11.5, h: 0.4, fontSize: 12, color: C.accent3, isTextBox: true, margin: 0 });
   s.addNotes("Stehen lassen, solange Fragen kommen.");
 }
 
+}
+
 (async () => {
+  await loadIcons(["FaBuilding","FaLightbulb","FaBullseye","FaRecycle","FaMapMarkerAlt","FaLeaf","FaThumbsUp","FaThumbsDown","FaExchangeAlt","FaBan","FaChartLine","FaBullhorn","FaStore"]);
+  build();
   await pres.writeFile({ fileName: "Elbharz_Endpraesentation_Geruest.pptx" });
   await applyTheme("Elbharz_Endpraesentation_Geruest.pptx", THEME);
 })();
