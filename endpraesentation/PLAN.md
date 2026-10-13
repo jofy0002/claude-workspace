@@ -1,7 +1,7 @@
 # Plan: Endpräsentation Planspiel „Bertis Brause“ (Elbharz Getränke GbR)
 
 **Vorgaben:** 10–12 Min., digital an die Lehrkraft, zählt 60 % (Phase III).
-**Datei:** `Elbharz_Endpraesentation_Geruest.pptx` (12 Folien, Sprechernotizen mit Zeitangaben). Neu erzeugen mit `node build.js`.
+**Datei:** `Elbharz_Endpraesentation.pptx` (12 Folien, mit echten Zahlen und Sprechtext-Entwürfen in den Notizen). Neu erzeugen mit `node build.js`.
 
 ## Folienplan (≈ 12 Min.)
 
@@ -26,11 +26,18 @@
 - [ ] Wirtschaftsdienst-Nachrichten Runde 2–6
 - [x] Unternehmensverkaufswert: 83.770 € (Restwert Economy 2 noch prüfen: evtl. 80.770 €); Platzierung offen
 - [x] Gruppenname (Elbharz Getränke GbR) und Klasse (11b) auf der Titelfolie
-- [ ] Sprecher je Folie festlegen (4 Gesellschafter, 12 Folien: Namen und Aufteilung fehlen noch)
+- [ ] Sprecher je Folie festlegen (später; jeder passt dann seinen Sprechtext in den Notizen an)
 - [x] Firma bleibt Elbharz / Primatenbrause (so auf den Arbeitsblättern eingetragen)
 
+## Stand
+- [x] Folien 1–5 und 7–9 mit echten Zahlen und Diagrammen gebaut
+- [x] Folien 10 und 11 als Entwurf aus dem Entscheidungsprotokoll (gemeinsam prüfen)
+- [ ] Folie 6 (Wirtschaftsdienst) wartet auf die Nachrichten
+- [ ] Restwert Maschine 2 mit der Lehrkraft klären (83.770 € oder 80.770 €)
+- [ ] Platzierung nachtragen, sobald es sie gibt
+
 ## Nächste Schritte
-1. Zahlen schicken -> Tabellen und echte Diagramme einbauen.
-2. Texte für Reflexion und Bezug zur Gründung gemeinsam ausformulieren.
+1. Wirtschaftsdienst-Nachrichten schicken -> Folie 6 füllen.
+2. Reflexion und Bezug zur Gründung gemeinsam durchgehen.
 3. Probelauf mit Stoppuhr, auf 10–12 Min. kürzen/strecken.
 4. Als PPTX und PDF an die Lehrkraft.
