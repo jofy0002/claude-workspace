@@ -44,14 +44,14 @@ ws["B2"] = "Graues Feld anklicken → Pfeil → ✓ oder deinen Namen wählen. E
 ws["B2"].font = F(size=11, color=MUTED)
 
 einzeln = [
-    "Sprechtext für meine Folien in eigene Worte gebracht",
-    "Meinen Teil laut mit Stoppuhr geübt",
+    "Sprechtext für meine Folien gelesen und in eigene Worte gebracht",
+    "Meinen Teil laut mit Stoppuhr geübt (inkl. Übergabesatz)",
     "Kann die Zahlen meiner Folien ohne Ablesen erklären",
     "Reflexion (Folie 10) gelesen – passt für mich",
     "Generalprobe mitgemacht",
 ]
 gemeinsam = [
-    "Karte Norddeutschland mit roter Elbe einfügen (Folie 3)",
+    "Optional: Karte mit roter Elbe statt Standort-Symbol (Folie 3)",
     "KI-Teambild einfügen + Tool notieren (Folie 12)",
     "Bildquelle Limette & Tamarinde klären (Quellenfolie)",
     "R3 klären: 18,2 Paletten und Mitarbeiterzahl laut Protokoll",
@@ -113,13 +113,13 @@ zp = wb.create_sheet("Wer spricht was")
 sheet_base(zp, {"A": 2, "B": 8, "C": 42, "D": 16, "E": 10, "F": 2})
 zp["B1"] = "Wer spricht was"; zp["B1"].font = F(size=20, bold=True, color=PETROL)
 zp.row_dimensions[1].height = 34
-zp["B2"] = "Pro Folie einen Namen wählen – Wechsel sind jederzeit möglich."; zp["B2"].font = F(size=11, color=MUTED)
+zp["B2"] = "Pro Folie einen Namen wählen. Vorschlag: Folie 1–3 · 4–6 · 7–9 · 10–12 (passt zu den Kapiteln)."; zp["B2"].font = F(size=11, color=MUTED)
 colhead(zp, 4, [(2, "Folie"), (3, "Titel"), (4, "Wer?"), (5, "Dauer")])
 zp.cell(4, 2).alignment = CENTER; zp.cell(4, 3).alignment = LEFT
-plan = [("Titel", 0, 20), ("Wer wir sind", 0, 45), ("Nachhaltigkeit", 0, 45), ("Produziert, angeboten, verkauft", 1, 0),
-        ("Warum wir so entschieden haben", 1, 5), ("Wirtschaftsdienst", 0, 50), ("Unsere Kennzahlen", 1, 0),
-        ("Wirtschaftlichkeit & Schlussbestand", 0, 55), ("Verkaufswert", 0, 50), ("Reflexion", 1, 20),
-        ("Bezug zur Gründung", 1, 10), ("Vielen Dank", 0, 10)]
+plan = [("Titel + Einstiegsfrage", 0, 35), ("Wer wir sind", 0, 45), ("Nachhaltigkeit", 0, 40), ("Produziert, angeboten, verkauft", 1, 0),
+        ("Drei Entscheidungen", 1, 10), ("Zwei Kennzahlen", 1, 0), ("Wirtschaftlichkeit & Schlussbestand", 0, 50),
+        ("Verkaufswert", 0, 50), ("Wirtschaftsdienst", 0, 50), ("Reflexion", 1, 10),
+        ("Bezug zur Gründung", 1, 5), ("Schluss + Danke", 0, 30)]
 dv_who = DataValidation(type="list", formula1='"' + ",".join(NAMES) + '"', allow_blank=True)
 zp.add_data_validation(dv_who)
 for k, (t, m, s) in enumerate(plan):

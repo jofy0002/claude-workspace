@@ -66,7 +66,7 @@ Summen: Umsatz 240.270 €, Kosten 286.500 €, Wirtschaftlichkeit gesamt 0,84. 
 ## 5b. Zweite Kennzahl und Einordnung
 - Absatzquote = am Markt verkauft ÷ produziert: 100 % · 50 % · 70 % · 50 % · 20 % · 40 %.
 - Wirtschaftlichkeit gesamt 0,84 (240.270 € ÷ 286.500 €).
-- Mit Wertverlust (10 %) statt Kaufpreis wären R1 (45.000 ÷ 42.000 = 1,07) und R2 (55.900 ÷ 48.000 = 1,16) knapp wirtschaftlich (eigene Rechnung).
+- Mit Wertverlust (10 % je Nutzungsrunde) statt Kaufpreis in ALLEN Runden: R1 1,07 · R2 1,16 · R3 1,33 · R4 0,22 · R5 0,09 · R6 ≈ 1,00 (nur als Antwort auf Rückfragen, nicht im Vortrag).
 - Ohne Wirtschaftsdienst-Kosten: Verkaufswert 117.770 € (rein rechnerisch).
 - Preise R4–R6 (9.500 / 9.500 / 8.400 €) waren die höchsten des Spiels, obwohl wir weniger Absatz erwarteten.
 
