@@ -144,5 +144,7 @@ c = zp.cell(24, 4, '=COUNTBLANK(D5:D16)&" Folien"'); c.font = F(color=MUTED); c.
 
 ws.sheet_properties.tabColor = PETROL; zp.sheet_properties.tabColor = AMBER
 wb.active = 0
+wb.calculation.fullCalcOnLoad = True
+wb.security = None  # kein (leerer) Arbeitsmappenschutz – sonst öffnet Excel/Teams evtl. schreibgeschützt  # Excel rechnet beim Öffnen; Datei NICHT über LibreOffice neu speichern (setzt sonst Blattschutz)
 wb.save("Team_Leitfaden_Elbharz.xlsx")
 print("ok")
