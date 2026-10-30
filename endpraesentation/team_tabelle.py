@@ -56,7 +56,6 @@ gemeinsam = [
     "Bildquelle Limette & Tamarinde klären (Quellenfolie)",
     "R3 klären: 18,2 Paletten und Mitarbeiterzahl laut Protokoll",
     "Präsentation am Schul-Beamer testen",
-    "Requisit: Glasflasche besorgen, Etikett drucken und aufkleben",
     "Alle Platzhalter ersetzt („BILD FOLGT“, „Quelle ergänzen“)",
     "PDF exportieren + Backup auf USB-Stick",
     "Präsentation, PDF und Bögen M15 an die Lehrkraft",
@@ -117,10 +116,10 @@ zp.row_dimensions[1].height = 34
 zp["B2"] = "Pro Folie einen Namen wählen. Vorschlag: Folie 1–4 · 5–7 · 8–10 · 11–13 (je ca. 2:20–3:10 Min.)."; zp["B2"].font = F(size=11, color=MUTED)
 colhead(zp, 4, [(2, "Folie"), (3, "Titel"), (4, "Wer?"), (5, "Dauer")])
 zp.cell(4, 2).alignment = CENTER; zp.cell(4, 3).alignment = LEFT
-plan = [("Titel + Flasche + Einstiegsfrage", 0, 40), ("Wer wir sind", 0, 45), ("Nachhaltigkeit", 0, 45), ("Produziert, angeboten, verkauft", 0, 40),
-        ("Drei Entscheidungen", 1, 5), ("Zwei Kennzahlen", 1, 0), ("Wirtschaftlichkeit & Schlussbestand + Schätzfrage", 1, 5),
+plan = [("Titel", 0, 30), ("Wer wir sind", 0, 45), ("Nachhaltigkeit", 0, 45), ("Produziert, angeboten, verkauft", 0, 40),
+        ("Drei Entscheidungen", 1, 5), ("Zwei Kennzahlen", 1, 0), ("Wirtschaftlichkeit & Schlussbestand", 0, 55),
         ("Verkaufswert", 0, 50), ("Wirtschaftsdienst", 0, 45), ("Was wäre mit 1 Maschine?", 0, 50), ("Reflexion", 1, 0),
-        ("Bezug zur Gründung", 1, 10), ("Schluss: Rückseite + Flasche", 0, 35)]
+        ("Bezug zur Gründung", 1, 10), ("Ergebnis auf einen Blick + Danke", 0, 30)]
 dv_who = DataValidation(type="list", formula1='"' + ",".join(NAMES) + '"', allow_blank=True)
 zp.add_data_validation(dv_who)
 for k, (t, m, s) in enumerate(plan):

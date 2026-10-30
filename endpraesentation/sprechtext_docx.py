@@ -5,11 +5,11 @@ from docx.shared import Pt, RGBColor, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 PETROL, AMBER, MUTED = RGBColor(0x0F, 0x5C, 0x6B), RGBColor(0xD9, 0x82, 0x2B), RGBColor(0x5F, 0x8F, 0x99)
-TITEL = ["Titel + Flasche + Einstiegsfrage", "Wer wir sind", "Nachhaltigkeit", "Produziert, angeboten, verkauft", "Drei Entscheidungen",
-         "Zwei Kennzahlen", "Wirtschaftlichkeit & Schlussbestand + Schätzfrage", "Verkaufswert", "Wirtschaftsdienst", "Was wäre mit 1 Maschine?",
-         "Reflexion", "Bezug zur Gründung", "Schluss: Rückseite + Flasche"]
+TITEL = ["Titel", "Wer wir sind", "Nachhaltigkeit", "Produziert, angeboten, verkauft", "Drei Entscheidungen",
+         "Zwei Kennzahlen", "Wirtschaftlichkeit & Schlussbestand", "Verkaufswert", "Wirtschaftsdienst", "Was wäre mit 1 Maschine?",
+         "Reflexion", "Bezug zur Gründung", "Ergebnis auf einen Blick"]
 UEBERGABE = {4: "Übergabe an Folie 5 (steht im Text): „… erklärt euch jetzt [Name].“",
-             7: "Übergabe an Folie 8 (steht im Text): „Die Auflösung hat [Name].“",
+             7: "Übergabe an Folie 8 (steht im Text): „Was unser Unternehmen am Ende wert war, erklärt euch jetzt [Name].“",
              10: "Übergabe an Folie 11 (steht im Text): „Was wir daraus lernen, erklärt euch jetzt [Name].“"}
 
 prs = Presentation("Elbharz_Endpraesentation.pptx")

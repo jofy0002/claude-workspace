@@ -72,7 +72,6 @@ Summen: Umsatz 240.270 €, Kosten 286.500 €, Wirtschaftlichkeit gesamt 0,84. 
 
 ## 5c. Was wäre, wenn – nur eine Maschine (eigene Rechnung nach Spielregeln)
 Gleiche Preise, gleicher Absatz am Markt (nie mehr als 15 Paletten normal verkauft): +30.000 € (kein 2. Maschinenkauf) + 16.000 € (R3–R6 je 1 Mitarbeiter weniger) + ca. 3.000 € (R3: 15 statt 18 Paletten, 6.000 € weniger Kosten, ca. 3.000 € weniger Schnäppchen-Umsatz) − 18.000 € (kein Restwert Maschine 2) = **ca. +31.000 €** → Verkaufswert **ca. 115.000 €** (über dem Startkapital). Nur Personal R4/R5 reduzieren: +8.000 €. Maschine 2 erst in R3 kaufen: gleicher Endwert.
-- Tamarinde: Name aus dem Arabischen „indische Dattel“, Herkunft tropisches Afrika, in Mexiko als Agua de tamarindo verbreitet (Allgemeinwissen, Quelle nicht geöffnet).
 
 ## 6. Begründungen (Entscheidungsprotokoll, sinngemäß)
 - R1: Economy statt Standard, weil Standard sich wegen des Extra-Mitarbeiters nicht lohnt. 15 Paletten zu 3.000 €: lieber zu Beginn alles verkaufen und sehen, wie die anderen ihre Preise ändern.

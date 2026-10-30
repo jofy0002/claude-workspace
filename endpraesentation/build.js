@@ -140,13 +140,13 @@ function build() {
   s.addShape(pres.ShapeType.ellipse, { x: 7.35, y: 4.55, w: 2.1, h: 2.1, fill: { color: C.accent3 }, line: { type: "none" }, objectName: "Zutatenkreis" });
   s.addImage({ data: IMG.tamarinde, x: 7.65, y: 4.95, w: 1.55, h: 1.55, altText: "Tamarinde", objectName: "Tamarinde" });
   s.addImage({ data: IMG.limette, x: 7.05, y: 4.45, w: 1.5, h: 0.75, altText: "Limette", objectName: "Limette" });
-  s.addNotes(NOTE("ca. 0:40 min", "[Flasche hochhalten und umdrehen.] Wer von euch dreht beim Einkaufen eigentlich mal die Flasche um und liest, was drin ist? [kurz warten] Genau für solche Leute haben wir die Primatenbrause erfunden. Wir sind die Elbharz Getränke GbR aus der 11b, und in den nächsten elf Minuten zeigen wir euch, was aus unserer Idee im Planspiel geworden ist. Vorweg: Am Ende hatten wir weniger Geld als am Anfang. Warum, zeigen wir euch heute. Zuerst zu unserer Idee."));
+  s.addNotes(NOTE("ca. 0:30 min", "Wir sind die Elbharz Getränke GbR aus der 11b. Unser Produkt ist die Primatenbrause, Tamarinde-Limette: ein Getränk für Leute, die im Laden die Flasche umdrehen und die Zutaten lesen. In den nächsten elf Minuten zeigen wir euch, was aus unserer Idee im Planspiel geworden ist. Vorweg: Am Ende hatten wir weniger Geld als am Anfang. Warum, zeigen wir euch heute. Zuerst zu unserer Idee."));
 }
 
 // =========================================================== 2 Wer wir sind
 {
   const s = content("Wer wir sind – in 30 Sekunden", "Einleitung",
-    NOTE("ca. 0:45 min", "Unsere Idee war ganz einfach: ein Getränk, dessen Rückseite man zu Ende lesen kann. Viele Getränke versprechen heute irgendwas, mehr Energie, mehr Fokus. Wir wollten bewusst wenig versprechen, nur das, was man auf dem Etikett nachprüfen kann. Gedacht ist sie für 16- bis 25-Jährige wie unsere Persona Jasper, der im Laden jede Flasche umdreht. Und Tamarinde, weil sie bei uns kaum jemand kennt: Der Name heißt übersetzt indische Dattel, die Frucht stammt aber aus Afrika, und in Mexiko trinkt man sie ganz alltäglich. Herb statt süß, und auf unserer Zutatenliste steht kein Zucker."));
+    NOTE("ca. 0:45 min", "Unsere Idee war ganz einfach: ein Getränk, dessen Rückseite man zu Ende lesen kann. Viele Getränke versprechen heute irgendwas, mehr Energie, mehr Fokus. Wir wollten bewusst wenig versprechen, nur das, was man auf dem Etikett nachprüfen kann. Gedacht ist sie für 16- bis 25-Jährige wie unsere Persona Jasper, der im Laden jede Flasche umdreht. Und Tamarinde, weil sie bei uns als Getränk kaum bekannt ist. Herb statt süß, und auf unserer Zutatenliste steht kein Zucker."));
   box(s, 0.7, 1.6, 4.1, 4.9, C.accent1, "Leitgedanke");
   s.addText([
     { text: "Ein Getränk, dessen Rückseite man zu Ende lesen kann.", options: { fontSize: 30, bold: true, fontFace: "Cambria", color: C.background1, breakLine: true, paraSpaceAfter: 14 } },
@@ -282,7 +282,7 @@ function build() {
 // =========================================================== 8 Entwicklung
 {
   const s = content("Wirtschaftlichkeit und Schlussbestand", "Auswertung",
-    NOTE("ca. 1:05 min", "Links seht ihr die Wirtschaftlichkeit für jede Runde. Die gestrichelte Linie ist die Eins, also die Grenze zwischen Gewinn und Verlust. Darüber liegen nur Runde drei und Runde sechs. Über alle Runden zusammen kommen wir auf 0,84: rund 240.000 Euro Umsatz bei rund 287.000 Euro Kosten. Rechts seht ihr, was mit unserem Startkapital passiert ist. Wir sind mit 100.000 Euro gestartet. Die Maschinenkäufe haben uns am Anfang runtergezogen. In Runde drei ging es auf rund 83.000 Euro hoch, danach in zwei schwachen Runden auf unter 48.000. Am Ende stehen knapp 54.000 Euro in der Kasse. An unser Startkapital sind wir nie wieder herangekommen. Kurze Frage an euch: Am Ende wird das Unternehmen verkauft, Kasse plus Maschinen. Wer glaubt, dass es mehr wert ist als die 100.000 Euro vom Start? Hand hoch. Und wer glaubt, weniger? [kurz warten] Die Auflösung hat [Name]."));
+    NOTE("ca. 1:05 min", "Links seht ihr die Wirtschaftlichkeit für jede Runde. Die gestrichelte Linie ist die Eins, also die Grenze zwischen Gewinn und Verlust. Darüber liegen nur Runde drei und Runde sechs. Über alle Runden zusammen kommen wir auf 0,84: rund 240.000 Euro Umsatz bei rund 287.000 Euro Kosten. Rechts seht ihr, was mit unserem Startkapital passiert ist. Wir sind mit 100.000 Euro gestartet. Die Maschinenkäufe haben uns am Anfang runtergezogen. In Runde drei ging es auf rund 83.000 Euro hoch, danach in zwei schwachen Runden auf unter 48.000. Am Ende stehen knapp 54.000 Euro in der Kasse. An unser Startkapital sind wir nie wieder herangekommen. Was unser Unternehmen am Ende wert war, erklärt euch jetzt [Name]."));
   s.addChart([
     { type: pres.charts.BAR, data: [{ name: "Wirtschaftlichkeit", labels: R, values: wirt }], options: { chartColors: [HEX.petrol], barGapWidthPct: 60, showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0.00" } },
     { type: pres.charts.LINE, data: [{ name: "Grenze 1,0 (Kosten gedeckt)", labels: R, values: [1, 1, 1, 1, 1, 1] }], options: { chartColors: [HEX.amber], lineSize: 2, lineDash: "dash", lineDataSymbol: "none", showValue: false } },
@@ -306,7 +306,7 @@ function build() {
 // =========================================================== 9 Verkaufswert
 {
   const s = content("Was unser Unternehmen am Ende wert ist", "Auswertung",
-    NOTE("ca. 0:50 min", "Die meisten von euch lagen richtig, wenn ihr weniger gesagt habt. Der Wert ist das Geld in der Kasse plus das, was die Maschinen noch wert sind. Jede Maschine verliert pro Runde, in der sie läuft, zehn Prozent. Die erste lief sechs Runden und ist noch 12.000 Euro wert. Die zweite lief nur vier Runden, weil sie in Runde zwei stillstand. Sie ist noch 18.000 Euro wert. Zusammen kommen wir auf 83.770 Euro. Das sind gut 16.000 Euro weniger, als wir am Anfang hatten. Allein die zwei Maschinen haben 60.000 Euro gekostet, davon steckt nur noch die Hälfte im Unternehmenswert. Und hier kommt die Frage: warum nur so wenig?"));
+    NOTE("ca. 0:50 min", "Am Ende des Spiels wird das Unternehmen verkauft. Der Wert ist das Geld in der Kasse plus das, was die Maschinen noch wert sind. Jede Maschine verliert pro Runde, in der sie läuft, zehn Prozent. Die erste lief sechs Runden und ist noch 12.000 Euro wert. Die zweite lief nur vier Runden, weil sie in Runde zwei stillstand. Sie ist noch 18.000 Euro wert. Zusammen kommen wir auf 83.770 Euro. Das sind gut 16.000 Euro weniger, als wir am Anfang hatten. Allein die zwei Maschinen haben 60.000 Euro gekostet, davon steckt nur noch die Hälfte im Unternehmenswert. Und hier kommt die Frage: warum nur so wenig?"));
   const tiles = [
     ["FaCoins", "53.770\u00A0€", "Schlussbestand nach R6", C.accent1],
     ["FaCogs", "12.000\u00A0€", "Maschine 1 (6 Runden genutzt)", C.accent1],
@@ -439,15 +439,15 @@ function build() {
   const s = slide("DARK", "Abschluss");
   // Etikett-Rückseite wie auf Folie 2
   s.addShape(pres.ShapeType.roundRect, { x: 0.8, y: 0.75, w: 4.7, h: 6.0, rectRadius: 0.08, fill: { color: C.background1 }, line: { color: C.accent2, width: 2 }, objectName: "Etikett Ergebnis" });
-  s.addText("RÜCKSEITE · UNSER ERGEBNIS", { x: 1.15, y: 1.0, w: 4.1, h: 0.3, fontSize: 12, bold: true, color: C.accent2, charSpacing: 3, isTextBox: true, margin: 0 });
-  s.addText("Zutaten", { x: 1.15, y: 1.3, w: 4.1, h: 0.55, fontSize: 24, bold: true, fontFace: "Cambria", color: C.text2, isTextBox: true, margin: 0 });
-  ["100.000 € Startkapital", "2 Maschinen – eine zu viel", "1 starke Runde (R3)", "2 Runden zum falschen Preis (R4, R5)", "34.000 € Wirtschaftsdienst", "Wirtschaftlichkeit gesamt: 0,84"].forEach((z, i) => {
+  s.addText("UNSER ERGEBNIS", { x: 1.15, y: 1.0, w: 4.1, h: 0.3, fontSize: 12, bold: true, color: C.accent2, charSpacing: 3, isTextBox: true, margin: 0 });
+  s.addText("Auf einen Blick", { x: 1.15, y: 1.3, w: 4.1, h: 0.55, fontSize: 24, bold: true, fontFace: "Cambria", color: C.text2, isTextBox: true, margin: 0 });
+  ["Startkapital: 100.000 €", "Wirtschaftlichkeit gesamt: 0,84", "Beste Runde: R3 (+25.940 €)", "Größter Fehler: hohe Preise in R4/R5", "Wirtschaftsdienst: 34.000 €", "Mit 1 Maschine: ca. 115.000 €"].forEach((z, i) => {
     const y = 2.05 + i * 0.52;
     s.addShape(pres.ShapeType.ellipse, { x: 1.17, y: y + 0.13, w: 0.14, h: 0.14, fill: { color: C.accent3 }, line: { type: "none" }, objectName: "Punkt " + i });
     s.addText(z, { x: 1.45, y, w: 3.85, h: 0.4, fontSize: 16, color: C.text1, valign: "middle", isTextBox: true, margin: 0 });
   });
   s.addShape(pres.ShapeType.line, { x: 1.15, y: 5.3, w: 4.0, h: 0, line: { color: C.accent5, width: 1 }, objectName: "Linie" });
-  s.addText([{ text: "Inhalt: ", options: { fontSize: 18, color: C.text1 } }, { text: "83.770 €", options: { fontSize: 30, bold: true, fontFace: "Cambria", color: C.accent2 } }],
+  s.addText([{ text: "Verkaufswert: ", options: { fontSize: 18, color: C.text1 } }, { text: "83.770 €", options: { fontSize: 30, bold: true, fontFace: "Cambria", color: C.accent2 } }],
     { x: 1.15, y: 5.45, w: 4.1, h: 0.75, valign: "middle", isTextBox: true, margin: 0 });
   // Botschaft
   s.addText("Unsere Rückseite kann man zu Ende lesen.", { x: 5.9, y: 1.4, w: 3.4, h: 0.9, fontSize: 18, bold: true, color: C.accent2, isTextBox: true, margin: 0 });
@@ -457,7 +457,7 @@ function build() {
   s.addText("BILD FOLGT: KI-Teambild", { x: 6.25, y: 4.9, w: 1.6, h: 1.7, fontSize: 10, bold: true, color: C.background1, align: "center", valign: "middle", isTextBox: true, margin: 0 });
   s.addShape(pres.ShapeType.ellipse, { x: 9.5, y: 1.7, w: 3.4, h: 3.4, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Sonne" });
   const fh = 5.2; s.addImage({ data: IMG.flasche, x: 11.2 - (fh * FLASCHE_RATIO) / 2, y: 1.15, w: fh * FLASCHE_RATIO, h: fh, altText: "Flasche Primatenbrause", objectName: "Flasche" });
-  s.addNotes(NOTE("ca. 0:35 min", "[Flasche umdrehen.] Am Anfang haben wir gefragt, wer die Flasche umdreht. Zum Schluss drehen wir unsere eigene um. Auf der Rückseite unseres Spiels stehen diese Zutaten: eine Maschine zu viel, eine starke Runde, zwei Runden zum falschen Preis und 34.000 Euro, die wir nicht planen konnten. Heraus kommen 83.770 Euro. Unsere Rückseite kann man zu Ende lesen. Unsere Zahlen auch. Vielen Dank, wir freuen uns auf eure Fragen."));
+  s.addNotes(NOTE("ca. 0:30 min", "Zum Schluss unser Ergebnis auf einen Blick. Gestartet sind wir mit 100.000 Euro, verkauft haben wir unser Unternehmen für 83.770 Euro. Unsere beste Runde war Runde drei, unser größter Fehler waren die hohen Preise in Runde vier und fünf, während die Fixkosten weiterliefen. Am Anfang haben wir gesagt: Die Rückseite unserer Flasche kann man zu Ende lesen. Unsere Zahlen auch. Vielen Dank fürs Zuhören, wir freuen uns auf eure Fragen."));
 }
 
 // =========================================================== 13 Quellen
