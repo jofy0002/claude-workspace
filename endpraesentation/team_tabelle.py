@@ -113,13 +113,13 @@ zp = wb.create_sheet("Wer spricht was")
 sheet_base(zp, {"A": 2, "B": 8, "C": 42, "D": 16, "E": 10, "F": 2})
 zp["B1"] = "Wer spricht was"; zp["B1"].font = F(size=20, bold=True, color=PETROL)
 zp.row_dimensions[1].height = 34
-zp["B2"] = "Pro Folie einen Namen wählen. Vorschlag: Folie 1–3 · 4–6 · 7–9 · 10–12 (passt zu den Kapiteln)."; zp["B2"].font = F(size=11, color=MUTED)
+zp["B2"] = "Pro Folie einen Namen wählen. Vorschlag: Folie 1–4 · 5–6 · 7–9 · 10–12 (je ca. 2:20–2:50 Min.)."; zp["B2"].font = F(size=11, color=MUTED)
 colhead(zp, 4, [(2, "Folie"), (3, "Titel"), (4, "Wer?"), (5, "Dauer")])
 zp.cell(4, 2).alignment = CENTER; zp.cell(4, 3).alignment = LEFT
-plan = [("Titel + Einstiegsfrage", 0, 35), ("Wer wir sind", 0, 45), ("Nachhaltigkeit", 0, 40), ("Produziert, angeboten, verkauft", 1, 0),
-        ("Drei Entscheidungen", 1, 10), ("Zwei Kennzahlen", 1, 0), ("Wirtschaftlichkeit & Schlussbestand", 0, 50),
-        ("Verkaufswert", 0, 50), ("Wirtschaftsdienst", 0, 50), ("Reflexion", 1, 10),
-        ("Bezug zur Gründung", 1, 5), ("Schluss + Danke", 0, 30)]
+plan = [("Titel + Einstiegsfrage", 0, 35), ("Wer wir sind", 0, 50), ("Nachhaltigkeit", 0, 45), ("Produziert, angeboten, verkauft", 0, 40),
+        ("Drei Entscheidungen", 1, 20), ("Zwei Kennzahlen", 1, 10), ("Wirtschaftlichkeit & Schlussbestand", 0, 50),
+        ("Verkaufswert", 0, 50), ("Wirtschaftsdienst", 0, 45), ("Reflexion", 1, 15),
+        ("Bezug zur Gründung", 1, 15), ("Schluss + Danke", 0, 20)]
 dv_who = DataValidation(type="list", formula1='"' + ",".join(NAMES) + '"', allow_blank=True)
 zp.add_data_validation(dv_who)
 for k, (t, m, s) in enumerate(plan):
