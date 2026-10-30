@@ -5,12 +5,12 @@ from docx.shared import Pt, RGBColor, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 PETROL, AMBER, MUTED = RGBColor(0x0F, 0x5C, 0x6B), RGBColor(0xD9, 0x82, 0x2B), RGBColor(0x5F, 0x8F, 0x99)
-TITEL = ["Titel + Einstiegsfrage", "Wer wir sind", "Nachhaltigkeit", "Produziert, angeboten, verkauft", "Drei Entscheidungen",
-         "Zwei Kennzahlen", "Wirtschaftlichkeit & Schlussbestand", "Verkaufswert", "Wirtschaftsdienst", "Reflexion",
-         "Bezug zur Gründung", "Schluss + Danke"]
-UEBERGABE = {4: "Übergabe an Folie 5 (steht schon im Text): „… erklärt euch jetzt [Name].“",
-             6: "Übergabe an Folie 7 (steht schon im Text): „Was das für unser Geld bedeutet hat, zeigt euch jetzt [Name].“",
-             9: "Übergabe an Folie 10 (steht schon im Text): „Was wir daraus lernen, erklärt euch jetzt [Name].“"}
+TITEL = ["Titel + Flasche + Einstiegsfrage", "Wer wir sind", "Nachhaltigkeit", "Produziert, angeboten, verkauft", "Drei Entscheidungen",
+         "Zwei Kennzahlen", "Wirtschaftlichkeit & Schlussbestand + Schätzfrage", "Verkaufswert", "Wirtschaftsdienst", "Was wäre mit 1 Maschine?",
+         "Reflexion", "Bezug zur Gründung", "Schluss: Rückseite + Flasche"]
+UEBERGABE = {4: "Übergabe an Folie 5 (steht im Text): „… erklärt euch jetzt [Name].“",
+             7: "Übergabe an Folie 8 (steht im Text): „Die Auflösung hat [Name].“",
+             10: "Übergabe an Folie 11 (steht im Text): „Was wir daraus lernen, erklärt euch jetzt [Name].“"}
 
 prs = Presentation("Elbharz_Endpraesentation.pptx")
 doc = Document()
@@ -19,14 +19,14 @@ for sec in doc.sections:
 st = doc.styles["Normal"]; st.font.name = "Calibri"; st.font.size = Pt(12)
 
 h = doc.add_paragraph(); r = h.add_run("Sprechtext Endpräsentation"); r.bold = True; r.font.size = Pt(22); r.font.color.rgb = PETROL
-p = doc.add_paragraph(); r = p.add_run("Elbharz Getränke GbR · Klasse 11b · ca. 10:30 Minuten · Vorschlag: Folie 1–4 · 5–6 · 7–9 · 10–12"); r.font.color.rgb = MUTED
+p = doc.add_paragraph(); r = p.add_run("Elbharz Getränke GbR · Klasse 11b · Vorschlag: Folie 1–4 · 5–7 · 8–10 · 11–13 · ca. 11 Min."); r.font.color.rgb = MUTED
 tips = doc.add_paragraph()
 r = tips.add_run("So nutzt ihr den Text: "); r.bold = True
 tips.add_run("Das ist ein Vorschlag – sagt es in euren eigenen Worten. Genaue Zahlen stehen auf den Folien, im Sprechen reichen runde Zahlen. "
              "Nicht ablesen, was alle sehen, sondern erzählen, was ihr gedacht habt. Text in [eckigen Klammern] noch anpassen. "
              "Sprecher:innen tragt ihr in der Excel-Liste „Wer spricht was“ ein.")
 
-for i, s in enumerate(list(prs.slides)[:12]):
+for i, s in enumerate(list(prs.slides)[:13]):
     n = s.notes_slide.notes_text_frame.text
     zeit = n.splitlines()[0].replace("ZEIT: ", "").replace("ca. ", "").replace(" min", "")
     text = n.split("anpassen):\n")[-1].strip()
@@ -43,6 +43,7 @@ h = doc.add_paragraph(); r = h.add_run("Falls die Lehrkraft nachfragt"); r.bold 
 for q, a in [
     ("Wie habt ihr die Wirtschaftlichkeit berechnet?", "Umsatzerlöse geteilt durch alle Kosten der Runde, z. B. R3: 79.940 € ÷ 54.000 € = 1,48. Alle Werte: Anhang-Folie."),
     ("Wie aussagekräftig ist die Kennzahl?", "Maschinenkäufe zählen voll in der Kaufrunde; die Absatzquote sagt bei nur 1 Palette (R4/R5) wenig aus. Rechnet man stattdessen in allen Runden nur den Wertverlust (10 % je Nutzungsrunde), ergibt sich: R1 1,07 · R2 1,16 · R3 1,33 · R4 0,22 · R5 0,09 · R6 ≈ 1,00."),
+    ("Wie kommt ihr auf die 31.000 € bei nur einer Maschine?", "Gleiche Preise und gleicher Absatz wie im Spiel: +30.000 € kein Maschinenkauf, +16.000 € ein Mitarbeiter weniger ab R3, ca. +3.000 € weniger Produktion in R3 (am Markt trotzdem 12,6 verkauft), −18.000 € kein Restwert. Wir haben nie mehr als 15 Paletten normal verkauft."),
     ("Warum habt ihr in R2 eine Maschine ohne Mitarbeiter gekauft?", "Wir wollten Kapazität für R3 aufbauen; der Mitarbeiter kam erst in R3. Im Nachhinein hätten wir beides zusammen planen sollen."),
     ("Warum in R4/R5 so ein hoher Preis?", "Wir erwarteten weniger Absatz und wollten mit einer Palette kein Minus machen. Das war ein Denkfehler: Der Preis bestimmt den Absatz."),
     ("Wie kommt ihr auf 18.000 € Restwert für Maschine 2?", "10 % Wertverlust je genutzter Runde; sie lief nur R3–R6, also 4 Runden: 30.000 − 4 × 3.000."),
