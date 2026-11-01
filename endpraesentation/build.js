@@ -466,17 +466,16 @@ function build() {
   const s = content("Quellen: Wo wir KI genutzt haben", "Quellen", "Quellenfolie KI – wird nicht vorgetragen. Screenshots aus unseren eigenen Chats.");
   const tools = [
     ["Claude", "Planung, Texte und Aufbau der Endpräsentation", "ki_1.png", 685, 500],
-    ["Perplexity", "Logo und Flaschenbild der Primatenbrause", "ki_2.png", 454, 484],
     ["Perplexity", "KI-Teambild (Cartoon von uns vier)", "ki_3.png", 600, 396],
     ["Perplexity", "Werbespot-Video zur Primatenbrause", "ki_4.png", 602, 505],
   ];
   tools.forEach(([t, wofuer, f, pw, ph], i) => {
-    const x = 0.7 + (i % 2) * 6.05, y = 1.5 + Math.floor(i / 2) * 2.55, w = 5.85, h = 2.4;
+    const x = 0.7 + i * 4.025, y = 1.5, w = 3.85, h = 4.9;
     box(s, x, y, w, h, C.background2, "Karte KI " + (i + 1));
     s.addText([{ text: t, options: { bold: true, fontSize: 20, color: C.text2, breakLine: true, paraSpaceAfter: 4 } }, { text: wofuer, options: { fontSize: 14, color: C.text1 } }],
-      { x: x + 0.25, y, w: 2.25, h, valign: "middle", isTextBox: true, margin: 0 });
-    const mh = h - 0.2, mw = 3.2, sc = Math.min(mw / pw, mh / ph), iw = pw * sc, ih = ph * sc;
-    s.addImage({ path: "assets/" + f, x: x + 2.55 + (mw - iw) / 2, y: y + 0.1 + (mh - ih) / 2, w: iw, h: ih, altText: "Screenshot Chat " + t + ": " + wofuer, objectName: "Screenshot " + t });
+      { x: x + 0.25, y: y + 0.2, w: w - 0.5, h: 1.0, valign: "top", isTextBox: true, margin: 0 });
+    const mh = 3.4, mw = w - 0.4, sc = Math.min(mw / pw, mh / ph), iw = pw * sc, ih = ph * sc;
+    s.addImage({ path: "assets/" + f, x: x + 0.2 + (mw - iw) / 2, y: y + 1.35 + (mh - ih) / 2, w: iw, h: ih, altText: "Screenshot Chat " + t + ": " + wofuer, objectName: "Screenshot " + t });
   });
   s.addText("Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.", { x: 0.7, y: 6.6, w: 11.0, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
 }
