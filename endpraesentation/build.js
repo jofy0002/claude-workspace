@@ -439,8 +439,9 @@ function build() {
   // Dank + Platz fürs Teambild
   s.addText("Vielen Dank!", { x: 5.9, y: 1.5, w: 3.6, h: 1.0, fontSize: 40, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
   s.addText("Wir freuen uns auf eure Fragen.", { x: 5.9, y: 2.5, w: 3.6, h: 0.6, fontSize: 19, bold: true, color: C.accent3, isTextBox: true, margin: 0 });
-  s.addShape(pres.ShapeType.ellipse, { x: 6.1, y: 3.6, w: 2.4, h: 2.4, fill: { color: C.accent3, transparency: 15 }, line: { color: C.background1, width: 1.5, dashType: "dash" }, objectName: "Platz KI-Teambild" });
-  s.addText("BILD FOLGT: KI-Teambild", { x: 6.2, y: 3.6, w: 2.2, h: 2.4, fontSize: 11, bold: true, color: C.background1, align: "center", valign: "middle", isTextBox: true, margin: 0 });
+  s.addShape(pres.ShapeType.roundRect, { x: 5.85, y: 3.45, w: 3.5, h: 2.34, rectRadius: 0.12, fill: { color: C.background1 }, line: { type: "none" }, objectName: "Rahmen Teambild" });
+  s.addImage({ path: "assets/teambild.png", x: 5.9, y: 3.5, w: 3.4, h: 3.4 * 490 / 744, rounding: false, altText: "KI-Teambild: wir vier als Cartoon (Perplexity)", objectName: "KI-Teambild" });
+  s.addText("Wir vier als KI-Cartoon", { x: 5.85, y: 5.9, w: 3.5, h: 0.3, fontSize: 11, italic: true, color: C.background2, align: "center", isTextBox: true, margin: 0 });
   s.addShape(pres.ShapeType.ellipse, { x: 9.5, y: 1.7, w: 3.4, h: 3.4, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Sonne" });
   const fh = 5.2; s.addImage({ data: IMG.flasche, x: 11.2 - (fh * FLASCHE_RATIO) / 2, y: 1.15, w: fh * FLASCHE_RATIO, h: fh, altText: "Flasche Primatenbrause", objectName: "Flasche" });
   s.addNotes(NOTE("ca. 0:30 min", "Zum Schluss unser Ergebnis auf einen Blick. Gestartet sind wir mit 100.000 Euro, verkauft haben wir unser Unternehmen für 83.770 Euro. Unsere beste Runde war Runde drei, unser größter Fehler waren die hohen Preise in Runde vier und fünf, während die Fixkosten weiterliefen. Mit nur einer Maschine wären wir sogar über unserem Startkapital gelandet. Vielen Dank fürs Zuhören, wir freuen uns auf eure Fragen."));
