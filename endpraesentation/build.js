@@ -462,23 +462,28 @@ function build() {
   });
 }
 // =========================================================== 13b KI-Einsatz
-{
-  const s = content("Quellen: Wo wir KI genutzt haben", "Quellen", "Quellenfolie KI – wird nicht vorgetragen. Screenshots aus unseren eigenen Chats.");
-  const tools = [
-    ["Claude", "Planung, Texte und Aufbau der Endpräsentation", "ki_1.png", 685, 500],
-    ["Perplexity", "KI-Teambild (Cartoon von uns vier)", "ki_3.png", 600, 396],
-    ["Perplexity", "Werbespot-Video zur Primatenbrause", "ki_4.png", 602, 505],
-  ];
-  tools.forEach(([t, wofuer, f, pw, ph], i) => {
-    const x = 0.7 + i * 4.025, y = 1.5, w = 3.85, h = 4.9;
+function kiFolie(title, notes, items, foot) {
+  const s = content(title, "Quellen", notes);
+  const n = items.length, gap = 0.2, w = (11.9 - gap * (n - 1)) / n;
+  items.forEach(([t, wofuer, f, pw, ph], i) => {
+    const x = 0.7 + i * (w + gap), y = 1.5, h = 4.95;
     box(s, x, y, w, h, C.background2, "Karte KI " + (i + 1));
-    s.addText([{ text: t, options: { bold: true, fontSize: 20, color: C.text2, breakLine: true, paraSpaceAfter: 4 } }, { text: wofuer, options: { fontSize: 14, color: C.text1 } }],
-      { x: x + 0.25, y: y + 0.2, w: w - 0.5, h: 1.0, valign: "top", isTextBox: true, margin: 0 });
-    const mh = 3.4, mw = w - 0.4, sc = Math.min(mw / pw, mh / ph), iw = pw * sc, ih = ph * sc;
-    s.addImage({ path: "assets/" + f, x: x + 0.2 + (mw - iw) / 2, y: y + 1.35 + (mh - ih) / 2, w: iw, h: ih, altText: "Screenshot Chat " + t + ": " + wofuer, objectName: "Screenshot " + t });
+    s.addText([{ text: t, options: { bold: true, fontSize: 18, color: C.text2, breakLine: true, paraSpaceAfter: 2 } }, { text: wofuer, options: { fontSize: 13, color: C.text1 } }],
+      { x: x + 0.2, y: y + 0.15, w: w - 0.4, h: 0.85, valign: "top", isTextBox: true, margin: 0 });
+    const mh = h - 1.2, mw = w - 0.3, sc = Math.min(mw / pw, mh / ph), iw = pw * sc, ih = ph * sc;
+    s.addImage({ path: "assets/" + f, x: x + 0.15 + (mw - iw) / 2, y: y + 1.05, w: iw, h: ih, altText: "Auszug Chat " + t + ": " + wofuer, objectName: "Chat-Auszug " + (i + 1) });
   });
-  s.addText("Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.", { x: 0.7, y: 6.6, w: 11.0, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
+  s.addText(foot, { x: 0.7, y: 6.55, w: 11.2, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
 }
+kiFolie("Quellen: KI-Einsatz (Claude)", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
+  ["Gestaltung", "Design der Folien überarbeitet, Farben beibehalten", "ki_claude_gestaltung.png", 1624, 934],
+  ["Nachrechnen", "Handlungsalternative „nur eine Maschine“ berechnet", "ki_claude_nachrechnen.png", 1624, 798],
+  ["Abrunden", "Titel gekürzt, Kapitelwechsel, leere Flasche", "ki_claude_abrunden.png", 1624, 1318],
+], "Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026). Vollständiger Verlauf: Chatverlauf_Elbharz_Claude.pdf");
+kiFolie("Quellen: KI-Einsatz (Perplexity)", "Quellenfolie KI – wird nicht vorgetragen.", [
+  ["KI-Teambild", "Cartoon von uns vier (Schlussfolie)", "ki_3.png", 600, 396],
+  ["Werbespot", "Video zur Primatenbrause", "ki_4.png", 602, 505],
+], "Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.");
 // =========================================================== 14 Anhang
 {
   const s = content("Anhang: Kosten und Kennzahlen je Runde", "Anhang", "Backup-Folie für Rückfragen – wird nicht vorgetragen.");
