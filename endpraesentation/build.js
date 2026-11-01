@@ -473,11 +473,17 @@ function kiFolie(title, notes, items, foot) {
   });
   s.addText(foot, { x: 0.7, y: 6.55, w: 11.2, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
 }
-kiFolie("Quellen: KI-Einsatz (Claude)", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
-  ["Gestaltung", "Design der Folien überarbeitet, Farben beibehalten", "ki_claude_gestaltung.png", 1624, 934],
-  ["Nachrechnen", "Handlungsalternative „nur eine Maschine“ berechnet", "ki_claude_nachrechnen.png", 1624, 798],
-  ["Abrunden", "Titel gekürzt, Kapitelwechsel, leere Flasche", "ki_claude_abrunden.png", 1624, 1318],
-], "Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026). Vollständiger Verlauf: Chatverlauf_Elbharz_Claude.pdf");
+const FUSS_CLAUDE = "Wortgetreue Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026). Vollständiger Verlauf: Anhang ab Folie 18.";
+kiFolie("Quellen: KI-Einsatz (Claude) 1/2", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
+  ["Grundgerüst", "Aufbau und Plan der Präsentation", "ki_claude_geruest.png", 1624, 1114],
+  ["Gestaltung", "Design überarbeitet, Farben beibehalten", "ki_claude_gestaltung.png", 1624, 1020],
+  ["Team-Liste", "Excel zum Abhaken für unser Team", "ki_claude_teamliste.png", 1624, 1336],
+], FUSS_CLAUDE);
+kiFolie("Quellen: KI-Einsatz (Claude) 2/2", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
+  ["Nachrechnen", "Handlungsalternative „nur eine Maschine“", "ki_claude_nachrechnen.png", 1624, 972],
+  ["Struktur prüfen", "Unsere Folien mit der Aufgabe abgeglichen", "ki_claude_struktur.png", 1624, 1224],
+  ["Abrunden", "Titel gekürzt, Kapitelwechsel, leere Flasche", "ki_claude_abrunden.png", 1624, 1530],
+], FUSS_CLAUDE);
 kiFolie("Quellen: KI-Einsatz (Perplexity)", "Quellenfolie KI – wird nicht vorgetragen.", [
   ["Werbespot", "Video zur Primatenbrause", "ki_4.png", 602, 505],
 ], "Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.");
@@ -494,6 +500,20 @@ kiFolie("Quellen: KI-Einsatz (Perplexity)", "Quellenfolie KI – wird nicht vorg
   rows.push([{ text: "Schlussbestand", options: { bold: true } }, ...schluss.map((x) => ({ text: fmt(x), options: { align: "right" } }))]);
   s.addTable(rows, { x: 0.7, y: 1.5, w: 11.9, colW: [3.2, 1.45, 1.45, 1.45, 1.45, 1.45, 1.45], fontSize: 15, color: HEX.text, border: { type: "solid", color: "D3D1C8", pt: 0.75 }, rowH: 0.42, valign: "middle", objectName: "Tabelle Anhang" });
   s.addText("Wirtschaftlichkeit gesamt: 240.270 € ÷ 286.500 € = 0,84 · Wirtschaftsdienst = sonstige Kosten laut Kassenbuch", { x: 0.7, y: 6.5, w: 11.9, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
+}
+
+// =========================================================== 15 Anhang Chatverlauf (Seiten aus Chatverlauf_Elbharz_Claude.pdf)
+if (fs.existsSync("assets/chat")) {
+  const seiten = fs.readdirSync("assets/chat").filter((f) => f.endsWith(".jpg")).sort();
+  for (let k = 0; k < seiten.length; k += 3) {
+    const von = k + 1, bis = Math.min(k + 3, seiten.length);
+    const s = content(`Anhang: Vollständiger Chatverlauf (S. ${von}–${bis} von ${seiten.length})`, "Anhang", "Anhang – wird nicht vorgetragen. Vollständiger Claude-Code-Chat, wortgetreu exportiert.");
+    seiten.slice(k, k + 3).forEach((f, i) => {
+      const h = 5.55, w = h * 595.92 / 842.88;
+      s.addImage({ path: "assets/chat/" + f, x: 0.7 + i * (w + 0.2), y: 1.45, w, h, altText: "Chatverlauf Seite " + (k + i + 1), objectName: "Chatseite " + (k + i + 1) });
+      s.addShape(pres.ShapeType.rect, { x: 0.7 + i * (w + 0.2), y: 1.45, w, h, fill: { type: "none" }, line: { color: "D3D1C8", width: 0.75 }, objectName: "Rahmen Seite " + (k + i + 1) });
+    });
+  }
 }
 
 }
