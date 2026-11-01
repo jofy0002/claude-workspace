@@ -140,13 +140,13 @@ function build() {
   s.addShape(pres.ShapeType.ellipse, { x: 7.35, y: 4.55, w: 2.1, h: 2.1, fill: { color: C.accent3 }, line: { type: "none" }, objectName: "Zutatenkreis" });
   s.addImage({ data: IMG.tamarinde, x: 7.65, y: 4.95, w: 1.55, h: 1.55, altText: "Tamarinde", objectName: "Tamarinde" });
   s.addImage({ data: IMG.limette, x: 7.05, y: 4.45, w: 1.5, h: 0.75, altText: "Limette", objectName: "Limette" });
-  s.addNotes(NOTE("ca. 0:30 min", "Wir sind die Elbharz Getränke GbR aus der 11b. Unser Produkt ist die Primatenbrause, Tamarinde-Limette: ein Getränk für Leute, die im Laden die Flasche umdrehen und die Zutaten lesen. In den nächsten elf Minuten zeigen wir euch, was aus unserer Idee im Planspiel geworden ist. Vorweg: Am Ende hatten wir weniger Geld als am Anfang. Warum, zeigen wir euch heute. Zuerst zu unserer Idee."));
+  s.addNotes(NOTE("ca. 0:35 min", "Wir sind die Elbharz Getränke GbR aus der 11b. Unser Produkt ist die Primatenbrause, Tamarinde-Limette: ein Getränk für Leute, die im Laden die Flasche umdrehen und die Zutaten lesen. In den nächsten elf Minuten zeigen wir euch, was aus unserer Idee im Planspiel geworden ist. Vorweg: Am Ende hatten wir weniger Geld als am Anfang. Warum, zeigen wir euch heute. Zuerst zu unserer Idee."));
 }
 
 // =========================================================== 2 Wer wir sind
 {
-  const s = content("Wer wir sind – in 30 Sekunden", "Einleitung",
-    NOTE("ca. 0:45 min", "Unsere Idee war ganz einfach: ein Getränk, dessen Rückseite man zu Ende lesen kann. Viele Getränke versprechen heute irgendwas, mehr Energie, mehr Fokus. Wir wollten bewusst wenig versprechen, nur das, was man auf dem Etikett nachprüfen kann. Gedacht ist sie für 16- bis 25-Jährige wie unsere Persona Jasper, der im Laden jede Flasche umdreht. Und Tamarinde, weil sie bei uns als Getränk kaum bekannt ist. Herb statt süß, und auf unserer Zutatenliste steht kein Zucker."));
+  const s = content("Wer wir sind", "Einleitung",
+    NOTE("ca. 0:45 min", "Unsere Idee war ganz einfach: ein Getränk, dessen Rückseite man zu Ende lesen kann. Viele Getränke versprechen heute irgendwas, mehr Energie, mehr Fokus. Wir wollten bewusst wenig versprechen, nur das, was man auf dem Etikett nachprüfen kann. Gedacht ist sie für 16- bis 25-Jährige wie unsere Persona Jasper, der im Laden jede Flasche umdreht. Verkaufen wollten wir zuerst online und über Social Media, danach im regionalen Handel. Und Tamarinde, weil sie bei uns als Getränk kaum bekannt ist. Herb statt süß, und auf unserer Zutatenliste steht kein Zucker."));
   box(s, 0.7, 1.6, 4.1, 4.9, C.accent1, "Leitgedanke");
   s.addText([
     { text: "Ein Getränk, dessen Rückseite man zu Ende lesen kann.", options: { fontSize: 30, bold: true, fontFace: "Cambria", color: C.background1, breakLine: true, paraSpaceAfter: 14 } },
@@ -178,7 +178,7 @@ function build() {
 // =========================================================== 3 Nachhaltigkeit
 {
   const s = content("Nachhaltigkeit war Teil der Idee", "Einleitung",
-    NOTE("ca. 0:45 min", "Nachhaltigkeit war uns von Anfang an wichtig. Wir wollten Mehrweg-Glas statt Einweg. Das lohnt sich aber nur bei kurzen Wegen, denn Glas ist schwer. Deshalb regional: in Hamburg herstellen und im Norden verkaufen. Und nur eine Sorte, weil das bei Produktion, Lager und Transport Aufwand spart. Für uns hieß das: lieber wenige Dinge richtig machen, als überall ein bisschen grün zu wirken. Im Planspiel selbst spielte das allerdings gar keine Rolle. Dort ging es nur um Preis, Menge und Kosten. Dazu sagen wir am Ende noch etwas."));
+    NOTE("ca. 0:40 min", "Nachhaltigkeit war uns von Anfang an wichtig. Wir wollten Mehrweg-Glas statt Einweg. Das lohnt sich aber nur bei kurzen Wegen, denn Glas ist schwer. Deshalb regional: in Hamburg herstellen und im Norden verkaufen. Und nur eine Sorte, weil das bei Produktion, Lager und Transport Aufwand spart. Für uns hieß das: lieber wenige Dinge richtig machen, als überall ein bisschen grün zu wirken. Im Planspiel selbst spielte das allerdings gar keine Rolle. Dort ging es nur um Preis, Menge und Kosten. Dazu sagen wir am Ende noch etwas. Wie es im Spiel lief, zeigt euch jetzt Jona."));
   const cw = 3.85, gx = 0.175;
   box(s, 0.7, 1.6, cw, 3.75, C.background2, "Karte Mehrweg");
   s.addImage({ data: IMG.umriss, x: 0.7 + cw / 2 - (2.0 * FLASCHE_RATIO) / 2, y: 1.85, w: 2.0 * FLASCHE_RATIO, h: 2.0, altText: "Leere Mehrwegflasche (Umriss)", objectName: "Leere Flasche" });
@@ -208,7 +208,7 @@ function build() {
 // =========================================================== 4 Produziert, angeboten, verkauft
 {
   const s = content("Produziert, angeboten, verkauft", "Verlauf",
-    NOTE("ca. 0:40 min", "Hier seht ihr alle sechs Runden auf einen Blick. Jede Säule ist das, was wir produziert haben, darunter steht unser Preis pro Palette. Der dunkle Teil wurde normal verkauft. Der orange Teil ging für nur tausend Euro an den Schnäppchenmarkt. Man sieht ein Muster: Je höher unser Preis, desto mehr landete meist auf dem Schnäppchenmarkt. In den Runden mit den höchsten Preisen, vier bis sechs, haben wir höchstens die Hälfte normal verkauft. Welche Entscheidungen dahinterstanden, erklärt euch jetzt [Name]."));
+    NOTE("ca. 1:00 min", "Hier seht ihr alle sechs Runden auf einen Blick. Jede Säule ist das, was wir produziert haben, darunter steht unser Preis pro Palette. Der dunkle Teil wurde normal verkauft. Der orange Teil ging für nur tausend Euro an den Schnäppchenmarkt. In Runde eins war bei 3.000 Euro alles weg, in Runde drei lief es mit 5.900 Euro am besten, und in Runde vier und fünf haben wir nur noch je eine Palette produziert. Man sieht ein Muster: Je höher unser Preis, desto mehr landete meist auf dem Schnäppchenmarkt. In den Runden mit den höchsten Preisen, vier bis sechs, haben wir höchstens die Hälfte normal verkauft. Welche Entscheidungen dahinterstanden, erklärt euch jetzt Nio."));
   const labels = R.map((r, i) => `${r} · ${fmt(preis[i])}\u00A0€`);
   s.addChart(pres.charts.BAR, [
     { name: "Am Markt verkauft", labels, values: markt },
@@ -235,7 +235,7 @@ function build() {
 // =========================================================== 5 Drei Entscheidungen
 {
   const s = content("Drei Entscheidungen, die unser Spiel geprägt haben", "Verlauf",
-    NOTE("ca. 1:05 min", "Hinter diesem Verlauf stecken unsere Entscheidungen. In Runde eins haben wir mit 3.000 Euro alles verkauft und daraus den falschen Schluss gezogen: Die anderen sind wohl teurer. Also sind wir in Runde zwei auf 7.600 Euro hoch und haben eine zweite Maschine für 30.000 Euro gekauft, aber niemanden, der sie bedient. Ergebnis: rund 19.000 Euro Verlust. In Runde drei sind wir knapp unter die 6.000 Euro gegangen, die wir bei der Konkurrenz vermutet haben, und haben einen zweiten Mitarbeiter eingestellt. Das war unsere beste Runde, mit fast 26.000 Euro Gewinn. In Runde vier und fünf haben wir mit weniger Nachfrage gerechnet und nur je eine Palette hergestellt, um kein Minus zu machen. Trotzdem haben wir zusammen rund 35.000 Euro verloren. In Runde sechs wollten wir zum Schluss noch einmal alles verkaufen, lagen mit 8.400 Euro aber wieder zu hoch: Nur 40 Prozent gingen normal weg."));
+    NOTE("ca. 1:10 min", "Hinter diesem Verlauf stecken unsere Entscheidungen. In Runde eins haben wir mit 3.000 Euro alles verkauft und daraus den falschen Schluss gezogen: Die anderen sind wohl teurer. Also sind wir in Runde zwei auf 7.600 Euro hoch und haben eine zweite Maschine für 30.000 Euro gekauft, aber niemanden, der sie bedient. Ergebnis: rund 19.000 Euro Verlust. In Runde drei sind wir knapp unter die 6.000 Euro gegangen, die wir bei der Konkurrenz vermutet haben, und haben einen zweiten Mitarbeiter eingestellt. Das war unsere beste Runde, mit fast 26.000 Euro Gewinn. In Runde vier und fünf haben wir mit weniger Nachfrage gerechnet und nur je eine Palette hergestellt, um kein Minus zu machen. Trotzdem haben wir zusammen rund 35.000 Euro verloren. In Runde sechs wollten wir zum Schluss noch einmal alles verkaufen, lagen mit 8.400 Euro aber wieder zu hoch: Nur 40 Prozent gingen normal weg. Wie wir das ausgewertet haben, zeigt euch jetzt Jona."));
   const cards = [
     ["Runde 2", "7.600 €", "„Alles war weg – die anderen sind wohl teurer.“", "Preis drastisch rauf. 2. Maschine gekauft – aber ohne Mitarbeiter.", "−19.100 €", false],
     ["Runde 3", "5.900 €", "„Wir waren zu teuer. Die Konkurrenz liegt bei ca. 6.000\u00A0€.“", "Knapp darunter angeboten, 2. Mitarbeiter eingestellt.", "+25.940 €", true],
@@ -282,7 +282,7 @@ function build() {
 // =========================================================== 8 Entwicklung
 {
   const s = content("Wirtschaftlichkeit und Schlussbestand", "Auswertung",
-    NOTE("ca. 1:05 min", "Links seht ihr die Wirtschaftlichkeit für jede Runde. Die gestrichelte Linie ist die Eins, also die Grenze zwischen Gewinn und Verlust. Darüber liegen nur Runde drei und Runde sechs. Über alle Runden zusammen kommen wir auf 0,84: rund 240.000 Euro Umsatz bei rund 287.000 Euro Kosten. Rechts seht ihr, was mit unserem Startkapital passiert ist. Wir sind mit 100.000 Euro gestartet. Die Maschinenkäufe haben uns am Anfang runtergezogen. In Runde drei ging es auf rund 83.000 Euro hoch, danach in zwei schwachen Runden auf unter 48.000. Am Ende stehen knapp 54.000 Euro in der Kasse. An unser Startkapital sind wir nie wieder herangekommen. Was unser Unternehmen am Ende wert war, erklärt euch jetzt [Name]."));
+    NOTE("ca. 0:50 min", "Links seht ihr die Wirtschaftlichkeit für jede Runde. Die gestrichelte Linie ist die Eins, also die Grenze zwischen Gewinn und Verlust. Darüber liegen nur Runde drei und Runde sechs. Über alle Runden zusammen kommen wir auf 0,84: rund 240.000 Euro Umsatz bei rund 287.000 Euro Kosten. Rechts seht ihr, was mit unserem Startkapital passiert ist. Wir sind mit 100.000 Euro gestartet. Die Maschinenkäufe haben uns am Anfang runtergezogen. In Runde drei ging es auf rund 83.000 Euro hoch, danach in zwei schwachen Runden auf unter 48.000. Am Ende stehen knapp 54.000 Euro in der Kasse. An unser Startkapital sind wir nie wieder herangekommen. Was unser Unternehmen am Ende wert war, erklärt euch jetzt Lennart."));
   s.addChart([
     { type: pres.charts.BAR, data: [{ name: "Wirtschaftlichkeit", labels: R, values: wirt }], options: { chartColors: [HEX.petrol], barGapWidthPct: 60, showValue: true, dataLabelPosition: "outEnd", dataLabelFormatCode: "0.00" } },
     { type: pres.charts.LINE, data: [{ name: "Grenze 1,0 (Kosten gedeckt)", labels: R, values: [1, 1, 1, 1, 1, 1] }], options: { chartColors: [HEX.amber], lineSize: 2, lineDash: "dash", lineDataSymbol: "none", showValue: false } },
@@ -306,7 +306,7 @@ function build() {
 // =========================================================== 9 Verkaufswert
 {
   const s = content("Was unser Unternehmen am Ende wert ist", "Auswertung",
-    NOTE("ca. 0:50 min", "Am Ende des Spiels wird das Unternehmen verkauft. Der Wert ist das Geld in der Kasse plus das, was die Maschinen noch wert sind. Jede Maschine verliert pro Runde, in der sie läuft, zehn Prozent. Die erste lief sechs Runden und ist noch 12.000 Euro wert. Die zweite lief nur vier Runden, weil sie in Runde zwei stillstand. Sie ist noch 18.000 Euro wert. Zusammen kommen wir auf 83.770 Euro. Das sind gut 16.000 Euro weniger, als wir am Anfang hatten. Allein die zwei Maschinen haben 60.000 Euro gekostet, davon steckt nur noch die Hälfte im Unternehmenswert. Und hier kommt die Frage: warum nur so wenig?"));
+    NOTE("ca. 0:50 min", "Am Ende des Spiels wird das Unternehmen verkauft. Der Wert ist das Geld in der Kasse plus das, was die Maschinen noch wert sind. Jede Maschine verliert pro Runde, in der sie läuft, zehn Prozent. Die erste lief sechs Runden und ist noch 12.000 Euro wert. Die zweite lief nur vier Runden, weil sie in Runde zwei stillstand. Sie ist noch 18.000 Euro wert. Zusammen kommen wir auf 83.770 Euro. Das sind gut 16.000 Euro weniger, als wir am Anfang hatten. Allein die zwei Maschinen haben 60.000 Euro gekostet, davon steckt nur noch die Hälfte im Unternehmenswert. Warum es so wenig wurde, erklärt euch Nio."));
   const tiles = [
     ["FaCoins", "53.770\u00A0€", "Schlussbestand nach R6", C.accent1],
     ["FaCogs", "12.000\u00A0€", "Maschine 1 (6 Runden genutzt)", C.accent1],
@@ -338,7 +338,7 @@ function build() {
 // =========================================================== 6 Wirtschaftsdienst
 {
   const s = content("Warum nur 83.770\u00A0€? Der Wirtschaftsdienst", "Auswertung",
-    NOTE("ca. 0:45 min", "Ein Teil davon lag nicht an uns. Ab Runde zwei kamen die Meldungen des Wirtschaftsdienstes, und jede hat uns Geld gekostet. Insgesamt waren das 34.000 Euro, am meisten in Runde zwei und fünf mit je 10.000. Rein rechnerisch hätten wir ohne diese Kosten am Ende rund 118.000 Euro gehabt, also mehr als unser Startkapital. Das soll keine Ausrede sein. Die Meldungen konnten wir nicht verhindern. Unsere eigenen Verluste in Runde vier und fünf waren mit rund 35.000 Euro aber genauso groß, und die lagen an uns. Was wir selbst hätten besser machen können, haben wir nachgerechnet."));
+    NOTE("ca. 0:50 min", "Ein Teil davon lag nicht an uns. Ab Runde zwei kamen die Meldungen des Wirtschaftsdienstes, und jede hat uns Geld gekostet. Insgesamt waren das 34.000 Euro, am meisten in Runde zwei und fünf mit je 10.000. Rein rechnerisch hätten wir ohne diese Kosten am Ende rund 118.000 Euro gehabt, also mehr als unser Startkapital. Das soll keine Ausrede sein. Die Meldungen konnten wir nicht verhindern. Unsere eigenen Verluste in Runde vier und fünf waren mit rund 35.000 Euro aber genauso groß, und die lagen an uns. Was wir selbst hätten besser machen können, erklärt euch jetzt Sönke."));
   box(s, 0.7, 1.6, 3.6, 2.35, C.accent1, "Kennzahl Zusatzkosten");
   iconCircle(s, "FaNewspaper", 0.95, 1.85, 0.65, C.accent2);
   s.addText("34.000\u00A0€", { x: 0.95, y: 2.55, w: 3.2, h: 0.8, fontSize: 40, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
@@ -354,63 +354,38 @@ function build() {
   }));
 }
 
-// =========================================================== 15 Was wäre wenn
-{
-  const s = content("Was wäre mit nur einer Maschine passiert?", "Reflexion",
-    NOTE("ca. 0:50 min", "Wir haben nachgerechnet, was mit nur einer Maschine passiert wäre, bei gleichen Preisen. Wir hätten 30.000 Euro für die zweite Maschine gespart und ab Runde drei einen Mitarbeiter weniger gebraucht, das sind noch einmal 16.000 Euro. In Runde drei hätten wir nur 15 statt 18 Paletten herstellen können, aber am Markt haben wir sowieso nur knapp 13 verkauft. Dafür fehlt am Ende der Restwert der zweiten Maschine. Unterm Strich wären wir bei rund 115.000 Euro gelandet, also über unserem Startkapital. Die zweite Maschine hat uns damit rund 31.000 Euro gekostet. Was wir daraus lernen, erklärt euch jetzt [Name]."));
-  const rows = [
-    ["+30.000 €", "keine 2. Maschine gekauft", "3D6610"],
-    ["+16.000 €", "ab R3 ein Mitarbeiter statt zwei", "3D6610"],
-    ["+3.000 €", "R3: 15 statt 18 Paletten – Absatz am Markt gleich", "3D6610"],
-    ["−18.000 €", "kein Restwert der 2. Maschine", "8A4A12"],
-  ];
-  box(s, 0.7, 1.55, 6.0, 4.6, C.background2, "Rechnung");
-  s.addText("So rechnet es sich", { x: 1.0, y: 1.75, w: 5.4, h: 0.45, fontSize: 18, bold: true, color: C.text2, isTextBox: true, margin: 0 });
-  rows.forEach(([v, t, col], i) => {
-    const y = 2.35 + i * 0.72;
-    s.addText(v, { x: 1.0, y, w: 1.8, h: 0.6, fontSize: 22, bold: true, fontFace: "Cambria", color: col, align: "right", valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(t, { x: 3.0, y, w: 3.5, h: 0.6, fontSize: 15, color: C.text1, valign: "middle", isTextBox: true, margin: 0 });
-  });
-  s.addShape(pres.ShapeType.line, { x: 1.0, y: 5.25, w: 5.4, h: 0, line: { color: C.accent5, width: 1 }, objectName: "Summenlinie" });
-  s.addText([{ text: "≈ +31.000 €", options: { fontSize: 26, bold: true, fontFace: "Cambria", color: "3D6610" } }, { text: "   mehr Unternehmenswert", options: { fontSize: 15, color: C.text1 } }],
-    { x: 1.0, y: 5.35, w: 5.4, h: 0.65, valign: "middle", isTextBox: true, margin: 0 });
-  // Vergleich als Balken
-  s.addText("Unternehmenswert am Ende", { x: 7.1, y: 1.6, w: 5.5, h: 0.45, fontSize: 18, bold: true, color: C.text2, isTextBox: true, margin: 0 });
-  const full = 4.6, max = 120000;
-  [["Startkapital", 100000, C.accent5, "100.000 €", C.text1], ["Unser Ergebnis", 83770, C.accent2, "83.770 €", C.background1], ["Mit 1 Maschine", 115000, C.accent3, "≈ 115.000 €", C.background1]].forEach(([l, v, col, t, tc], i) => {
-    const y = 2.3 + i * 1.15;
-    s.addText(l, { x: 7.1, y, w: 5.5, h: 0.35, fontSize: 14, color: C.text1, isTextBox: true, margin: 0 });
-    s.addShape(pres.ShapeType.roundRect, { x: 7.1, y: y + 0.38, w: (full * v) / max, h: 0.55, rectRadius: 0.06, fill: { color: col }, line: { type: "none" }, objectName: "Balken " + l });
-    s.addText(t, { x: 7.25, y: y + 0.38, w: 2.6, h: 0.55, fontSize: 16, bold: true, color: tc, valign: "middle", isTextBox: true, margin: 0 });
-  });
-  s.addText("Gleiche Preise, gleicher Absatz: Wir haben nie mehr als 15 Paletten normal verkauft – eine Maschine hätte gereicht.", { x: 7.1, y: 5.75, w: 5.5, h: 0.6, fontSize: 13, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
-}
-
 // =========================================================== 10 Reflexion
 {
   const s = content("Reflexion: Würden wir wieder so entscheiden?", "Reflexion",
-    NOTE("ca. 1:00 min", "Würden wir wieder so entscheiden? Nur teilweise. Richtig war der vorsichtige Start mit einer Maschine, das empfiehlt auch die Spielanleitung. Und nach Runde zwei haben wir schnell gemerkt, dass unser Preis zu hoch war. Falsch war vor allem unser Vorgehen ab Runde vier. Wir haben mit wenig Nachfrage gerechnet und trotzdem die höchsten Preise verlangt, obwohl im Spiel allein der Preis den Absatz bestimmt. Gleichzeitig liefen 13.000 Euro Fixkosten pro Runde weiter, egal ob eine Palette oder dreißig. Beim nächsten Mal würden wir drei Dinge anders machen: den Preis in der Nähe von 6.000 Euro halten, weil wir nur dort deutlich Gewinn gemacht haben, Maschinen erst kaufen, wenn wir sie auslasten können, und Personal abbauen, wenn wenig produziert wird. Unser Fazit steht unten auf der Folie."));
+    NOTE("ca. 1:10 min", "Würden wir wieder so entscheiden? Nur teilweise. Richtig war der vorsichtige Start mit einer Maschine, das empfiehlt auch die Spielanleitung, und nach Runde zwei haben wir schnell gemerkt, dass unser Preis zu hoch war. Falsch war vor allem unser Vorgehen ab Runde vier: Wir haben mit wenig Nachfrage gerechnet und trotzdem die höchsten Preise verlangt, obwohl im Spiel allein der Preis den Absatz bestimmt. Dazu liefen 13.000 Euro Fixkosten pro Runde weiter. Außerdem haben wir nachgerechnet, was mit nur einer Maschine passiert wäre, bei gleichen Preisen. Wir haben nie mehr als 15 Paletten normal verkauft, eine Maschine hätte also gereicht. Ohne die zweite Maschine und den zweiten Mitarbeiter wären wir bei rund 115.000 Euro gelandet, also über unserem Startkapital. Beim nächsten Mal würden wir deshalb den Preis um 6.000 Euro halten, Maschinen erst kaufen, wenn wir sie auslasten, und Personal an die Produktion anpassen. Den Blick zurück auf unsere Gründung übernimmt jetzt Lennart."));
   const cols = [
     ["FaThumbsUp", "Das lief gut", C.accent3, ["Vorsichtiger Start mit nur 1 Maschine", "Nach R2 schnell reagiert → beste Runde"]],
-    ["FaThumbsDown", "Das lief schlecht", C.accent2, ["Höchstpreise ab R4 – obwohl wir in R4/R5 wenig Absatz erwarteten", "13.000\u00A0€ Fixkosten für 1 Palette", "2. Maschine: unterm Strich ca. −31.000\u00A0€"]],
-    ["FaExchangeAlt", "Das machen wir anders", C.accent1, ["Preis nahe 5.900\u00A0€ halten", "Maschinen nur kaufen, wenn ausgelastet und besetzt", "Personal an die Produktion anpassen"]],
+    ["FaThumbsDown", "Das lief schlecht", C.accent2, ["Höchstpreise ab R4 – obwohl wir in R4/R5 wenig Absatz erwarteten", "13.000 € Fixkosten für 1 Palette", "Eine Maschine zu viel"]],
+    ["FaExchangeAlt", "Das machen wir anders", C.accent1, ["Preis nahe 5.900 € halten", "Maschinen nur kaufen, wenn ausgelastet und besetzt", "Personal an die Produktion anpassen"]],
   ];
   cols.forEach(([ic, h, col, items], i) => {
     const x = 0.7 + i * 4.025;
-    box(s, x, 1.6, 3.85, 3.85, C.background2, "Karte " + h);
-    iconCircle(s, ic, x + 0.3, 1.85, 0.7, col);
-    s.addText(h, { x: x + 1.2, y: 1.85, w: 2.5, h: 0.7, fontSize: 19, bold: true, color: C.text2, valign: "middle", isTextBox: true, margin: 0 });
-    s.addText(bullets(items, 18), { x: x + 0.3, y: 2.75, w: 3.3, h: 2.6, color: C.text1, valign: "top", isTextBox: true, margin: 0 });
+    box(s, x, 1.5, 3.85, 3.05, C.background2, "Karte " + h);
+    iconCircle(s, ic, x + 0.3, 1.7, 0.65, col);
+    s.addText(h, { x: x + 1.15, y: 1.7, w: 2.55, h: 0.65, fontSize: 18, bold: true, color: C.text2, valign: "middle", isTextBox: true, margin: 0 });
+    s.addText(bullets(items, 15), { x: x + 0.3, y: 2.5, w: 3.3, h: 1.95, color: C.text1, valign: "top", isTextBox: true, margin: 0 });
   });
-  box(s, 0.7, 5.65, 11.9, 1.0, C.accent1, "Fazit");
+  box(s, 0.7, 4.7, 11.9, 1.2, "E3EFCF", "Was wäre wenn");
+  s.addText([{ text: "Was wäre mit nur einer Maschine gewesen?", options: { bold: true, fontSize: 17, color: C.text2, breakLine: true } },
+             { text: "Gleiche Preise, gleicher Absatz – wir haben nie mehr als 15 Paletten normal verkauft.", options: { fontSize: 13, color: C.text1 } }],
+    { x: 1.0, y: 4.7, w: 6.6, h: 1.2, valign: "middle", isTextBox: true, margin: 0 });
+  s.addText([{ text: "≈ 115.000 €", options: { fontSize: 28, bold: true, fontFace: "Cambria", color: "3D6610" } }, { text: "  statt 83.770 €", options: { fontSize: 16, color: C.text1, breakLine: true } },
+             { text: "+31.000 € – über dem Startkapital", options: { fontSize: 13, bold: true, color: "3D6610" } }],
+    { x: 7.7, y: 4.7, w: 4.7, h: 1.2, valign: "middle", isTextBox: true, margin: 0 });
+  box(s, 0.7, 6.05, 11.9, 0.75, C.accent1, "Fazit");
   s.addText([{ text: "Unser Fazit: ", options: { bold: true, color: C.accent2 } }, { text: "Der Preis war unser stärkster Hebel – und Fixkosten laufen weiter, auch wenn man kaum verkauft.", options: { color: C.background1 } }],
-    { x: 1.0, y: 5.65, w: 11.4, h: 1.0, fontSize: 17, valign: "middle", isTextBox: true, margin: 0 });
+    { x: 1.0, y: 6.05, w: 11.4, h: 0.75, fontSize: 16, valign: "middle", isTextBox: true, margin: 0 });
 }
 
 // =========================================================== 11 Bezug zur Gründung
 {
   const s = content("Bezug zur Gründung: Was im Spiel fehlte", "Gründung",
-    NOTE("ca. 1:10 min", "Jetzt der Blick zurück auf unsere Gründung. Vieles, was uns dort wichtig war, kam im Spiel nicht vor, und das hatte Folgen. Mehrweg hätte erst mal mehr gekostet, für Rücknahme und Spülen. Unsere Zielgruppe und unsere Sorte hätten uns dagegen geholfen: Wer Leute wie Jasper gezielt anspricht und etwas Besonderes wie Tamarinde-Limette anbietet, kann vielleicht auch mehr verlangen. Im Spiel war aber jede Brause gleich, deshalb zählte nur der Preis. Und mit Social Media hätten wir in Runde vier und fünf Werbung machen können, statt nur eine Palette anzubieten. Deshalb schlagen wir zwei Erweiterungen vor. Erstens ein Marketingbudget: Für je 2.000 Euro gibt es eine Palette mehr Absatz, höchstens drei pro Runde. Zweitens eine Mehrweg-Option: Sie kostet 1.000 Euro pro Runde und bringt eine Palette mehr Absatz bei umweltbewussten Kunden. Wichtig ist der Zielkonflikt: Beides kostet sicher Geld und lohnt sich nur, wenn Menge und Preis stimmen. So käme Nachhaltigkeit endlich ins Spiel."));
+    NOTE("ca. 1:05 min", "Jetzt der Blick zurück auf unsere Gründung. Vieles, was uns dort wichtig war, kam im Spiel nicht vor. Mehrweg hätte erst mal mehr gekostet, für Rücknahme und Spülen. Unsere Zielgruppe und unsere Sorte hätten uns dagegen geholfen: Wer Leute wie Jasper gezielt anspricht und etwas Besonderes wie Tamarinde-Limette anbietet, kann vielleicht auch mehr verlangen. Im Spiel war aber jede Brause gleich, deshalb zählte nur der Preis. Und mit Social Media hätten wir in Runde vier und fünf Werbung machen können, statt nur eine Palette anzubieten. Deshalb schlagen wir zwei Erweiterungen vor. Erstens ein Marketingbudget: Für je 2.000 Euro gibt es eine Palette mehr Absatz, höchstens drei pro Runde. Zweitens eine Mehrweg-Option: Sie kostet 1.000 Euro pro Runde und bringt eine Palette mehr Absatz bei umweltbewussten Kunden. Wichtig ist der Zielkonflikt: Beides kostet sicher Geld und lohnt sich nur, wenn Menge und Preis stimmen. So käme Nachhaltigkeit endlich ins Spiel."));
   s.addText("Was im Spiel fehlte – und was es bewirkt hätte", { x: 0.7, y: 1.5, w: 7.6, h: 0.4, fontSize: 16, bold: true, color: C.accent4, isTextBox: true, margin: 0 });
   [["FaRecycle", "Mehrweg & Pfand", "Mehr Kosten für Rücknahme und Spülen"],
    ["FaUserAlt", "Zielgruppe & Persona Jasper", "Nicht nur der Preis zählt, auch wen man anspricht"],

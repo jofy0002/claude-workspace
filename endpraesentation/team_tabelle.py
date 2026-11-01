@@ -113,34 +113,34 @@ zp = wb.create_sheet("Wer spricht was")
 sheet_base(zp, {"A": 2, "B": 8, "C": 42, "D": 16, "E": 10, "F": 2})
 zp["B1"] = "Wer spricht was"; zp["B1"].font = F(size=20, bold=True, color=PETROL)
 zp.row_dimensions[1].height = 34
-zp["B2"] = "Pro Folie einen Namen wählen. Vorschlag: Folie 1–4 · 5–7 · 8–10 · 11–13 (je ca. 2:20–3:10 Min.)."; zp["B2"].font = F(size=11, color=MUTED)
+zp["B2"] = "Eure Aufteilung ist eingetragen – bei Bedarf Namen per Pfeil ändern."; zp["B2"].font = F(size=11, color=MUTED)
 colhead(zp, 4, [(2, "Folie"), (3, "Titel"), (4, "Wer?"), (5, "Dauer")])
 zp.cell(4, 2).alignment = CENTER; zp.cell(4, 3).alignment = LEFT
-plan = [("Titel", 0, 30), ("Wer wir sind", 0, 45), ("Nachhaltigkeit", 0, 45), ("Produziert, angeboten, verkauft", 0, 40),
-        ("Drei Entscheidungen", 1, 5), ("Zwei Kennzahlen", 1, 0), ("Wirtschaftlichkeit & Schlussbestand", 0, 55),
-        ("Verkaufswert", 0, 50), ("Wirtschaftsdienst", 0, 45), ("Was wäre mit 1 Maschine?", 0, 50), ("Reflexion", 1, 0),
-        ("Bezug zur Gründung", 1, 10), ("Ergebnis auf einen Blick + Danke", 0, 30)]
+plan = [("Titel", "Sönke", 0, 35), ("Wer wir sind", "Sönke", 0, 45), ("Nachhaltigkeit", "Sönke", 0, 40),
+        ("Produziert, angeboten, verkauft", "Jona", 1, 0), ("Drei Entscheidungen", "Nio", 1, 10), ("Zwei Kennzahlen", "Jona", 1, 0),
+        ("Wirtschaftlichkeit & Schlussbestand", "Jona", 0, 50), ("Verkaufswert", "Lennart", 0, 50), ("Wirtschaftsdienst", "Nio", 0, 50),
+        ("Reflexion (inkl. „Was wäre mit 1 Maschine?“)", "Sönke", 1, 10), ("Bezug zur Gründung", "Lennart", 1, 5), ("Schluss + Danke", "Lennart", 0, 30)]
 dv_who = DataValidation(type="list", formula1='"' + ",".join(NAMES) + '"', allow_blank=True)
 zp.add_data_validation(dv_who)
-for k, (t, m, s) in enumerate(plan):
+for k, (t, who, m, s) in enumerate(plan):
     r = 5 + k
     zp.row_dimensions[r].height = 26
     a = zp.cell(r, 2, k + 1); a.font = F(color=MUTED); a.alignment = CENTER
     b = zp.cell(r, 3, t); b.font = F(); b.alignment = LEFT
-    w = zp.cell(r, 4); w.fill = FIELD; w.alignment = CENTER; w.font = F(bold=True, color=PETROL); dv_who.add(w.coordinate)
+    w = zp.cell(r, 4, who); w.fill = FIELD; w.alignment = CENTER; w.font = F(bold=True, color=PETROL); dv_who.add(w.coordinate)
     d = zp.cell(r, 5, time(0, m, s)); d.number_format = "m:ss"; d.font = F(color=MUTED); d.alignment = CENTER
     for col in (2, 3, 5): zp.cell(r, col).border = Border(bottom=LINE)
-zp.conditional_formatting.add("B5:E17", FormulaRule(formula=['$D5<>""'], fill=DONE))
+zp.conditional_formatting.add("B5:E16", FormulaRule(formula=['$D5<>""'], fill=DONE))
 
 zp.cell(19, 3, "Zeit pro Person").font = F(size=14, bold=True, color=PETROL)
 for i, n in enumerate(NAMES):
     r = 20 + i
     zp.cell(r, 3, n).font = F(); zp.cell(r, 3).alignment = LEFT
-    c = zp.cell(r, 4, f'=SUMIF($D$5:$D$17,"{n}",$E$5:$E$17)'); c.number_format = "m:ss"; c.font = F(bold=True); c.alignment = CENTER
+    c = zp.cell(r, 4, f'=SUMIF($D$5:$D$16,"{n}",$E$5:$E$16)'); c.number_format = "m:ss"; c.font = F(bold=True); c.alignment = CENTER
 zp.cell(24, 3, "Gesamt (Ziel 10–12 Min.)").font = F(bold=True)
-c = zp.cell(24, 4, "=SUM(E5:E17)"); c.number_format = "m:ss"; c.font = F(bold=True, color=AMBER); c.alignment = CENTER
+c = zp.cell(24, 4, "=SUM(E5:E16)"); c.number_format = "m:ss"; c.font = F(bold=True, color=AMBER); c.alignment = CENTER
 zp.cell(25, 3, "Noch ohne Sprecher:in").font = F(color=MUTED)
-c = zp.cell(25, 4, '=COUNTBLANK(D5:D17)&" Folien"'); c.font = F(color=MUTED); c.alignment = CENTER
+c = zp.cell(25, 4, '=COUNTBLANK(D5:D16)&" Folien"'); c.font = F(color=MUTED); c.alignment = CENTER
 
 ws.sheet_properties.tabColor = PETROL; zp.sheet_properties.tabColor = AMBER
 wb.active = 0
