@@ -52,7 +52,6 @@ einzeln = [
 ]
 gemeinsam = [
     "Optional: Karte mit roter Elbe statt Standort-Symbol (Folie 3)",
-    "KI-Teambild einfügen + Tool notieren (Folie 12)",
     "Bildquelle Limette & Tamarinde klären (Quellenfolie)",
     "R3 klären: 18,2 Paletten und Mitarbeiterzahl laut Protokoll",
     "Präsentation am Schul-Beamer testen",

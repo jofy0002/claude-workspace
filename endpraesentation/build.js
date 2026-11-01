@@ -436,12 +436,9 @@ function build() {
   s.addShape(pres.ShapeType.line, { x: 1.15, y: 5.3, w: 4.0, h: 0, line: { color: C.accent5, width: 1 }, objectName: "Linie" });
   s.addText([{ text: "Verkaufswert: ", options: { fontSize: 18, color: C.text1 } }, { text: "83.770 €", options: { fontSize: 30, bold: true, fontFace: "Cambria", color: C.accent2 } }],
     { x: 1.15, y: 5.45, w: 4.1, h: 0.75, valign: "middle", isTextBox: true, margin: 0 });
-  // Dank + Platz fürs Teambild
-  s.addText("Vielen Dank!", { x: 5.9, y: 1.5, w: 3.6, h: 1.0, fontSize: 40, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
-  s.addText("Wir freuen uns auf eure Fragen.", { x: 5.9, y: 2.5, w: 3.6, h: 0.6, fontSize: 19, bold: true, color: C.accent3, isTextBox: true, margin: 0 });
-  s.addShape(pres.ShapeType.roundRect, { x: 5.85, y: 3.45, w: 3.5, h: 2.34, rectRadius: 0.12, fill: { color: C.background1 }, line: { type: "none" }, objectName: "Rahmen Teambild" });
-  s.addImage({ path: "assets/teambild.png", x: 5.9, y: 3.5, w: 3.4, h: 3.4 * 490 / 744, rounding: false, altText: "KI-Teambild: wir vier als Cartoon (Perplexity)", objectName: "KI-Teambild" });
-  s.addText("Wir vier als KI-Cartoon", { x: 5.85, y: 5.9, w: 3.5, h: 0.3, fontSize: 11, italic: true, color: C.background2, align: "center", isTextBox: true, margin: 0 });
+  // Dank
+  s.addText("Vielen Dank!", { x: 5.9, y: 2.9, w: 3.6, h: 1.0, fontSize: 40, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
+  s.addText("Wir freuen uns auf eure Fragen.", { x: 5.9, y: 3.9, w: 3.6, h: 0.6, fontSize: 19, bold: true, color: C.accent3, isTextBox: true, margin: 0 });
   s.addShape(pres.ShapeType.ellipse, { x: 9.5, y: 1.7, w: 3.4, h: 3.4, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Sonne" });
   const fh = 5.2; s.addImage({ data: IMG.flasche, x: 11.2 - (fh * FLASCHE_RATIO) / 2, y: 1.15, w: fh * FLASCHE_RATIO, h: fh, altText: "Flasche Primatenbrause", objectName: "Flasche" });
   s.addNotes(NOTE("ca. 0:30 min", "Zum Schluss unser Ergebnis auf einen Blick. Gestartet sind wir mit 100.000 Euro, verkauft haben wir unser Unternehmen für 83.770 Euro. Unsere beste Runde war Runde drei, unser größter Fehler waren die hohen Preise in Runde vier und fünf, während die Fixkosten weiterliefen. Mit nur einer Maschine wären wir sogar über unserem Startkapital gelandet. Vielen Dank fürs Zuhören, wir freuen uns auf eure Fragen."));
@@ -453,7 +450,7 @@ function build() {
   const blocks = [
     ["Spielmaterial", ["Planspiel „Bertis Brause“, Cornelsen Verlag 2006 (Spielanleitung, Arbeitsblätter, Bögen M14/M15)", "Aufgabenstellung Endpräsentation, Wirtschaftsgymnasium Am Lämmermarkt"]],
     ["Daten", ["Eigene Arbeitsblätter: Maschinen/Personal, Produktion/Material, Kassenbuch, Angebotskarte, Umsatzberechnung, Unternehmensverkauf", "Eigenes Entscheidungsprotokoll; alle Kennzahlen selbst berechnet", "KI-Unterstützung bei Folien und Texten – siehe nächste Folie"]],
-    ["Bilder", ["Logo und Flasche: KI-generiert mit Perplexity (aus unserer Gründungspräsentation)", "Limette, Tamarinde: [Quelle ergänzen]", "KI-Teambild: KI-generiert mit Perplexity", "Symbole: Font Awesome (CC BY 4.0)"]],
+    ["Bilder", ["Logo und Flasche: KI-generiert mit Perplexity (aus unserer Gründungspräsentation)", "Limette, Tamarinde: [Quelle ergänzen]", "Symbole: Font Awesome (CC BY 4.0)"]],
   ];
   blocks.forEach(([h, items], i) => {
     const x = 0.7 + i * 4.025;
@@ -482,7 +479,6 @@ kiFolie("Quellen: KI-Einsatz (Claude)", "Quellenfolie KI – wird nicht vorgetra
   ["Abrunden", "Titel gekürzt, Kapitelwechsel, leere Flasche", "ki_claude_abrunden.png", 1624, 1318],
 ], "Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026). Vollständiger Verlauf: Chatverlauf_Elbharz_Claude.pdf");
 kiFolie("Quellen: KI-Einsatz (Perplexity)", "Quellenfolie KI – wird nicht vorgetragen.", [
-  ["KI-Teambild", "Cartoon von uns vier (Schlussfolie)", "ki_3.png", 600, 396],
   ["Werbespot", "Video zur Primatenbrause", "ki_4.png", 602, 505],
 ], "Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.");
 // =========================================================== 14 Anhang
