@@ -452,7 +452,7 @@ function build() {
   const blocks = [
     ["Spielmaterial", ["Planspiel „Bertis Brause“, Cornelsen Verlag 2006 (Spielanleitung, Arbeitsblätter, Bögen M14/M15)", "Aufgabenstellung Endpräsentation, Wirtschaftsgymnasium Am Lämmermarkt"]],
     ["Daten", ["Eigene Arbeitsblätter: Maschinen/Personal, Produktion/Material, Kassenbuch, Angebotskarte, Umsatzberechnung, Unternehmensverkauf", "Eigenes Entscheidungsprotokoll; alle Kennzahlen selbst berechnet", "KI-Unterstützung bei Folien und Texten – siehe nächste Folie"]],
-    ["Bilder", ["Logo und Flasche: KI-generiert mit Perplexity (aus unserer Gründungspräsentation)", "Limette, Tamarinde: [Quelle ergänzen]", "KI-Teambild: [Tool ergänzen]", "Symbole: Font Awesome (CC BY 4.0)"]],
+    ["Bilder", ["Logo und Flasche: KI-generiert mit Perplexity (aus unserer Gründungspräsentation)", "Limette, Tamarinde: [Quelle ergänzen]", "KI-Teambild: KI-generiert mit Perplexity", "Symbole: Font Awesome (CC BY 4.0)"]],
   ];
   blocks.forEach(([h, items], i) => {
     const x = 0.7 + i * 4.025;
@@ -463,24 +463,22 @@ function build() {
 }
 // =========================================================== 13b KI-Einsatz
 {
-  const s = content("Quellen: Wo wir KI genutzt haben", "Quellen", "Quellenfolie KI – wird nicht vorgetragen. Screenshots der Chats in die gestrichelten Felder einfügen (Bild einfügen, auf Feldgröße ziehen).");
+  const s = content("Quellen: Wo wir KI genutzt haben", "Quellen", "Quellenfolie KI – wird nicht vorgetragen. Screenshots aus unseren eigenen Chats.");
   const tools = [
-    ["Claude (Anthropic)", "Folienentwurf, Sprechtext-Vorschlag, Rechnungen geprüft"],
-    ["Perplexity", "Logo und Flaschenbild (Gründungspräsentation)"],
-    ["[Tool ergänzen]", "KI-Teambild (Schlussfolie)"],
-    ["[weiterer Chat]", "[wofür genutzt]"],
+    ["Claude", "Planung, Texte und Aufbau der Endpräsentation", "ki_1.png", 685, 500],
+    ["Perplexity", "Logo und Flaschenbild der Primatenbrause", "ki_2.png", 454, 484],
+    ["Perplexity", "KI-Teambild (Cartoon von uns vier)", "ki_3.png", 600, 396],
+    ["Perplexity", "Werbespot-Video zur Primatenbrause", "ki_4.png", 602, 505],
   ];
-  const w = 2.83, g = 0.19;
-  tools.forEach(([t, wofuer], i) => {
-    const x = 0.7 + i * (w + g);
-    box(s, x, 1.6, w, 3.3, C.background2, "Screenshot " + t, true);
-    s.addText("SCREENSHOT EINFÜGEN", { x, y: 1.6, w, h: 3.3, fontSize: 11, bold: true, color: C.accent5, align: "center", valign: "middle", isTextBox: true, margin: 0 });
-    s.addText([{ text: t, options: { bold: true, fontSize: 16, color: C.text2, breakLine: true } }, { text: wofuer, options: { fontSize: 13, color: C.text1 } }],
-      { x, y: 5.0, w, h: 0.95, valign: "top", isTextBox: true, margin: 0 });
+  tools.forEach(([t, wofuer, f, pw, ph], i) => {
+    const x = 0.7 + (i % 2) * 6.05, y = 1.5 + Math.floor(i / 2) * 2.55, w = 5.85, h = 2.4;
+    box(s, x, y, w, h, C.background2, "Karte KI " + (i + 1));
+    s.addText([{ text: t, options: { bold: true, fontSize: 20, color: C.text2, breakLine: true, paraSpaceAfter: 4 } }, { text: wofuer, options: { fontSize: 14, color: C.text1 } }],
+      { x: x + 0.25, y, w: 2.25, h, valign: "middle", isTextBox: true, margin: 0 });
+    const mh = h - 0.2, mw = 3.2, sc = Math.min(mw / pw, mh / ph), iw = pw * sc, ih = ph * sc;
+    s.addImage({ path: "assets/" + f, x: x + 2.55 + (mw - iw) / 2, y: y + 0.1 + (mh - ih) / 2, w: iw, h: ih, altText: "Screenshot Chat " + t + ": " + wofuer, objectName: "Screenshot " + t });
   });
-  box(s, 0.7, 6.0, 11.9, 0.7, C.accent1, "Hinweis KI");
-  s.addText([{ text: "Wichtig: ", options: { bold: true, color: C.accent2 } }, { text: "Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.", options: { color: C.background1 } }],
-    { x: 1.0, y: 6.0, w: 11.4, h: 0.7, fontSize: 15, valign: "middle", isTextBox: true, margin: 0 });
+  s.addText("Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.", { x: 0.7, y: 6.6, w: 11.0, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
 }
 // =========================================================== 14 Anhang
 {
