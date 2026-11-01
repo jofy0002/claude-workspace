@@ -33,7 +33,7 @@ const C = pres.SchemeColor;
 const img = (f) => "image/png;base64," + fs.readFileSync("assets/" + f).toString("base64");
 const IMG = {
   logo: img("logo.png"), flasche: img("flasche.png"), limette: img("limette.png"), tamarinde: img("tamarinde.png"),
-  umriss: img("flasche_umriss_petrol.png"),
+  umriss: img("flasche_umriss_petrol.png"), leer: img("flasche_leer.png"),
 };
 const FLASCHE_RATIO = 262 / 621;
 
@@ -52,7 +52,7 @@ pres.defineSlideMaster({
   title: "CONTENT",
   background: { color: C.background1 },
   objects: [
-    { placeholder: { options: { name: "title", type: "title", x: 0.7, y: 0.4, w: 11.9, h: 0.9, fontSize: 36, bold: true, fontFace: "Cambria", color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
+    { placeholder: { options: { name: "title", type: "title", x: 0.7, y: 0.5, w: 11.9, h: 0.9, fontSize: 36, bold: true, fontFace: "Cambria", color: C.text2, valign: "middle", align: "left", margin: 0 }, text: "" } },
   ],
   slideNumber: { x: 12.0, y: 6.95, w: 0.6, h: 0.3, fontSize: 11, color: C.accent4, align: "right" },
 });
@@ -73,10 +73,22 @@ function tracker(s, active) {
     s.addText(c, { x: x + 0.2, y: 6.95, w: 1.3, h: 0.3, fontSize: 11, bold: on, color: on ? C.accent2 : C.accent4, isTextBox: true, margin: 0, valign: "middle" });
   });
 }
+const KAPITEL = { Einleitung: "Einleitung", Verlauf: "Verlauf der Runden", Auswertung: "Auswertung", Reflexion: "Reflexion", "Gründung": "Bezug zur Gründung" };
+let lastChapter = null;
 function content(title, chapter, notes) {
   const s = slide("CONTENT", chapter);
   s.addText(title, { placeholder: "title" });
-  if (CHAPTERS.includes(chapter)) tracker(s, chapter);
+  if (CHAPTERS.includes(chapter)) {
+    tracker(s, chapter);
+    const nr = CHAPTERS.indexOf(chapter) + 1, neu = chapter !== lastChapter;
+    const label = `TEIL ${nr} · ${KAPITEL[chapter].toUpperCase()}`;
+    // Kapitelwechsel: oranger Balken links + gefülltes Etikett; innerhalb eines Kapitels nur dezent
+    s.addShape(pres.ShapeType.rect, { x: 0, y: 0, w: 0.22, h: 7.5, fill: { color: neu ? C.accent2 : C.background2 }, line: { type: "none" }, objectName: "Kapitelbalken" });
+    const lw = 0.4 + label.length * 0.11;
+    if (neu) s.addShape(pres.ShapeType.roundRect, { x: 0.7, y: 0.16, w: lw, h: 0.36, rectRadius: 0.08, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Kapitel-Etikett" });
+    s.addText(label, { x: neu ? 0.88 : 0.7, y: 0.16, w: lw, h: 0.36, fontSize: 12, bold: true, color: neu ? C.background1 : C.accent4, charSpacing: 2, valign: "middle", isTextBox: true, margin: 0 });
+    lastChapter = chapter;
+  }
   s.addNotes(notes);
   return s;
 }
@@ -177,11 +189,11 @@ function build() {
 
 // =========================================================== 3 Nachhaltigkeit
 {
-  const s = content("Nachhaltigkeit war Teil der Idee", "Einleitung",
+  const s = content("Nachhaltigkeit", "Einleitung",
     NOTE("ca. 0:40 min", "Nachhaltigkeit war uns von Anfang an wichtig. Wir wollten Mehrweg-Glas statt Einweg. Das lohnt sich aber nur bei kurzen Wegen, denn Glas ist schwer. Deshalb regional: in Hamburg herstellen und im Norden verkaufen. Und nur eine Sorte, weil das bei Produktion, Lager und Transport Aufwand spart. Für uns hieß das: lieber wenige Dinge richtig machen, als überall ein bisschen grün zu wirken. Im Planspiel selbst spielte das allerdings gar keine Rolle. Dort ging es nur um Preis, Menge und Kosten. Dazu sagen wir am Ende noch etwas. Wie es im Spiel lief, zeigt euch jetzt Jona."));
   const cw = 3.85, gx = 0.175;
   box(s, 0.7, 1.6, cw, 3.75, C.background2, "Karte Mehrweg");
-  s.addImage({ data: IMG.umriss, x: 0.7 + cw / 2 - (2.0 * FLASCHE_RATIO) / 2, y: 1.85, w: 2.0 * FLASCHE_RATIO, h: 2.0, altText: "Leere Mehrwegflasche (Umriss)", objectName: "Leere Flasche" });
+  s.addImage({ data: IMG.leer, x: 0.7 + cw / 2 - (2.1 * FLASCHE_RATIO) / 2, y: 1.8, w: 2.1 * FLASCHE_RATIO, h: 2.1, altText: "Leere Mehrwegflasche Primatenbrause", objectName: "Leere Flasche" });
   s.addText([{ text: "Mehrweg-Glas", options: { bold: true, fontSize: 20, color: C.text2, breakLine: true, paraSpaceAfter: 4 } }, { text: "Leere Flasche zurück, spülen, neu befüllen – Pfand statt Einweg", options: { fontSize: 15, color: C.text1 } }],
     { x: 0.95, y: 4.0, w: cw - 0.5, h: 1.2, valign: "top", isTextBox: true, margin: 0 });
   const x2 = 0.7 + cw + gx;
@@ -234,7 +246,7 @@ function build() {
 
 // =========================================================== 5 Drei Entscheidungen
 {
-  const s = content("Drei Entscheidungen, die unser Spiel geprägt haben", "Verlauf",
+  const s = content("Drei Entscheidungen", "Verlauf",
     NOTE("ca. 1:10 min", "Hinter diesem Verlauf stecken unsere Entscheidungen. In Runde eins haben wir mit 3.000 Euro alles verkauft und daraus den falschen Schluss gezogen: Die anderen sind wohl teurer. Also sind wir in Runde zwei auf 7.600 Euro hoch und haben eine zweite Maschine für 30.000 Euro gekauft, aber niemanden, der sie bedient. Ergebnis: rund 19.000 Euro Verlust. In Runde drei sind wir knapp unter die 6.000 Euro gegangen, die wir bei der Konkurrenz vermutet haben, und haben einen zweiten Mitarbeiter eingestellt. Das war unsere beste Runde, mit fast 26.000 Euro Gewinn. In Runde vier und fünf haben wir mit weniger Nachfrage gerechnet und nur je eine Palette hergestellt, um kein Minus zu machen. Trotzdem haben wir zusammen rund 35.000 Euro verloren. In Runde sechs wollten wir zum Schluss noch einmal alles verkaufen, lagen mit 8.400 Euro aber wieder zu hoch: Nur 40 Prozent gingen normal weg. Wie wir das ausgewertet haben, zeigt euch jetzt Jona."));
   const cards = [
     ["Runde 2", "7.600 €", "„Alles war weg – die anderen sind wohl teurer.“", "Preis drastisch rauf. 2. Maschine gekauft – aber ohne Mitarbeiter.", "−19.100 €", false],
@@ -260,7 +272,7 @@ function build() {
 
 // =========================================================== 7 Kennzahlen
 {
-  const s = content("So haben wir ausgewertet: zwei Kennzahlen", "Auswertung",
+  const s = content("Zwei Kennzahlen", "Auswertung",
     NOTE("ca. 1:00 min", "Um das auszuwerten, haben wir zwei Kennzahlen berechnet. Die erste ist die Wirtschaftlichkeit: Umsatz geteilt durch Kosten. In Runde drei hatten wir knapp 80.000 Euro Umsatz und 54.000 Euro Kosten. Das ergibt 1,48. Für jeden Euro, den wir ausgegeben haben, kamen also fast anderthalb Euro zurück. Alles über eins ist Gewinn. Die zweite Kennzahl ist die Absatzquote: Wie viel unserer Produktion haben wir zum normalen Preis verkauft? In Runde drei waren das 70 Prozent. Die Zahl zeigt, ob unser Preis zum Markt gepasst hat. Wichtig: Maschinenkäufe zählen voll in der Kaufrunde, deshalb sehen Runde eins und zwei schlechter aus. Die Absatzquote hat aber eine Grenze: In Runde vier und fünf haben wir nur eine Palette produziert, 50 Prozent heißt dort also nur eine halbe Palette. Was das für unser Geld bedeutet hat, seht ihr jetzt."));
   const ks = [
     ["FaBalanceScale", "Wirtschaftlichkeit", "Umsatzerlöse ÷ Kosten", "79.940 € ÷ 54.000 € = 1,48", "Über 1 = Gewinn. Zeigt, ob der Umsatz die Kosten einer Runde deckt."],
@@ -305,7 +317,7 @@ function build() {
 
 // =========================================================== 9 Verkaufswert
 {
-  const s = content("Was unser Unternehmen am Ende wert ist", "Auswertung",
+  const s = content("Verkaufswert", "Auswertung",
     NOTE("ca. 0:50 min", "Am Ende des Spiels wird das Unternehmen verkauft. Der Wert ist das Geld in der Kasse plus das, was die Maschinen noch wert sind. Jede Maschine verliert pro Runde, in der sie läuft, zehn Prozent. Die erste lief sechs Runden und ist noch 12.000 Euro wert. Die zweite lief nur vier Runden, weil sie in Runde zwei stillstand. Sie ist noch 18.000 Euro wert. Zusammen kommen wir auf 83.770 Euro. Das sind gut 16.000 Euro weniger, als wir am Anfang hatten. Allein die zwei Maschinen haben 60.000 Euro gekostet, davon steckt nur noch die Hälfte im Unternehmenswert. Warum es so wenig wurde, erklärt euch Nio."));
   const tiles = [
     ["FaCoins", "53.770\u00A0€", "Schlussbestand nach R6", C.accent1],
@@ -337,7 +349,7 @@ function build() {
 
 // =========================================================== 6 Wirtschaftsdienst
 {
-  const s = content("Warum nur 83.770\u00A0€? Der Wirtschaftsdienst", "Auswertung",
+  const s = content("Wirtschaftsdienst", "Auswertung",
     NOTE("ca. 0:50 min", "Ein Teil davon lag nicht an uns. Ab Runde zwei kamen die Meldungen des Wirtschaftsdienstes, und jede hat uns Geld gekostet. Insgesamt waren das 34.000 Euro, am meisten in Runde zwei und fünf mit je 10.000. Rein rechnerisch hätten wir ohne diese Kosten am Ende rund 118.000 Euro gehabt, also mehr als unser Startkapital. Das soll keine Ausrede sein. Die Meldungen konnten wir nicht verhindern. Unsere eigenen Verluste in Runde vier und fünf waren mit rund 35.000 Euro aber genauso groß, und die lagen an uns. Was wir selbst hätten besser machen können, erklärt euch jetzt Sönke."));
   box(s, 0.7, 1.6, 3.6, 2.35, C.accent1, "Kennzahl Zusatzkosten");
   iconCircle(s, "FaNewspaper", 0.95, 1.85, 0.65, C.accent2);
@@ -356,7 +368,7 @@ function build() {
 
 // =========================================================== 10 Reflexion
 {
-  const s = content("Reflexion: Würden wir wieder so entscheiden?", "Reflexion",
+  const s = content("Reflexion", "Reflexion",
     NOTE("ca. 1:10 min", "Würden wir wieder so entscheiden? Nur teilweise. Richtig war der vorsichtige Start mit einer Maschine, das empfiehlt auch die Spielanleitung, und nach Runde zwei haben wir schnell gemerkt, dass unser Preis zu hoch war. Falsch war vor allem unser Vorgehen ab Runde vier: Wir haben mit wenig Nachfrage gerechnet und trotzdem die höchsten Preise verlangt, obwohl im Spiel allein der Preis den Absatz bestimmt. Dazu liefen 13.000 Euro Fixkosten pro Runde weiter. Außerdem haben wir nachgerechnet, was mit nur einer Maschine passiert wäre, bei gleichen Preisen. Wir haben nie mehr als 15 Paletten normal verkauft, eine Maschine hätte also gereicht. Ohne die zweite Maschine und den zweiten Mitarbeiter wären wir bei rund 115.000 Euro gelandet, also über unserem Startkapital. Beim nächsten Mal würden wir deshalb den Preis um 6.000 Euro halten, Maschinen erst kaufen, wenn wir sie auslasten, und Personal an die Produktion anpassen. Den Blick zurück auf unsere Gründung übernimmt jetzt Lennart."));
   const cols = [
     ["FaThumbsUp", "Das lief gut", C.accent3, ["Vorsichtiger Start mit nur 1 Maschine", "Nach R2 schnell reagiert → beste Runde"]],
@@ -384,7 +396,7 @@ function build() {
 
 // =========================================================== 11 Bezug zur Gründung
 {
-  const s = content("Bezug zur Gründung: Was im Spiel fehlte", "Gründung",
+  const s = content("Bezug zur Gründung", "Gründung",
     NOTE("ca. 1:05 min", "Jetzt der Blick zurück auf unsere Gründung. Vieles, was uns dort wichtig war, kam im Spiel nicht vor. Mehrweg hätte erst mal mehr gekostet, für Rücknahme und Spülen. Unsere Zielgruppe und unsere Sorte hätten uns dagegen geholfen: Wer Leute wie Jasper gezielt anspricht und etwas Besonderes wie Tamarinde-Limette anbietet, kann vielleicht auch mehr verlangen. Im Spiel war aber jede Brause gleich, deshalb zählte nur der Preis. Und mit Social Media hätten wir in Runde vier und fünf Werbung machen können, statt nur eine Palette anzubieten. Deshalb schlagen wir zwei Erweiterungen vor. Erstens ein Marketingbudget: Für je 2.000 Euro gibt es eine Palette mehr Absatz, höchstens drei pro Runde. Zweitens eine Mehrweg-Option: Sie kostet 1.000 Euro pro Runde und bringt eine Palette mehr Absatz bei umweltbewussten Kunden. Wichtig ist der Zielkonflikt: Beides kostet sicher Geld und lohnt sich nur, wenn Menge und Preis stimmen. So käme Nachhaltigkeit endlich ins Spiel."));
   s.addText("Was im Spiel fehlte – und was es bewirkt hätte", { x: 0.7, y: 1.5, w: 7.6, h: 0.4, fontSize: 16, bold: true, color: C.accent4, isTextBox: true, margin: 0 });
   [["FaRecycle", "Mehrweg & Pfand", "Mehr Kosten für Rücknahme und Spülen"],
@@ -424,15 +436,14 @@ function build() {
   s.addShape(pres.ShapeType.line, { x: 1.15, y: 5.3, w: 4.0, h: 0, line: { color: C.accent5, width: 1 }, objectName: "Linie" });
   s.addText([{ text: "Verkaufswert: ", options: { fontSize: 18, color: C.text1 } }, { text: "83.770 €", options: { fontSize: 30, bold: true, fontFace: "Cambria", color: C.accent2 } }],
     { x: 1.15, y: 5.45, w: 4.1, h: 0.75, valign: "middle", isTextBox: true, margin: 0 });
-  // Botschaft
-  s.addText("Unsere Rückseite kann man zu Ende lesen.", { x: 5.9, y: 1.4, w: 3.4, h: 0.9, fontSize: 18, bold: true, color: C.accent2, isTextBox: true, margin: 0 });
-  s.addText("Unsere Zahlen auch.", { x: 5.9, y: 2.3, w: 3.4, h: 1.3, fontSize: 34, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
-  s.addText("Vielen Dank! Wir freuen uns auf eure Fragen.", { x: 5.9, y: 3.75, w: 3.4, h: 0.9, fontSize: 17, bold: true, color: C.accent3, isTextBox: true, margin: 0 });
-  s.addShape(pres.ShapeType.ellipse, { x: 6.2, y: 4.9, w: 1.7, h: 1.7, fill: { color: C.accent3, transparency: 15 }, line: { color: C.background1, width: 1.5, dashType: "dash" }, objectName: "Platz KI-Teambild" });
-  s.addText("BILD FOLGT: KI-Teambild", { x: 6.25, y: 4.9, w: 1.6, h: 1.7, fontSize: 10, bold: true, color: C.background1, align: "center", valign: "middle", isTextBox: true, margin: 0 });
+  // Dank + Platz fürs Teambild
+  s.addText("Vielen Dank!", { x: 5.9, y: 1.5, w: 3.6, h: 1.0, fontSize: 40, bold: true, fontFace: "Cambria", color: C.background1, isTextBox: true, margin: 0 });
+  s.addText("Wir freuen uns auf eure Fragen.", { x: 5.9, y: 2.5, w: 3.6, h: 0.6, fontSize: 19, bold: true, color: C.accent3, isTextBox: true, margin: 0 });
+  s.addShape(pres.ShapeType.ellipse, { x: 6.1, y: 3.6, w: 2.4, h: 2.4, fill: { color: C.accent3, transparency: 15 }, line: { color: C.background1, width: 1.5, dashType: "dash" }, objectName: "Platz KI-Teambild" });
+  s.addText("BILD FOLGT: KI-Teambild", { x: 6.2, y: 3.6, w: 2.2, h: 2.4, fontSize: 11, bold: true, color: C.background1, align: "center", valign: "middle", isTextBox: true, margin: 0 });
   s.addShape(pres.ShapeType.ellipse, { x: 9.5, y: 1.7, w: 3.4, h: 3.4, fill: { color: C.accent2 }, line: { type: "none" }, objectName: "Sonne" });
   const fh = 5.2; s.addImage({ data: IMG.flasche, x: 11.2 - (fh * FLASCHE_RATIO) / 2, y: 1.15, w: fh * FLASCHE_RATIO, h: fh, altText: "Flasche Primatenbrause", objectName: "Flasche" });
-  s.addNotes(NOTE("ca. 0:30 min", "Zum Schluss unser Ergebnis auf einen Blick. Gestartet sind wir mit 100.000 Euro, verkauft haben wir unser Unternehmen für 83.770 Euro. Unsere beste Runde war Runde drei, unser größter Fehler waren die hohen Preise in Runde vier und fünf, während die Fixkosten weiterliefen. Am Anfang haben wir gesagt: Die Rückseite unserer Flasche kann man zu Ende lesen. Unsere Zahlen auch. Vielen Dank fürs Zuhören, wir freuen uns auf eure Fragen."));
+  s.addNotes(NOTE("ca. 0:30 min", "Zum Schluss unser Ergebnis auf einen Blick. Gestartet sind wir mit 100.000 Euro, verkauft haben wir unser Unternehmen für 83.770 Euro. Unsere beste Runde war Runde drei, unser größter Fehler waren die hohen Preise in Runde vier und fünf, während die Fixkosten weiterliefen. Mit nur einer Maschine wären wir sogar über unserem Startkapital gelandet. Vielen Dank fürs Zuhören, wir freuen uns auf eure Fragen."));
 }
 
 // =========================================================== 13 Quellen
@@ -440,7 +451,7 @@ function build() {
   const s = content("Quellen", "Quellen", "Quellenfolie – wird nicht vorgetragen, steht für die Lehrkraft.");
   const blocks = [
     ["Spielmaterial", ["Planspiel „Bertis Brause“, Cornelsen Verlag 2006 (Spielanleitung, Arbeitsblätter, Bögen M14/M15)", "Aufgabenstellung Endpräsentation, Wirtschaftsgymnasium Am Lämmermarkt"]],
-    ["Daten", ["Eigene Arbeitsblätter: Maschinen/Personal, Produktion/Material, Kassenbuch, Angebotskarte, Umsatzberechnung, Unternehmensverkauf", "Eigenes Entscheidungsprotokoll; alle Kennzahlen selbst berechnet"]],
+    ["Daten", ["Eigene Arbeitsblätter: Maschinen/Personal, Produktion/Material, Kassenbuch, Angebotskarte, Umsatzberechnung, Unternehmensverkauf", "Eigenes Entscheidungsprotokoll; alle Kennzahlen selbst berechnet", "KI-Unterstützung bei Folien und Texten – siehe nächste Folie"]],
     ["Bilder", ["Logo und Flasche: KI-generiert mit Perplexity (aus unserer Gründungspräsentation)", "Limette, Tamarinde: [Quelle ergänzen]", "KI-Teambild: [Tool ergänzen]", "Symbole: Font Awesome (CC BY 4.0)"]],
   ];
   blocks.forEach(([h, items], i) => {
@@ -449,6 +460,27 @@ function build() {
     s.addText(h, { x: x + 0.3, y: 1.8, w: 3.3, h: 0.5, fontSize: 19, bold: true, color: C.text2, isTextBox: true, margin: 0 });
     s.addText(bullets(items, 14), { x: x + 0.3, y: 2.4, w: 3.3, h: 2.75, color: C.text1, valign: "top", isTextBox: true, margin: 0 });
   });
+}
+// =========================================================== 13b KI-Einsatz
+{
+  const s = content("Quellen: Wo wir KI genutzt haben", "Quellen", "Quellenfolie KI – wird nicht vorgetragen. Screenshots der Chats in die gestrichelten Felder einfügen (Bild einfügen, auf Feldgröße ziehen).");
+  const tools = [
+    ["Claude (Anthropic)", "Folienentwurf, Sprechtext-Vorschlag, Rechnungen geprüft"],
+    ["Perplexity", "Logo und Flaschenbild (Gründungspräsentation)"],
+    ["[Tool ergänzen]", "KI-Teambild (Schlussfolie)"],
+    ["[weiterer Chat]", "[wofür genutzt]"],
+  ];
+  const w = 2.83, g = 0.19;
+  tools.forEach(([t, wofuer], i) => {
+    const x = 0.7 + i * (w + g);
+    box(s, x, 1.6, w, 3.3, C.background2, "Screenshot " + t, true);
+    s.addText("SCREENSHOT EINFÜGEN", { x, y: 1.6, w, h: 3.3, fontSize: 11, bold: true, color: C.accent5, align: "center", valign: "middle", isTextBox: true, margin: 0 });
+    s.addText([{ text: t, options: { bold: true, fontSize: 16, color: C.text2, breakLine: true } }, { text: wofuer, options: { fontSize: 13, color: C.text1 } }],
+      { x, y: 5.0, w, h: 0.95, valign: "top", isTextBox: true, margin: 0 });
+  });
+  box(s, 0.7, 6.0, 11.9, 0.7, C.accent1, "Hinweis KI");
+  s.addText([{ text: "Wichtig: ", options: { bold: true, color: C.accent2 } }, { text: "Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.", options: { color: C.background1 } }],
+    { x: 1.0, y: 6.0, w: 11.4, h: 0.7, fontSize: 15, valign: "middle", isTextBox: true, margin: 0 });
 }
 // =========================================================== 14 Anhang
 {
