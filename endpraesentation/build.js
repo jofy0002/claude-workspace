@@ -478,15 +478,19 @@ function kiFolie(title, notes, items, foot, chatLink) {
   return s;
 }
 const FUSS_CLAUDE = "Wortgetreue Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026). Den vollständigen Verlauf zeigen wir gern auf Nachfrage.";
-kiFolie("Quellen: KI-Einsatz (Claude) 1/2", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
+kiFolie("Quellen: KI-Einsatz (Claude) 1/3", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
   ["Grundgerüst", "Aufbau und Plan der Präsentation", "ki_claude_geruest.png", 1624, 1114],
   ["Gestaltung", "Design überarbeitet, Farben beibehalten", "ki_claude_gestaltung.png", 1624, 1020],
   ["Team-Liste", "Excel zum Abhaken für unser Team", "ki_claude_teamliste.png", 1624, 1336],
 ], FUSS_CLAUDE, HAT_CHAT);
-kiFolie("Quellen: KI-Einsatz (Claude) 2/2", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
+kiFolie("Quellen: KI-Einsatz (Claude) 2/3", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
   ["Nachrechnen", "Handlungsalternative „nur eine Maschine“", "ki_claude_nachrechnen.png", 1624, 972],
   ["Struktur prüfen", "Unsere Folien mit der Aufgabe abgeglichen", "ki_claude_struktur.png", 1624, 1224],
   ["Abrunden", "Titel gekürzt, Kapitelwechsel, leere Flasche", "ki_claude_abrunden.png", 1624, 1530],
+], FUSS_CLAUDE, HAT_CHAT);
+kiFolie("Quellen: KI-Einsatz (Claude) 3/3", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
+  ["Unsere Ideen", "Handschriftliche Gestaltungsideen der Gruppe übernommen", "ki_claude_ideen.png", 1624, 1322],
+  ["Gestaltung Version 1", "Wiedererkennbar wie die Gründungspräsentation, aber neu", "ki_claude_design1.png", 1624, 1376],
 ], FUSS_CLAUDE, HAT_CHAT);
 // =========================================================== 14 Anhang
 {
