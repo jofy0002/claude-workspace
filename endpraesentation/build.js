@@ -450,7 +450,7 @@ function build() {
   const blocks = [
     ["Spielmaterial", ["Planspiel „Bertis Brause“, Cornelsen Verlag 2006 (Spielanleitung, Arbeitsblätter, Bögen M14/M15)", "Aufgabenstellung Endpräsentation, Wirtschaftsgymnasium Am Lämmermarkt"]],
     ["Daten", ["Eigene Arbeitsblätter: Maschinen/Personal, Produktion/Material, Kassenbuch, Angebotskarte, Umsatzberechnung, Unternehmensverkauf", "Eigenes Entscheidungsprotokoll; alle Kennzahlen selbst berechnet", "KI-Unterstützung bei Folien und Texten – siehe nächste Folie"]],
-    ["Bilder", ["Logo und Flasche: KI-generiert mit Perplexity (aus unserer Gründungspräsentation)", "Limette, Tamarinde: [Quelle ergänzen]", "Symbole: Font Awesome (CC BY 4.0)"]],
+    ["Bilder", ["Logo, Flasche, Limette und Tamarinde: aus unserer Gründungspräsentation", "Logo und Flasche dort KI-generiert mit Perplexity", "Symbole: Font Awesome (CC BY 4.0)"]],
   ];
   blocks.forEach(([h, items], i) => {
     const x = 0.7 + i * 4.025;
@@ -460,7 +460,7 @@ function build() {
   });
 }
 // =========================================================== 13b KI-Einsatz
-const HAT_CHAT = fs.existsSync("assets/chat"), CHAT_START = 18, QUELLEN_KI = 14;
+const HAT_CHAT = false, CHAT_START = 0, QUELLEN_KI = 14;
 function kiFolie(title, notes, items, foot, chatLink) {
   const s = content(title, "Quellen", notes);
   const n = items.length, gap = 0.2, w = (11.9 - gap * (n - 1)) / n;
@@ -472,12 +472,12 @@ function kiFolie(title, notes, items, foot, chatLink) {
     const mh = h - 1.2, mw = w - 0.3, sc = Math.min(mw / pw, mh / ph), iw = pw * sc, ih = ph * sc;
     s.addImage({ path: "assets/" + f, x: x + 0.15 + (mw - iw) / 2, y: y + 1.05, w: iw, h: ih, altText: "Auszug Chat " + t + ": " + wofuer, objectName: "Chat-Auszug " + (i + 1) });
   });
-  s.addText(foot, { x: 0.7, y: 6.55, w: 7.6, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
+  s.addText(foot, { x: 0.7, y: 6.55, w: 11.9, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
   if (chatLink) s.addText("Ganzen Chatverlauf ansehen  →", { x: 8.75, y: 6.5, w: 3.85, h: 0.45, fontSize: 14, bold: true, color: C.background1, fill: { color: C.accent1 }, align: "center", valign: "middle", isTextBox: true, margin: 0, objectName: "Link Chatverlauf",
     hyperlink: { slide: CHAT_START, tooltip: "Öffnet den vollständigen Chatverlauf (ausgeblendete Folien)" } });
   return s;
 }
-const FUSS_CLAUDE = "Wortgetreue Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026).";
+const FUSS_CLAUDE = "Wortgetreue Auszüge aus Claude Code, Sitzung „Elbharz Schulprojekt“ (13.10.–01.11.2026). Den vollständigen Verlauf zeigen wir gern auf Nachfrage.";
 kiFolie("Quellen: KI-Einsatz (Claude) 1/2", "Quellenfolie KI – wird nicht vorgetragen. Wortgetreue Auszüge aus unserem Claude-Code-Chat.", [
   ["Grundgerüst", "Aufbau und Plan der Präsentation", "ki_claude_geruest.png", 1624, 1114],
   ["Gestaltung", "Design überarbeitet, Farben beibehalten", "ki_claude_gestaltung.png", 1624, 1020],
@@ -488,9 +488,6 @@ kiFolie("Quellen: KI-Einsatz (Claude) 2/2", "Quellenfolie KI – wird nicht vorg
   ["Struktur prüfen", "Unsere Folien mit der Aufgabe abgeglichen", "ki_claude_struktur.png", 1624, 1224],
   ["Abrunden", "Titel gekürzt, Kapitelwechsel, leere Flasche", "ki_claude_abrunden.png", 1624, 1530],
 ], FUSS_CLAUDE, HAT_CHAT);
-kiFolie("Quellen: KI-Einsatz (Perplexity)", "Quellenfolie KI – wird nicht vorgetragen.", [
-  ["Werbespot", "Video zur Primatenbrause", "ki_4.png", 602, 505],
-], "Alle Spielzahlen stammen aus unseren eigenen Arbeitsblättern. KI-Ergebnisse haben wir geprüft und angepasst.");
 // =========================================================== 14 Anhang
 {
   const s = content("Anhang: Kosten und Kennzahlen je Runde", "Anhang", "Backup-Folie für Rückfragen – wird nicht vorgetragen.");
@@ -506,23 +503,6 @@ kiFolie("Quellen: KI-Einsatz (Perplexity)", "Quellenfolie KI – wird nicht vorg
   s.addText("Wirtschaftlichkeit gesamt: 240.270 € ÷ 286.500 € = 0,84 · Wirtschaftsdienst = sonstige Kosten laut Kassenbuch", { x: 0.7, y: 6.5, w: 11.9, h: 0.35, fontSize: 12, italic: true, color: C.accent4, isTextBox: true, margin: 0 });
 }
 
-// =========================================================== 15 Anhang Chatverlauf (Seiten aus Chatverlauf_Elbharz_Claude.pdf)
-if (fs.existsSync("assets/chat")) {
-  const seiten = fs.readdirSync("assets/chat").filter((f) => f.endsWith(".jpg")).sort();
-  for (let k = 0; k < seiten.length; k += 3) {
-    const von = k + 1, bis = Math.min(k + 3, seiten.length);
-    const s = content(`Vollständiger Chatverlauf (S. ${von}–${bis} von ${seiten.length})`, "Anhang", "Ausgeblendete Folie – erscheint nur über den Link auf den KI-Quellenfolien.");
-    s.hidden = true;
-    const nr = CHAT_START + k / 3, letzte = bis === seiten.length;
-    s.addText("←  Zurück zu den Quellen", { x: 0.7, y: 6.92, w: 2.75, h: 0.42, fontSize: 12, bold: true, color: C.text2, fill: { color: C.background2 }, align: "center", valign: "middle", isTextBox: true, margin: 0, objectName: "Link zurück", hyperlink: { slide: QUELLEN_KI, tooltip: "Zurück zu den KI-Quellen" } });
-    if (!letzte) s.addText("Nächste Seiten  →", { x: 3.6, y: 6.92, w: 2.7, h: 0.42, fontSize: 12, bold: true, color: C.background1, fill: { color: C.accent1 }, align: "center", valign: "middle", isTextBox: true, margin: 0, objectName: "Link weiter", hyperlink: { slide: nr + 1, tooltip: "Nächste Seiten" } });
-    seiten.slice(k, k + 3).forEach((f, i) => {
-      const h = 5.3, w = h * 595.92 / 842.88;
-      s.addImage({ path: "assets/chat/" + f, x: 0.7 + i * (w + 0.2), y: 1.45, w, h, altText: "Chatverlauf Seite " + (k + i + 1), objectName: "Chatseite " + (k + i + 1) });
-      s.addShape(pres.ShapeType.rect, { x: 0.7 + i * (w + 0.2), y: 1.45, w, h, fill: { type: "none" }, line: { color: "D3D1C8", width: 0.75 }, objectName: "Rahmen Seite " + (k + i + 1) });
-    });
-  }
-}
 
 }
 
