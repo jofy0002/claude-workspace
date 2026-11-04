@@ -19,7 +19,7 @@ for sec in doc.sections:
 st = doc.styles["Normal"]; st.font.name = "Calibri"; st.font.size = Pt(12)
 
 h = doc.add_paragraph(); r = h.add_run("Sprechtext Endpräsentation"); r.bold = True; r.font.size = Pt(22); r.font.color.rgb = PETROL
-p = doc.add_paragraph(); r = p.add_run("Elbharz Getränke GbR · Klasse 11b · Sönke 1–3, 10 · Jona 4, 6–7 · Nio 5, 9 · Lennart 8, 11–12 · ca. 10:30 Min."); r.font.color.rgb = MUTED
+p = doc.add_paragraph(); r = p.add_run("Elbharz Getränke GbR · Klasse 11b · Sönke 1–3, 10 · Jona 4, 6–7 · Nio 5, 9 · Lennart 8, 11–12 · ca. 10 Min. (ruhig sprechen)"); r.font.color.rgb = MUTED
 tips = doc.add_paragraph()
 r = tips.add_run("So nutzt ihr den Text: "); r.bold = True
 tips.add_run("Das ist ein Vorschlag – sagt es in euren eigenen Worten. Genaue Zahlen stehen auf den Folien, im Sprechen reichen runde Zahlen. "
