@@ -33,7 +33,7 @@ for i, s in enumerate(list(prs.slides)[:12]):
     hd = doc.add_paragraph(); hd.paragraph_format.space_before = Pt(16); hd.paragraph_format.keep_with_next = True
     r = hd.add_run(f"Folie {i+1} – {TITEL[i]} · {WER[i]}"); r.bold = True; r.font.size = Pt(15); r.font.color.rgb = PETROL
     meta = doc.add_paragraph(); meta.paragraph_format.keep_with_next = True
-    r = meta.add_run(f"{zeit} Min.   ·   Sprecher:in: ______________"); r.font.size = Pt(11); r.font.color.rgb = MUTED
+    r = meta.add_run(f"{zeit} Min."); r.font.size = Pt(11); r.font.color.rgb = MUTED
     doc.add_paragraph(text)
     if i + 1 in UEBERGABE:
         u = doc.add_paragraph(); r = u.add_run(UEBERGABE[i + 1]); r.italic = True; r.font.color.rgb = AMBER
