@@ -5,17 +5,17 @@ from docx.shared import Pt, RGBColor, Cm
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 
 PETROL, AMBER, MUTED = RGBColor(0x0F, 0x5C, 0x6B), RGBColor(0xD9, 0x82, 0x2B), RGBColor(0x5F, 0x8F, 0x99)
-WER = ["Sönke", "Sönke", "Sönke", "Nio", "Nio", "Lennart", "Lennart", "Lennart", "Nio", "Sönke", "Lennart", "Sönke"]
+WER = ["Sönke", "Sönke", "Sönke", "Nio", "Nio", "Nio", "Lennart", "Lennart", "Nio", "Sönke", "Lennart", "Lennart"]
 TITEL = ["Titel", "Wer wir sind", "Nachhaltigkeit", "Produziert, angeboten, verkauft", "Drei Entscheidungen",
          "Zwei Kennzahlen", "Wirtschaftlichkeit & Schlussbestand", "Verkaufswert", "Wirtschaftsdienst",
          "Reflexion", "Bezug zur Gründung", "Schluss + Danke"]
-UEBERGABE = {3: "Übergabe an Nio", 5: "Übergabe an Lennart", 8: "Übergabe an Nio", 9: "Übergabe an Sönke", 10: "Übergabe an Lennart", 11: "Übergabe an Sönke"}
-ERSETZEN = {  # Übergabesätze für die Aufteilung ohne Jona
+UEBERGABE = {3: "Übergabe an Nio", 6: "Übergabe an Lennart", 8: "Übergabe an Nio", 9: "Übergabe an Sönke", 10: "Übergabe an Lennart"}
+ERSETZEN = {  # Übergabesätze: alle behalten ihre Folien, Jonas Folien 4 + 6 → Nio, 7 → Lennart
     3: [("Wie es im Spiel lief, zeigt euch jetzt Jona.", "Wie es im Spiel lief, zeigt euch jetzt Nio.")],
     4: [("Welche Entscheidungen dahinterstanden, erklärt euch jetzt Nio.", "Welche Entscheidungen dahinterstanden, erkläre ich euch jetzt.")],
-    5: [("Ich erkläre euch unsere wichtigsten Entscheidungen.", "Hinter diesem Verlauf stecken unsere Entscheidungen."), ("Wie wir das ausgewertet haben, zeigt euch jetzt Jona.", "Wie wir das ausgewertet haben, zeigt euch jetzt Lennart.")],
+    5: [("Ich erkläre euch unsere wichtigsten Entscheidungen.", "Hinter diesem Verlauf stecken unsere Entscheidungen."), ("Wie wir das ausgewertet haben, zeigt euch jetzt Jona.", "Wie wir das ausgewertet haben, zeige ich euch jetzt.")],
+    6: [("Was das für unser Geld bedeutet hat, seht ihr jetzt.", "Was das für unser Geld bedeutet hat, zeigt euch jetzt Lennart.")],
     7: [("Was unser Unternehmen am Ende wert war, erklärt euch jetzt Lennart.", "Was unser Unternehmen am Ende wert war, zeige ich euch jetzt.")],
-    11: [("Beides ist im Kassenbuch nur eine zusätzliche Zeile, das Spiel bleibt also einfach.", "Beides ist im Kassenbuch nur eine zusätzliche Zeile, das Spiel bleibt also einfach. Zum Schluss übergebe ich noch einmal an Sönke.")],
 }
 
 prs = Presentation("Elbharz_Endpraesentation.pptx")
@@ -25,7 +25,7 @@ for sec in doc.sections:
 st = doc.styles["Normal"]; st.font.name = "Calibri"; st.font.size = Pt(12)
 
 h = doc.add_paragraph(); r = h.add_run("Sprechtext – Ersatzaufteilung ohne Jona"); r.bold = True; r.font.size = Pt(22); r.font.color.rgb = PETROL
-p = doc.add_paragraph(); r = p.add_run("Elbharz Getränke GbR · Klasse 11b · Aufteilung OHNE Jona: Sönke 1–3, 10, 12 · Nio 4–5, 9 · Lennart 6–8, 11 · ca. 10 Min. (ruhig sprechen)"); r.font.color.rgb = MUTED
+p = doc.add_paragraph(); r = p.add_run("Elbharz Getränke GbR · Klasse 11b · Aufteilung OHNE Jona (alle behalten ihre Folien): Sönke 1–3, 10 · Nio 4–6, 9 · Lennart 7–8, 11–12 · ca. 10 Min."); r.font.color.rgb = MUTED
 tips = doc.add_paragraph()
 r = tips.add_run("So nutzt ihr den Text: "); r.bold = True
 tips.add_run("Das ist ein Vorschlag – sagt es in euren eigenen Worten. Genaue Zahlen stehen auf den Folien, im Sprechen reichen runde Zahlen. "
